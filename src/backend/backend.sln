@@ -4,35 +4,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.API", "Web.API\Web.API.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logistics", "Logistics", "{A14D2523-5969-47B8-A8B1-EAAE264AC5C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Domain", "Logistics\Logistics.Domain\Logistics.Domain.csproj", "{14E80FCA-EDCB-4737-9E49-8174CACB80A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Domain", "Modules\Logistics\Logistics.Domain\Logistics.Domain.csproj", "{14E80FCA-EDCB-4737-9E49-8174CACB80A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Application", "Logistics\Logistics.Application\Logistics.Application.csproj", "{B5604C5B-328F-4187-8446-47CC48A776C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Application", "Modules\Logistics\Logistics.Application\Logistics.Application.csproj", "{B5604C5B-328F-4187-8446-47CC48A776C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Infrastructure", "Logistics\Logistics.Infrastructure\Logistics.Infrastructure.csproj", "{668DCF11-A876-45AF-BC91-A1F79730345E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Infrastructure", "Modules\Logistics\Logistics.Infrastructure\Logistics.Infrastructure.csproj", "{668DCF11-A876-45AF-BC91-A1F79730345E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{EDABF3F4-E8BE-4EE7-8CE4-40BCF7C81824}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Domain", "Identity\Identity.Domain\Identity.Domain.csproj", "{D8BEF0DD-225A-4641-8D9E-446A68F29E4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Domain", "Modules\Identity\Identity.Domain\Identity.Domain.csproj", "{D8BEF0DD-225A-4641-8D9E-446A68F29E4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Application", "Identity\Identity.Application\Identity.Application.csproj", "{D4766641-BA40-49C6-8A12-786F0CE3B2D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Application", "Modules\Identity\Identity.Application\Identity.Application.csproj", "{D4766641-BA40-49C6-8A12-786F0CE3B2D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Infrastructure", "Identity\Identity.Infrastructure\Identity.Infrastructure.csproj", "{4C8952C6-AB6D-4292-B1CA-CA6FF51C6E4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Infrastructure", "Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj", "{4C8952C6-AB6D-4292-B1CA-CA6FF51C6E4A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Events", "Events", "{B929F0BE-26CF-42B2-8E10-25616F5667E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Domain", "Events\Events.Domain\Events.Domain.csproj", "{609392E3-170A-4EDB-B916-65E1AF300F70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Domain", "Modules\Events\Events.Domain\Events.Domain.csproj", "{609392E3-170A-4EDB-B916-65E1AF300F70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Application", "Events\Events.Application\Events.Application.csproj", "{CD06F68B-0D3D-4977-BCFD-EFC71BFF417B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Application", "Modules\Events\Events.Application\Events.Application.csproj", "{CD06F68B-0D3D-4977-BCFD-EFC71BFF417B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Infrastructure", "Events\Events.Infrastructure\Events.Infrastructure.csproj", "{0B841382-1C3D-46A8-B10F-CF2414C6D72D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Infrastructure", "Modules\Events\Events.Infrastructure\Events.Infrastructure.csproj", "{0B841382-1C3D-46A8-B10F-CF2414C6D72D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Registration", "Registration", "{951863A4-D595-49C1-AA02-DBC451706BD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Domain", "Registration\Registration.Domain\Registration.Domain.csproj", "{20CFEA78-BD37-4BF1-A222-6A6674CAE628}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Domain", "Modules\Registration\Registration.Domain\Registration.Domain.csproj", "{20CFEA78-BD37-4BF1-A222-6A6674CAE628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Application", "Registration\Registration.Application\Registration.Application.csproj", "{DCD78DB2-6435-41A3-B6AB-8463D94A2F20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Application", "Modules\Registration\Registration.Application\Registration.Application.csproj", "{DCD78DB2-6435-41A3-B6AB-8463D94A2F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Infrastructure", "Registration\Registration.Infrastructure\Registration.Infrastructure.csproj", "{62F09EAC-1866-42F6-9D71-269F81BCC1A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Infrastructure", "Modules\Registration\Registration.Infrastructure\Registration.Infrastructure.csproj", "{62F09EAC-1866-42F6-9D71-269F81BCC1A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{BC93D265-5ADC-470A-B5AA-0B94F02825AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -106,5 +108,9 @@ Global
 		{20CFEA78-BD37-4BF1-A222-6A6674CAE628} = {951863A4-D595-49C1-AA02-DBC451706BD1}
 		{DCD78DB2-6435-41A3-B6AB-8463D94A2F20} = {951863A4-D595-49C1-AA02-DBC451706BD1}
 		{62F09EAC-1866-42F6-9D71-269F81BCC1A3} = {951863A4-D595-49C1-AA02-DBC451706BD1}
+		{B929F0BE-26CF-42B2-8E10-25616F5667E8} = {BC93D265-5ADC-470A-B5AA-0B94F02825AC}
+		{EDABF3F4-E8BE-4EE7-8CE4-40BCF7C81824} = {BC93D265-5ADC-470A-B5AA-0B94F02825AC}
+		{A14D2523-5969-47B8-A8B1-EAAE264AC5C1} = {BC93D265-5ADC-470A-B5AA-0B94F02825AC}
+		{951863A4-D595-49C1-AA02-DBC451706BD1} = {BC93D265-5ADC-470A-B5AA-0B94F02825AC}
 	EndGlobalSection
 EndGlobal
