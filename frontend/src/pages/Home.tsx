@@ -9,7 +9,7 @@ export const Home = () => {
 
 			<div className="relative z-10 text-center px-6">
 				<h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 tracking-tight mb-4">
-					Gestor de Eventos
+					Campeando
 				</h1>
 				<p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 font-medium">
 					La plataforma moderna y eficiente para planificar, administrar y
