@@ -9,7 +9,7 @@
   },
   "lint-staged": {
     "frontend/**/*.{js,ts,jsx,tsx}": [
-      "pnpm --filter frontend biome check --apply"
+      "pnpm --filter frontend biome check --write"
     ]
   },
   "keywords": [],
