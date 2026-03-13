@@ -2,11 +2,14 @@ import { Link } from "react-router-dom";
 import { EventSkeleton } from "../components/EventSkeleton";
 import { LoadingFallback } from "../components/LoadingFallback";
 import { useAuth } from "../context/AuthContext";
+import { useDeleteEvent } from "../hooks/useDeleteEvent";
 import { useEvents } from "../hooks/useEvents";
 
 export const Dashboard = () => {
 	const { user, logout } = useAuth();
 	const { data: events, isLoading, isError } = useEvents();
+
+	const { mutate: deleteEventFn, isPending: isDeleting } = useDeleteEvent();
 
 	if (isError) {
 		throw new Error("No se pudieron cargar los eventos"); // Forzamos al ErrorBoundary para que atrape
@@ -179,9 +182,33 @@ export const Dashboard = () => {
 										></path>
 									</svg>
 								</div>
-								<h3 className="text-xl font-semibold text-white mb-2">
-									{event.name}
-								</h3>
+								{/* Eliminar */}
+								<div className="flex justify-between items-start mb-2">
+									<h3 className="text-xl font-semibold text-white">
+										{event.name}
+									</h3>
+
+									<button
+										onClick={() => deleteEventFn(event.id)}
+										disabled={isDeleting}
+										className="text-slate-500 hover:text-red-500 transition-colors p-1"
+										title="Eliminar evento"
+									>
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2"
+												d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+											></path>
+										</svg>
+									</button>
+								</div>
 								<div className="space-y-3 mt-auto text-sm text-slate-400">
 									<div className="flex items-center gap-3 mt-3">
 										<svg

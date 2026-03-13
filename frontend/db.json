@@ -11,12 +11,12 @@
     },
     {
       "id": "2",
-      "name": "Campamento de semana Santa",
-      "date": "2026-04-10",
-      "location": "El Paraiso",
-      "status": "active",
-      "attendees": 40,
-      "revenue": 1200
+      "name": "Festival de música",
+      "date": "2026-03-20",
+      "location": "Santa Cruz",
+      "status": "upcoming",
+      "attendees": 5000,
+      "revenue": 150000
     },
     {
       "id": "3",
@@ -27,5 +27,6 @@
       "attendees": 3500,
       "revenue": 10500
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
