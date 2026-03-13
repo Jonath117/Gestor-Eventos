@@ -1,0 +1,31 @@
+{
+  "events": [
+    {
+      "id": "1",
+      "name": "Campamento de verano",
+      "date": "2026-05-15",
+      "location": "Buena Vista",
+      "status": "upcoming",
+      "attendees": 1200,
+      "revenue": 45000
+    },
+    {
+      "id": "2",
+      "name": "Campamento de semana Santa",
+      "date": "2026-04-10",
+      "location": "El Paraiso",
+      "status": "active",
+      "attendees": 40,
+      "revenue": 1200
+    },
+    {
+      "id": "3",
+      "name": "Retiro de carnaval",
+      "date": "2026-02-14",
+      "location": "Samaipata",
+      "status": "completed",
+      "attendees": 3500,
+      "revenue": 10500
+    }
+  ]
+}
