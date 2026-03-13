@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { EventSkeleton } from "../components/EventSkeleton";
 import { LoadingFallback } from "../components/LoadingFallback";
 import { useAuth } from "../context/AuthContext";
 import { useEvents } from "../hooks/useEvents";
@@ -149,7 +150,12 @@ export const Dashboard = () => {
 				</div>
 
 				{isLoading ? (
-					<LoadingFallback />
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+						{/* Creamos un arreglo falso de 6 elementos para mostrar 6 tarjetas parpadeando */}
+						{[1, 2, 3, 4, 5, 6].map((n) => (
+							<EventSkeleton key={n} />
+						))}
+					</div>
 				) : events && events.length > 0 ? (
 					/* Events Grid */
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

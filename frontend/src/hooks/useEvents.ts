@@ -6,6 +6,11 @@ import type { Event } from "../types/event";
 export const useEvents = () => {
 	return useQuery<Event[], Error>({
 		queryKey: ["events"], // Clave única de caché para esta consulta
-		queryFn: getEvents, // Función que realizará la petición real
+		queryFn: async () => {
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+
+			//ejectuamos la pettcion
+			return getEvents();
+		},
 	});
 };
