@@ -13,7 +13,7 @@ export const Login = () => {
 	return (
 		<div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 relative">
 			{/* Soft background glow */}
-			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-blue-900/20 rounded-full blur-[120px] pointer-events-none"></div>
 
 			<div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl relative z-10">
 				<div className="text-center mb-10">
@@ -41,7 +41,7 @@ export const Login = () => {
 				<div className="space-y-6">
 					<button
 						onClick={handleLogin}
-						className="w-full py-4 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+						className="w-full py-4 px-4 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
 					>
 						Simular Inicio de Sesión
 					</button>

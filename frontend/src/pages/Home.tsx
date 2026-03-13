@@ -8,7 +8,7 @@ export const Home = () => {
 			<div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse delay-700"></div>
 
 			<div className="relative z-10 text-center px-6">
-				<h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 tracking-tight mb-4">
+				<h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-indigo-400 tracking-tight mb-4">
 					Campeando
 				</h1>
 				<p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 font-medium">

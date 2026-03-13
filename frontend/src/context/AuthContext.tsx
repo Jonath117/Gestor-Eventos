@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useContext, useState } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export interface User {

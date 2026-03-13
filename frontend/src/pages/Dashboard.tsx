@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { EventSkeleton } from "../components/EventSkeleton";
-import { LoadingFallback } from "../components/LoadingFallback";
 import { useAuth } from "../context/AuthContext";
 import { useDeleteEvent } from "../hooks/useDeleteEvent";
 import { useEvents } from "../hooks/useEvents";
@@ -22,7 +21,7 @@ export const Dashboard = () => {
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex items-center justify-between h-16">
 						<div className="flex items-center gap-3">
-							<div className="w-8 h-8 rounded bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+							<div className="w-8 h-8 rounded bg-linear-to-tr from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
 								<span className="text-white font-bold text-lg">G</span>
 							</div>
 							<span className="font-bold text-xl tracking-tight text-white">
@@ -167,7 +166,7 @@ export const Dashboard = () => {
 								key={event.id}
 								className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all flex flex-col group relative overflow-hidden"
 							>
-								<div className="w-12 h-12 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 border border-blue-500/20 text-blue-400 rounded-xl mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
+								<div className="w-12 h-12 bg-linear-to-br from-blue-500/10 to-indigo-500/10 border border-blue-500/20 text-blue-400 rounded-xl mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
 									<svg
 										className="w-6 h-6"
 										fill="none"

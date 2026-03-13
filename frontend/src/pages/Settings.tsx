@@ -39,7 +39,7 @@ export const Settings = () => {
 					</div>
 					<div className="p-6 space-y-6">
 						<div className="flex items-center gap-6">
-							<div className="w-20 h-20 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
+							<div className="w-20 h-20 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
 								<svg
 									className="w-8 h-8 text-slate-500"
 									fill="none"

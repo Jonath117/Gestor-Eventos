@@ -4,10 +4,10 @@ export const NotFound = () => {
 	return (
 		<div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 relative overflow-hidden">
 			{/* Background */}
-			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-900/10 rounded-full blur-[100px] pointer-events-none"></div>
+			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-red-900/10 rounded-full blur-[100px] pointer-events-none"></div>
 
 			<div className="relative z-10 text-center max-w-md">
-				<div className="text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-slate-700 to-slate-500 mb-4 opacity-50">
+				<div className="text-9xl font-black text-transparent bg-clip-text bg-linear-to-br from-slate-700 to-slate-500 mb-4 opacity-50">
 					404
 				</div>
 				<h1 className="text-3xl font-bold text-white mb-4">

@@ -28,7 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
 		if (this.state.hasError) {
 			return (
 				<div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 relative overflow-hidden">
-					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-900/10 rounded-full blur-[120px] pointer-events-none"></div>
+					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-red-900/10 rounded-full blur-[120px] pointer-events-none"></div>
 
 					<div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl p-8 relative z-10">
 						<div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-2xl flex items-center justify-center mb-6">
