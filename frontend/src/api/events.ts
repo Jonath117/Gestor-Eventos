@@ -8,13 +8,5 @@ export const getEvents = async (): Promise<Event[]> => {
 };
 
 export const deleteEvent = async (id: string | number): Promise<void> => {
-	const apiUrl = import.meta.env.VITE_API_URL;
-
-	const response = await fetch(`${apiUrl}/events/${id}`, {
-		method: "DELETE",
-	});
-
-	if (!response.ok) {
-		throw new Error("No se pudo eliminar el evento");
-	}
+	await api.delete(`/events/${id}`);
 };

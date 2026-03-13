@@ -53,42 +53,6 @@
       "status": "upcoming",
       "attendees": 2000,
       "revenue": 40000
-    },
-    {
-      "id": "7",
-      "name": "Festival de cine",
-      "date": "2026-03-30",
-      "location": "Sucre",
-      "status": "upcoming",
-      "attendees": 600,
-      "revenue": 18000
-    },
-    {
-      "id": "8",
-      "name": "Feria del libro",
-      "date": "2026-02-20",
-      "location": "Tarija",
-      "status": "completed",
-      "attendees": 900,
-      "revenue": 4500
-    },
-    {
-      "id": "9",
-      "name": "Concierto benéfico",
-      "date": "2026-05-01",
-      "location": "Oruro",
-      "status": "upcoming",
-      "attendees": 3000,
-      "revenue": 90000
-    },
-    {
-      "id": "10",
-      "name": "Exposición de arte contemporáneo",
-      "date": "2026-04-15",
-      "location": "El Alto",
-      "status": "upcoming",
-      "attendees": 400,
-      "revenue": 12000
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
