@@ -5,7 +5,7 @@ import { useDeleteEvent } from "../features/events/hooks/useDeleteEvent";
 import { useEvents } from "../features/events/hooks/useEvents";
 
 export const Dashboard = () => {
-	const { user, logout } = useAuth();
+	const { logout } = useAuth();
 	const { data: events, isLoading, isError } = useEvents();
 
 	const { mutate: deleteEventFn, isPending: isDeleting } = useDeleteEvent();
@@ -31,13 +31,15 @@ export const Dashboard = () => {
 						<div className="flex items-center gap-6">
 							<div className="flex items-center gap-3">
 								<div className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-blue-400 font-bold">
-									{user?.name?.charAt(0) || "U"}
+									U
 								</div>
 								<div className="hidden md:block text-sm">
 									<p className="font-medium text-slate-200 leading-none">
-										{user?.name}
+										Administrador
 									</p>
-									<p className="text-slate-500 text-xs mt-1">{user?.email}</p>
+									<p className="text-slate-500 text-xs mt-1">
+										admin@gestor.com
+									</p>
 								</div>
 							</div>
 							<button
