@@ -10,6 +10,9 @@
   "lint-staged": {
     "frontend/**/*.{js,ts,jsx,tsx}": [
       "pnpm --filter frontend biome check --write"
+    ],
+    "backend/**/*.cs": [
+      "node scripts/dotnet-format-staged.js"
     ]
   },
   "keywords": [],
