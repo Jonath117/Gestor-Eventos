@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Campeando.API.Controllers;
+namespace Web.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]

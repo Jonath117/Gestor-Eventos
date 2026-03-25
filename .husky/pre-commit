@@ -1,6 +1,2 @@
-# 1. Ejecutar lint-staged para el frontend (Biome)
+# Ejecuta lint-staged para el frontend (Biome) y para el backend (dotnet format)
 pnpm lint-staged
-
-# 2. Ejecutar dotnet format para el backend
-# Apuntamos al archivo .sln que está en la carpeta backend/
-dotnet format backend/backend.sln
