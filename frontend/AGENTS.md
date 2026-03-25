@@ -7,7 +7,8 @@ This document provides architectural context, tech stack usage, and coding guide
 - **TypeScript**: Strict typing enabled
 - **Routing**: React Router v7
 - **Styling**: Tailwind CSS v4
-- **State Management & Data Fetching**: TanStack React Query v5 & Axios
+- **Server State & Data Fetching**: TanStack React Query v5 & Axios
+- **Client State Management**: React Context API (Strictly no Redux, Zustand, etc.)
 - **Linter & Formatter**: Biome (`npm run biome`)
 - **API Mocking**: json-server (`npm run mock-api`)
 
@@ -44,6 +45,7 @@ A typical feature inside `src/features/` should encapsulate its own concerns. Fo
 
 - **Component Organization**: Use arrow functions (`export const MyComponent = ...`) for components. Keep components focused on a single responsibility.
 - **Routing**: `pages/` should primarily be responsible for mapping routes and composing logic/components imported from `features/`. Pages themselves should remain thinly composed layouts.
+- **Global State**: Use React's native **Context API** for any global client state (e.g., Auth, UI themes). Do NOT introduce external state management libraries like Redux, Zustand, or MobX.
 - **Data Fetching & HTTP Client**: Always use the configured Axios client from `src/api/client.ts` for HTTP requests. **DO NOT use the native `fetch` API** or raw axios instances. Wrap these API requests using **TanStack React Query** (`useQuery` / `useMutation`) inside the `features/<feature-name>/hooks/` folder to decouple the UI from the API.
 - **Formatting**: Rely on **Biome** for all code formatting and linting. Do not use Prettier or ESLint as Biome replaces both.
 - **Typing**: Avoid using `any`. Use descriptive interfaces and export them from the respective feature's `types/` folder.
