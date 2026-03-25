@@ -14,6 +14,16 @@ builder.Services.AddOpenApi();
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
 
+builder.Services.AddCors(options => 
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,6 +31,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseCors();
 
 // These middlewares must be added before MapControllers to secure the endpoints
 app.UseAuthentication();
