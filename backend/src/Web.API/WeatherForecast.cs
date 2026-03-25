@@ -1,4 +1,4 @@
-namespace Campeando.API;
+namespace Web.API;
 
 public class WeatherForecast
 {
