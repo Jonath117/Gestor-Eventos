@@ -1,5 +1,6 @@
 using Identity.Application.Features.Users.Login;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.Presentation.Controllers;
@@ -9,6 +10,7 @@ namespace Identity.Presentation.Controllers;
 public class IdentityController(ISender sender) : ControllerBase
 {
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
     {
         try
@@ -26,5 +28,13 @@ public class IdentityController(ISender sender) : ControllerBase
 
             return StatusCode(500, new { error = "An unexpected error occurred." });
         }
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public IActionResult GetCurrentUser()
+    {
+        var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
+        return Ok(new { Message = "You are authenticated!", Claims = claims });
     }
 }
