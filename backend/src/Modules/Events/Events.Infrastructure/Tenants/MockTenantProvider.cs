@@ -1,6 +1,6 @@
-using Events.Application.Tenant;
+using Events.Application.Tenants;
 
-namespace Events.Infrastructure.Tenant;
+namespace Events.Infrastructure.Tenants;
 
 public class MockTenantProvider: ITenantProvider
 {

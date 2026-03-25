@@ -1,6 +1,6 @@
-using Events.Application.Tenant;
+using Events.Application.Tenants;
 using Events.Infrastructure.Database;
-using Events.Infrastructure.Tenant;
+using Events.Infrastructure.Tenants;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

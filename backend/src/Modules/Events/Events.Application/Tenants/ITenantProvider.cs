@@ -1,4 +1,4 @@
-namespace Events.Application.Tenant;
+namespace Events.Application.Tenants;
 
 public interface ITenantProvider
 {
