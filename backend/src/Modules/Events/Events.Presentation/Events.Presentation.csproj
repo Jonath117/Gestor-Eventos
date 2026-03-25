@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-      <ProjectReference Include="..\Events.Domain\Events.Domain.csproj" />
+      <ProjectReference Include="..\Events.Application\Events.Application.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
