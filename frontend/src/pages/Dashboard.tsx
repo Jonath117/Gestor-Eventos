@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { EventSkeleton } from "../components/EventSkeleton";
-import { useAuth } from "../context/AuthContext";
-import { useDeleteEvent } from "../hooks/useDeleteEvent";
-import { useEvents } from "../hooks/useEvents";
+import { useAuth } from "../features/auth/context/AuthContext";
+import { EventSkeleton } from "../features/events/components/EventSkeleton";
+import { useDeleteEvent } from "../features/events/hooks/useDeleteEvent";
+import { useEvents } from "../features/events/hooks/useEvents";
 
 export const Dashboard = () => {
 	const { user, logout } = useAuth();

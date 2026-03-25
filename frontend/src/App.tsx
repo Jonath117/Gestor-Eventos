@@ -2,9 +2,9 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LoadingFallback } from "./components/LoadingFallback";
-import { ProtectedRoute } from "./components/ProtectedRoute";
-import { PublicRoute } from "./components/PublicRoute";
-import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
+import { PublicRoute } from "./features/auth/components/PublicRoute";
+import { AuthProvider } from "./features/auth/context/AuthContext";
 
 // Carga Perezosa (Lazy Loading) de las páginas
 const Home = lazy(() =>
