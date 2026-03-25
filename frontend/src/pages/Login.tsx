@@ -1,3 +1,4 @@
+import { isAxiosError } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/context/AuthContext";
@@ -61,10 +62,9 @@ export const Login = () => {
 				<div className="space-y-6">
 					{isError && (
 						<div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-							{/* @ts-expect-error - axios error structure */}
-							{error?.response?.status === 401
+							{isAxiosError(error) && error.response?.status === 401
 								? "Credenciales incorrectas"
-								: error?.response?.status === 400
+								: isAxiosError(error) && error.response?.status === 400
 									? "Faltan datos en la petición"
 									: "Ocurrió un error al iniciar sesión"}
 						</div>
