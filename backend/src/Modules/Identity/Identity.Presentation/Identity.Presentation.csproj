@@ -7,6 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MediatR" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Identity.Application\Identity.Application.csproj" />
     </ItemGroup>
 

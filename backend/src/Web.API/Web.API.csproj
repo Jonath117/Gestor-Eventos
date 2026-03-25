@@ -14,6 +14,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Modules\Events\Events.Presentation\Events.Presentation.csproj" />
       <ProjectReference Include="..\Modules\Events\Events.Infrastructure\Events.Infrastructure.csproj" />
+      <ProjectReference Include="..\Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
+      <ProjectReference Include="..\Modules\Identity\Identity.Presentation\Identity.Presentation.csproj" />
     </ItemGroup>
 
 </Project>
