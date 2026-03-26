@@ -1,7 +1,3 @@
 namespace Events.Domain.Exceptions;
 
-public class EventNotFoundException : DomainException
-{
-    public EventNotFoundException(Guid eventId)
-        : base($"No se encontro ningun evento con el id {eventId}") { }
-}
+public class EventNotFoundException(Guid eventId) : Exception($"Event with ID {eventId} was not found.");
