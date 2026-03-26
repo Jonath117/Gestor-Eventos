@@ -1,5 +1,6 @@
 using Events.Application.Tenants;
 using Events.Domain.Entities;
+using Events.Domain.Exceptions;
 using Events.Domain.Repositories;
 using MediatR;
 
@@ -18,9 +19,15 @@ public class GetEventByIdHandler(
 
         if (eventEntity is null)
         {
-            throw new Exception($"No se encontro el evento {request.Id}");
+            throw new EventNotFoundException(request.Id);
         }
         
-        return new GetEventByIdResponse(eventEntity.Id, eventEntity.Name, eventEntity.Date);
+        return new GetEventByIdResponse(
+            eventEntity.Id, 
+            eventEntity.Name, 
+            eventEntity.Date,
+            eventEntity.MaxCapacity,
+            eventEntity.Participants.Count
+        );
     }
 }
