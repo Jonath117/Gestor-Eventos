@@ -22,6 +22,11 @@ const Settings = lazy(() =>
 const NotFound = lazy(() =>
 	import("./pages/NotFound").then((module) => ({ default: module.NotFound })),
 );
+const EventRegistration = lazy(() =>
+	import("./pages/EventRegistration").then((module) => ({
+		default: module.EventRegistration,
+	})),
+);
 
 function App() {
 	return (
@@ -41,6 +46,12 @@ function App() {
 								<Route path="/dashboard" element={<Dashboard />} />
 								<Route path="/settings" element={<Settings />} />
 							</Route>
+
+							{/* Ruta accesible con o sin autenticación */}
+							<Route
+								path="/events/:eventId/register"
+								element={<EventRegistration />}
+							/>
 
 							{/* Ruta 404 para URLs que no existen */}
 							<Route path="*" element={<NotFound />} />
