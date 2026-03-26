@@ -1,6 +1,6 @@
-using Events.Application.Feature.Events.CreateEvent;
-using Events.Application.Feature.Events.GetAllEvents;
-using Events.Application.Feature.Events.GetEventById;
+using Events.Application.Features.Events.CreateEvent;
+using Events.Application.Features.Events.GetAllEvents;
+using Events.Application.Features.Events.GetEventById;
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
