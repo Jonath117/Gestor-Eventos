@@ -7,6 +7,11 @@ export const getEvents = async (): Promise<Event[]> => {
 	return response.data;
 };
 
+export const getEvent = async (id: string): Promise<Event> => {
+	const response = await api.get<Event>(`/events/${id}`);
+	return response.data;
+};
+
 export const deleteEvent = async (id: string | number): Promise<void> => {
 	await api.delete(`/events/${id}`);
 };
