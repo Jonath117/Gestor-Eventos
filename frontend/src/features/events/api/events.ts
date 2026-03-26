@@ -1,8 +1,8 @@
 import { api } from "../../../api/client";
-import type { CreateEventData, Event } from "../types/event";
+import type { CreateEventData, Event, EventSummary } from "../types/event";
 
-export const getEvents = async (): Promise<Event[]> => {
-	const response = await api.get<Event[]>("/events");
+export const getEvents = async (): Promise<EventSummary[]> => {
+	const response = await api.get<EventSummary[]>("/events");
 	return response.data;
 };
 

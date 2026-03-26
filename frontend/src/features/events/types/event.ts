@@ -1,11 +1,12 @@
-export interface Event {
+export interface EventSummary {
 	id: string;
 	name: string;
 	date: string;
-	location: string;
-	status: "upcoming" | "active" | "completed" | "cancelled";
-	attendees: number;
-	revenue: number;
+}
+
+export interface Event extends EventSummary {
+	maxCapacity: number;
+	currentParticipantsCount: number;
 }
 
 export interface CreateEventData {
