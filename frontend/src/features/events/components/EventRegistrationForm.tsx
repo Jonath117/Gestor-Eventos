@@ -104,36 +104,10 @@ export const EventRegistrationForm = ({
 		);
 	}
 
-	// --- Evento cancelado ---
-	if (event && event.status === "cancelled") {
-		return (
-			<div className="text-center py-16">
-				<div className="w-20 h-20 mx-auto mb-6 bg-red-500/10 rounded-full flex items-center justify-center border border-red-500/20">
-					<svg
-						className="w-10 h-10 text-red-400"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth="2"
-							d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636"
-						/>
-					</svg>
-				</div>
-				<h2 className="text-2xl font-bold text-white mb-2">Evento cancelado</h2>
-				<p className="text-slate-400">
-					El evento <span className="text-white font-medium">{event.name}</span>{" "}
-					fue cancelado y no acepta inscripciones.
-				</p>
-			</div>
-		);
-	}
+	// --- Evento cancelado (removed: no status field in current API) ---
 
-	// --- Cupos agotados (attendees === 0) ---
-	if (event && event.attendees <= 0) {
+	// --- Cupos agotados ---
+	if (event && event.currentParticipantsCount >= event.maxCapacity) {
 		return (
 			<div className="text-center py-16">
 				<div className="w-20 h-20 mx-auto mb-6 bg-orange-500/10 rounded-full flex items-center justify-center border border-orange-500/20">
@@ -246,9 +220,7 @@ export const EventRegistrationForm = ({
 					<h1 className="text-3xl font-bold text-white mb-2">
 						Inscripción al evento
 					</h1>
-					<p className="text-slate-400 text-sm">
-						{event.name} &middot; {event.location}
-					</p>
+					<p className="text-slate-400 text-sm">{event.name}</p>
 					<p className="text-slate-500 text-xs mt-1">
 						{new Date(event.date).toLocaleDateString("es", {
 							year: "numeric",

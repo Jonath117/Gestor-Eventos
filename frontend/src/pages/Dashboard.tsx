@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../features/auth/context/AuthContext";
+import { EventDetailModal } from "../features/events/components/EventDetailModal";
 import { EventSkeleton } from "../features/events/components/EventSkeleton";
 import { useDeleteEvent } from "../features/events/hooks/useDeleteEvent";
 import { useEvents } from "../features/events/hooks/useEvents";
@@ -7,8 +9,11 @@ import { useEvents } from "../features/events/hooks/useEvents";
 export const Dashboard = () => {
 	const { logout } = useAuth();
 	const { data: events, isLoading, isError } = useEvents();
-
 	const { mutate: deleteEventFn, isPending: isDeleting } = useDeleteEvent();
+	const [selectedEvent, setSelectedEvent] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
 
 	if (isError) {
 		throw new Error("No se pudieron cargar los eventos"); // Forzamos al ErrorBoundary para que atrape
@@ -166,7 +171,14 @@ export const Dashboard = () => {
 						{events.map((event) => (
 							<div
 								key={event.id}
-								className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all flex flex-col group relative overflow-hidden"
+								className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all flex flex-col group relative overflow-hidden cursor-pointer"
+								onClick={() =>
+									setSelectedEvent({ id: event.id, name: event.name })
+								}
+								onKeyDown={(e) => {
+									if (e.key === "Enter" || e.key === " ")
+										setSelectedEvent({ id: event.id, name: event.name });
+								}}
 							>
 								<div className="w-12 h-12 bg-linear-to-br from-blue-500/10 to-indigo-500/10 border border-blue-500/20 text-blue-400 rounded-xl mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
 									<svg
@@ -190,7 +202,10 @@ export const Dashboard = () => {
 									</h3>
 
 									<button
-										onClick={() => deleteEventFn(event.id)}
+										onClick={(e) => {
+											e.stopPropagation();
+											deleteEventFn(event.id);
+										}}
 										disabled={isDeleting}
 										className="text-slate-500 hover:text-red-500 transition-colors p-1"
 										title="Eliminar evento"
@@ -225,7 +240,13 @@ export const Dashboard = () => {
 												d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
 											></path>
 										</svg>
-										<span>{new Date(event.date).toLocaleDateString()}</span>
+										<span>
+											{new Date(event.date).toLocaleDateString("es", {
+												year: "numeric",
+												month: "long",
+												day: "numeric",
+											})}
+										</span>
 									</div>
 									<div className="flex items-center gap-3">
 										<svg
@@ -238,56 +259,33 @@ export const Dashboard = () => {
 												strokeLinecap="round"
 												strokeLinejoin="round"
 												strokeWidth="2"
-												d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-											></path>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth="2"
-												d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-											></path>
-										</svg>
-										<span>{event.location}</span>
-									</div>
-									<div className="flex items-center gap-3">
-										<svg
-											className="w-4 h-4 text-slate-500 shrink-0"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth="2"
-												d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+												d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
 											></path>
 										</svg>
 										<span>
-											{(event.attendees || 0).toLocaleString()} asistentes
+											{new Date(event.date).toLocaleTimeString("es", {
+												hour: "2-digit",
+												minute: "2-digit",
+											})}
 										</span>
 									</div>
 								</div>
 
-								<div className="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center">
-									<span
-										className={`px-3 py-1 rounded-full text-xs font-semibold
-										${event.status === "upcoming" ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : ""}
-										${event.status === "active" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : ""}
-										${event.status === "completed" ? "bg-slate-500/10 text-slate-400 border border-slate-500/20" : ""}
-										${event.status === "cancelled" ? "bg-red-500/10 text-red-400 border border-red-500/20" : ""}`}
+								<div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-center gap-2 text-sm text-slate-500 group-hover:text-blue-400 transition-colors">
+									<span>Toca para ver más detalles</span>
+									<svg
+										className="w-4 h-4"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
 									>
-										{event.status === "upcoming"
-											? "Próximo"
-											: event.status === "active"
-												? "En progreso"
-												: event.status === "completed"
-													? "Finalizado"
-													: "Cancelado"}
-									</span>
-									<span className="text-white font-medium text-sm">
-										${(event.revenue || 0).toLocaleString()}
-									</span>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="2"
+											d="M9 5l7 7-7 7"
+										></path>
+									</svg>
 								</div>
 							</div>
 						))}
@@ -326,6 +324,15 @@ export const Dashboard = () => {
 					</div>
 				)}
 			</main>
+
+			{/* Event Detail Modal */}
+			{selectedEvent && (
+				<EventDetailModal
+					eventId={selectedEvent.id}
+					eventName={selectedEvent.name}
+					onClose={() => setSelectedEvent(null)}
+				/>
+			)}
 		</div>
 	);
 };
