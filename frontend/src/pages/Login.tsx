@@ -1,13 +1,34 @@
+import { isAxiosError } from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../features/auth/context/AuthContext";
+import { useLogin } from "../features/auth/hooks/useLogin";
 
 export const Login = () => {
 	const { login } = useAuth();
 	const navigate = useNavigate();
+	const {
+		mutate: loginMutation,
+		isPending,
+		isError,
+		error,
+		reset,
+	} = useLogin();
 
-	const handleLogin = () => {
-		login({ id: "1", name: "Usuario Admin", email: "admin@gestor.com" });
-		navigate("/dashboard");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		loginMutation(
+			{ email, password },
+			{
+				onSuccess: (data) => {
+					login(data.token);
+					navigate("/dashboard");
+				},
+			},
+		);
 	};
 
 	return (
@@ -39,12 +60,54 @@ export const Login = () => {
 				</div>
 
 				<div className="space-y-6">
-					<button
-						onClick={handleLogin}
-						className="w-full py-4 px-4 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-					>
-						Simular Inicio de Sesión
-					</button>
+					{isError && (
+						<div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+							{isAxiosError(error) && error.response?.status === 401
+								? "Credenciales incorrectas"
+								: isAxiosError(error) && error.response?.status === 400
+									? "Faltan datos en la petición"
+									: "Ocurrió un error al iniciar sesión"}
+						</div>
+					)}
+					<form onSubmit={handleSubmit} className="space-y-4">
+						<div>
+							<label className="block text-sm font-medium text-slate-400 mb-1">
+								Email
+							</label>
+							<input
+								type="email"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								onFocus={() => {
+									if (isError) reset();
+								}}
+								className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+								required
+							/>
+						</div>
+						<div>
+							<label className="block text-sm font-medium text-slate-400 mb-1">
+								Contraseña
+							</label>
+							<input
+								type="password"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+								onFocus={() => {
+									if (isError) reset();
+								}}
+								className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+								required
+							/>
+						</div>
+						<button
+							type="submit"
+							disabled={isPending}
+							className="w-full mt-6 py-4 px-4 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:hover:translate-y-0"
+						>
+							{isPending ? "Iniciando sesión..." : "Iniciar Sesión"}
+						</button>
+					</form>
 				</div>
 			</div>
 		</div>

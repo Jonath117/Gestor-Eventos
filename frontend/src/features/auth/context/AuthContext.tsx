@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useContext } from "react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
 
 export interface User {
 	id: string;
@@ -8,28 +8,27 @@ export interface User {
 }
 
 interface AuthContextType {
-	user: User | null;
-	login: (userData: User) => void;
+	token: string | null;
+	login: (token: string) => void;
 	logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-	const [user, setUser] = useLocalStorage<User | null>("user", null);
+	const [token, setToken] = useLocalStorage<string | null>("token", null);
 
-	const login = (userData: User) => {
-		setUser(userData);
+	const login = (newToken: string) => {
+		setToken(newToken);
 	};
 
 	const logout = () => {
-		setUser(null);
-
-		localStorage.removeItem("user");
+		setToken(null);
+		localStorage.removeItem("token");
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, login, logout }}>
+		<AuthContext.Provider value={{ token, login, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);
