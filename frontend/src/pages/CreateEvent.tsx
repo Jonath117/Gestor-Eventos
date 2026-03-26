@@ -1,0 +1,96 @@
+import type { ChangeEvent } from "react";
+import { type FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCreateEvent } from "../features/events/hooks/useCreateEvent";
+import type { CreateEventData } from "../features/events/types/event";
+
+export const CreateEvent = () => {
+	const navigate = useNavigate();
+	const { mutate, isPending } = useCreateEvent();
+	const [formData, setFormData] = useState<CreateEventData>({
+		name: "",
+		date: "",
+		maxCapacity: 0,
+	});
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setFormData((prev) => ({
+			...prev,
+			[name]: name === "maxCapacity" ? Number(value) : value,
+		}));
+	};
+
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		mutate(formData, {
+			onSuccess: () => {
+				navigate("/dashboard");
+			},
+		});
+	};
+
+	return (
+		<div className="min-h-screen bg-slate-950 text-slate-200 p-6">
+			<div className="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-8">
+				<h1 className="text-2xl font-bold text-white mb-4">
+					Crear Nuevo Evento
+				</h1>
+				<form onSubmit={handleSubmit} className="space-y-4">
+					<div>
+						<label className="block text-sm text-slate-300 mb-1">Nombre</label>
+						<input
+							name="name"
+							value={formData.name}
+							onChange={handleChange}
+							required
+							className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div>
+						<label className="block text-sm text-slate-300 mb-1">Fecha</label>
+						<input
+							name="date"
+							type="datetime-local"
+							value={formData.date}
+							onChange={handleChange}
+							required
+							className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div>
+						<label className="block text-sm text-slate-300 mb-1">
+							Capacidad máxima
+						</label>
+						<input
+							name="maxCapacity"
+							type="number"
+							min={1}
+							value={formData.maxCapacity}
+							onChange={handleChange}
+							required
+							className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div className="flex gap-2 pt-4">
+						<button
+							className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white font-semibold transition"
+							type="submit"
+							disabled={isPending}
+						>
+							{isPending ? "Creando..." : "Crear Evento"}
+						</button>
+						<button
+							className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-white font-semibold transition"
+							type="button"
+							onClick={() => navigate("/dashboard")}
+						>
+							Cancelar
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	);
+};

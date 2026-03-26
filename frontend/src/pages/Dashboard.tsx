@@ -146,13 +146,13 @@ export const Dashboard = () => {
 				{/* Events Section */}
 				<div className="mb-6 flex justify-between items-center mt-12">
 					<h2 className="text-xl font-semibold text-white">Tus Eventos</h2>
-					{events && events.length > 0 && (
-						<button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors">
-							Nuevo Evento
-						</button>
-					)}
+					<Link
+						to="/events/new"
+						className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors"
+					>
+						Nuevo Evento
+					</Link>
 				</div>
-
 				{isLoading ? (
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 						{/* Creamos un arreglo falso de 6 elementos para mostrar 6 tarjetas parpadeando */}
@@ -263,7 +263,9 @@ export const Dashboard = () => {
 												d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
 											></path>
 										</svg>
-										<span>{event.attendees.toLocaleString()} asistentes</span>
+										<span>
+											{(event.attendees || 0).toLocaleString()} asistentes
+										</span>
 									</div>
 								</div>
 
@@ -284,7 +286,7 @@ export const Dashboard = () => {
 													: "Cancelado"}
 									</span>
 									<span className="text-white font-medium text-sm">
-										${event.revenue.toLocaleString()}
+										${(event.revenue || 0).toLocaleString()}
 									</span>
 								</div>
 							</div>
@@ -315,9 +317,12 @@ export const Dashboard = () => {
 							Aún no tienes ningún evento programado. Empieza planeando tu
 							primera actividad.
 						</p>
-						<button className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors">
+						<Link
+							to="/events/new"
+							className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors"
+						>
 							Nuevo Evento
-						</button>
+						</Link>
 					</div>
 				)}
 			</main>
