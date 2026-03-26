@@ -19,6 +19,11 @@ const Dashboard = lazy(() =>
 const Settings = lazy(() =>
 	import("./pages/Settings").then((module) => ({ default: module.Settings })),
 );
+const CreateEvent = lazy(() =>
+	import("./pages/CreateEvent").then((module) => ({
+		default: module.CreateEvent,
+	})),
+);
 const NotFound = lazy(() =>
 	import("./pages/NotFound").then((module) => ({ default: module.NotFound })),
 );
@@ -39,6 +44,7 @@ function App() {
 							{/* Rutas Protegidas */}
 							<Route element={<ProtectedRoute />}>
 								<Route path="/dashboard" element={<Dashboard />} />
+								<Route path="/events/new" element={<CreateEvent />} />
 								<Route path="/settings" element={<Settings />} />
 							</Route>
 
