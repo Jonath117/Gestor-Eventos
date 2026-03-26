@@ -7,3 +7,9 @@ export interface Event {
 	attendees: number;
 	revenue: number;
 }
+
+export interface CreateEventData {
+	name: string;
+	date: string;
+	maxCapacity: number;
+}
