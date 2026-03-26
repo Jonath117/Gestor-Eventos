@@ -2,6 +2,7 @@ using Events.Application.Features.Events.RegisterParticipant;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Events.Presentation.Controllers;
 
@@ -14,6 +15,7 @@ public class RegistrationController(ISender sender) : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
+    [EnableRateLimiting("PublicEndpointsPolicy")]
     public async Task<IActionResult> RegisterParticipant(Guid eventId, [FromBody] RegisterParticipantRequest request, CancellationToken cancellationToken)
     {
         try

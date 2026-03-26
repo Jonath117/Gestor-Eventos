@@ -1,6 +1,8 @@
 using Events.Infrastructure;
 using Identity.Presentation;
 using Identity.Infrastructure;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,22 @@ builder.Services.AddSwaggerGen();
 // The JWT Bearer authentication is configured inside AddIdentityInfrastructure
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
+
+// 1. Configurar Rate Limiting
+builder.Services.AddRateLimiter(options =>
+{
+    // Política para el registro público y login (5 peticiones por minuto por IP)
+    options.AddFixedWindowLimiter("PublicEndpointsPolicy", opt =>
+    {
+        opt.PermitLimit = 5;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 0; // Rechazar inmediatamente si se pasa el límite
+    });
+    
+    // Devolver 429 Too Many Requests cuando se excede el límite
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
 
 builder.Services.AddCors(options => 
 {
@@ -41,6 +59,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+
+// 2. Usar el middleware de Rate Limiting (antes de UseAuthentication y MapControllers)
+app.UseRateLimiter();
 
 // These middlewares must be added before MapControllers to secure the endpoints
 app.UseAuthentication();

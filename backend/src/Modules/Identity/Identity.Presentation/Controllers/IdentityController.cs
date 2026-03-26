@@ -2,6 +2,7 @@ using Identity.Application.Features.Users.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Identity.Presentation.Controllers;
 
@@ -11,6 +12,7 @@ public class IdentityController(ISender sender) : ControllerBase
 {
     [HttpPost("login")]
     [AllowAnonymous]
+    [EnableRateLimiting("PublicEndpointsPolicy")]
     public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
     {
         try
