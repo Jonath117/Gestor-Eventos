@@ -37,7 +37,7 @@ export const Dashboard = () => {
 									<p className="font-medium text-slate-200 leading-none">
 										Administrador
 									</p>
-									<p className="text-slate-500 text-xs mt-1">
+									<p className="text-slate-500 text-medium mt-1">
 										admin@gestor.com
 									</p>
 								</div>
