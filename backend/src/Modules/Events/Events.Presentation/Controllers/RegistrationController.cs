@@ -3,12 +3,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Logging;
 
 namespace Events.Presentation.Controllers;
 
 [ApiController]
 [Route("api/events/{eventId:guid}/participants")]
-public class RegistrationController(ISender sender) : ControllerBase
+public class RegistrationController(ISender sender, ILogger<RegistrationController> logger) : ControllerBase
 {
     // DTO específico para la petición HTTP que excluye el EventId de la URL
     public record RegisterParticipantRequest(string FullName, string Email);
@@ -27,12 +28,16 @@ public class RegistrationController(ISender sender) : ControllerBase
         }
         catch (Exception ex)
         {
-            return ex.GetType().Name switch
-            {
-                "EventNotFoundException" => NotFound(new { error = ex.Message }),
-                "EventIsPastException" or "EventIsFullException" => BadRequest(new { error = ex.Message }),
-                _ => StatusCode(500, new { error = "An unexpected error occurred." })
-            };
+            // Manejo de excepciones conocidas
+            if (ex.GetType().Name == "EventNotFoundException")
+                return NotFound(new { error = ex.Message });
+                
+            if (ex.GetType().Name is "EventIsPastException" or "EventIsFullException")
+                return BadRequest(new { error = ex.Message });
+                
+            // Para cualquier otra excepción, registrarla y devolver un 500 genérico
+            logger.LogError(ex, "An unexpected error occurred while registering a participant for event {EventId}", eventId);
+            return StatusCode(500, new { error = "An unexpected error occurred." });
         }
     }
 }
