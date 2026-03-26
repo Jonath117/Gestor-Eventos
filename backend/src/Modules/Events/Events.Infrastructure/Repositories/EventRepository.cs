@@ -36,15 +36,20 @@ public class EventRepository(EventsDbContext context) : IEventRepository
 
     public async Task UpdateAsync(Event @event, CancellationToken cancellationToken = default)
     {
-        // Detectar participantes nuevos que aún no están siendo rastreados por el DbContext.
-        // Esto es necesario porque el proveedor InMemory no detecta automáticamente
-        // entidades nuevas añadidas a una colección de navegación cuando ya tienen un Id asignado.
         foreach (Participant participant in @event.Participants)
         {
-            EntityState state = context.Entry(participant).State;
-            if (state == EntityState.Detached)
+            var entry = context.Entry(participant);
+            
+            if (entry.State == EntityState.Detached || entry.State == EntityState.Modified)
             {
-                await context.Participants.AddAsync(participant, cancellationToken);
+                bool exists = await context.Participants
+                    .AsNoTracking()
+                    .AnyAsync(p => p.Id == participant.Id, cancellationToken);
+
+                if (!exists)
+                {
+                    entry.State = EntityState.Added;
+                }
             }
         }
 
