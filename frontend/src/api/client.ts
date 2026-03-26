@@ -8,13 +8,11 @@ export const api = axios.create({
 	},
 });
 
-// Interceptor para inyectar el token en peticiones a /api/events
 api.interceptors.request.use(
 	(config) => {
 		const storedToken = localStorage.getItem("token");
 		if (storedToken && config.url?.includes("/events")) {
 			try {
-				// useLocalStorage guarda valores serializados con JSON.stringify
 				const token = JSON.parse(storedToken);
 				if (token) {
 					config.headers.Authorization = `Bearer ${token}`;
@@ -26,6 +24,17 @@ api.interceptors.request.use(
 		return config;
 	},
 	(error) => {
+		return Promise.reject(error);
+	},
+);
+
+api.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (axios.isAxiosError(error) && error.response?.status === 401) {
+			localStorage.removeItem("token");
+			window.location.href = "/login";
+		}
 		return Promise.reject(error);
 	},
 );
