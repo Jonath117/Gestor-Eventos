@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Events.Application.Feature.Events.GetAllEvents;
+namespace Events.Application.Features.Events.GetAllEvents;
 
 public record GetAllEventsQuery() : IRequest<IEnumerable<GetAllEventsResponse>>;
 

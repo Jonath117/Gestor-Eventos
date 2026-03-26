@@ -3,7 +3,7 @@ using Events.Domain.Entities;
 using Events.Domain.Repositories;
 using MediatR;
 
-namespace Events.Application.Feature.Events.GetEventById;
+namespace Events.Application.Features.Events.GetEventById;
 
 public class GetEventByIdHandler(
     IEventRepository repository,

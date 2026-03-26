@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Events.Application.Feature.Events.GetEventById;
+namespace Events.Application.Features.Events.GetEventById;
 
 public record GetEventByIdQuery(Guid Id) : IRequest<GetEventByIdResponse>;
 
