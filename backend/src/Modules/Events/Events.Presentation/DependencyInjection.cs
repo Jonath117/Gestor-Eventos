@@ -4,12 +4,6 @@ namespace Events.Presentation;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddEventsModule(this IServiceCollection services)
-    {
-        //services.AddEventsInfraestructure();
-        
-        
-        return services;
-    }
-    
+    // This file can be used for presentation-specific services if needed in the future.
+    // For now, module registration is handled in the Infrastructure layer.
 }

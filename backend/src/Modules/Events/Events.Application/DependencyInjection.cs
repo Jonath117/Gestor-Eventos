@@ -4,7 +4,7 @@ namespace Events.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddEventsApplication(this ServiceCollection services)
+    public static IServiceCollection AddEventsApplication(this IServiceCollection services)
     {
         services.AddMediatR(config =>
             config.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));

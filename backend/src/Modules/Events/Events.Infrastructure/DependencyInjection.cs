@@ -1,7 +1,9 @@
+using Events.Application;
 using Events.Application.Tenants;
+using Events.Domain.Repositories;
 using Events.Infrastructure.Database;
+using Events.Infrastructure.Repositories;
 using Events.Infrastructure.Tenants;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,14 +11,21 @@ namespace Events.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddEventsInfrastructure(this ServiceCollection services)
+    public static IServiceCollection AddEventsModule(this IServiceCollection services)
     {
-        //registr bdd In-Memory
+        services.AddEventsApplication();
+        services.AddEventsInfrastructure();
+        
+        return services;
+    }
+
+    private static IServiceCollection AddEventsInfrastructure(this IServiceCollection services)
+    {
         services.AddDbContext<EventsDbContext>(options =>
             options.UseInMemoryDatabase("EventosSaas_MockDb"));
         
-        //registar Mock tenant provider
         services.AddScoped<ITenantProvider, MockTenantProvider>();
+        services.AddScoped<IEventRepository, EventRepository>();
 
         return services;
     }
