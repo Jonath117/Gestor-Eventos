@@ -4,7 +4,7 @@ using Events.Application.Tenants;
 using Events.Domain.Entities;
 using Events.Domain.Repositories;
 
-namespace Events.Application.Feature.Events.CreateEvent;
+namespace Events.Application.Features.Events.CreateEvent;
 
 public class CreateEventHandler(
         IEventRepository repository,

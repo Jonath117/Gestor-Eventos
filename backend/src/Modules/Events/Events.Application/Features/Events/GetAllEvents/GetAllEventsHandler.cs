@@ -4,7 +4,7 @@ using Events.Domain.Repositories;
 
 using MediatR;
 
-namespace Events.Application.Feature.Events.GetAllEvents;
+namespace Events.Application.Features.Events.GetAllEvents;
 
 public class GetAllEventsHandler (
     IEventRepository repository, ITenantProvider tenantProvider) : IRequestHandler<GetAllEventsQuery, IEnumerable<GetAllEventsResponse>> 
