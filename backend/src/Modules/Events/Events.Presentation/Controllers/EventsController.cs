@@ -28,6 +28,7 @@ public class EventsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetEvent(Guid id)
     {
         GetEventByIdResponse response = await mediator.Send(new GetEventByIdQuery(id));
