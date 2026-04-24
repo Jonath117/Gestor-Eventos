@@ -1,0 +1,15 @@
+services:
+  campeando-backend:
+    image: campeando-backend:${TAG:-latest}
+    build:
+      context: ./backend
+    # depends_on:
+    #   - campeando-database
+
+  campeando-frontend:
+    image: campeando-frontend:${TAG:-latest}
+    build:
+      context: ./frontend
+
+  # campeando-database:
+  #   image: postgres:18.1
