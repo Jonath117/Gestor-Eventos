@@ -3,6 +3,11 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS development
+WORKDIR /app
+EXPOSE 5206
+CMD ["dotnet", "watch", "run", "--project", "src/Web.API/Web.API.csproj", "--urls", "http://+:5206"]
+
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -32,7 +37,6 @@ COPY ["src/Web.API/Web.API.csproj", "Web.API/"]
 RUN dotnet restore "Web.API/Web.API.csproj"
 COPY src .
 RUN dotnet publish "Web.API/Web.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-restore
-
 
 FROM base AS final
 WORKDIR /app
