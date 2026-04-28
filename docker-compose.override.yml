@@ -8,22 +8,24 @@ services:
       - JwtSettings__Audience=${JWT_AUDIENCE}
       - JwtSettings__ExpiryMinutes=${JWT_EXPIRY_MINUTES}
     build:
-      context: ./backend
       target: development
+
     ports:
       - "${BACKEND_PORT:-5206}:5206"
+      
     volumes:
       - ./backend:/app
 
   campeando-frontend:
-    environment:
-      - VITE_API_URL=${VITE_API_URL:-http://localhost:5206/api}
     build:
-      context: ./frontend
       target: development
+
     volumes:
       - ./frontend:/app
       - /app/node_modules
+
+    environment:
+    - VITE_API_URL=${VITE_API_URL:-http://localhost:5206/api}
 
     ports:
       - "${FRONTEND_PORT:-5173}:5173"
