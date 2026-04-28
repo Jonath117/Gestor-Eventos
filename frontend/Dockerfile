@@ -10,6 +10,7 @@ CMD ["npm", "run", "dev", "--", "--host"]
 FROM base AS build
 RUN npm ci
 COPY . .
+ARG VITE_API_URL
 RUN npm run build
 
 FROM nginx:alpine AS production
