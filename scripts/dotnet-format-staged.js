@@ -12,7 +12,7 @@ if (csFiles.length === 0) {
 const filesArg = csFiles.join(" ");
 
 try {
-  execSync(`dotnet format backend/backend.sln --include ${filesArg}`, {
+  execSync(`dotnet format backend/backend.slnx --include ${filesArg}`, {
     stdio: "inherit",
   });
 } catch (e) {
