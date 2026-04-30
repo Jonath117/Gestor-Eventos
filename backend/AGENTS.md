@@ -1,36 +1,38 @@
-# Contexto de Arquitectura y Reglas de Desarrollo
+# Architecture Context and Development Rules
 
-## 1. Arquitectura Base
-* **Estilo:** Monolito Modular basado en Clean Architecture y Domain-Driven Design (DDD).
-* **Tecnología:** .NET 10 (C# 14).
-* **Gestión de Dependencias:** Uso estricto de `Directory.Packages.props` (Central Package Management). No agregar versiones en los `.csproj`.
+## 1. Base Architecture
+* **Style:** Modular Monolith based on Clean Architecture and Domain-Driven Design (DDD).
+* **Technology:** .NET 10 (C# 14).
+* **Dependency Management:** Strict use of `Directory.Packages.props` (Central Package Management). Do not add versions in `.csproj` files.
 
-## 2. Reglas Estructurales por Módulo
-Cada módulo (ej. `Events`, `Identity`, `Logistics`) contiene 4 proyectos físicos (`.csproj`):
-* `[Module].Domain`: Entidades, Excepciones de Dominio, Value Objects, Interfaces de Repositorio. (Cero dependencias externas).
-* `[Module].Application`: DTOs, Interfaces de Servicios, Lógica de Negocio. (Referencia a Domain).
-* `[Module].Infrastructure`: Implementación de Repositorios, EF Core `DbContext` por esquema, Configuración de Entidades. (Referencia a Application).
-* `[Module].Presentation`: Controladores HTTP (`[ApiController]`). (Referencia a Application).
+## 2. Structural Module Rules
+Each module (e.g., `Events`, `Identity`, `Logistics`) contains 4 physical projects (`.csproj`):
+* `[Module].Domain`: Entities, Domain Exceptions, Value Objects, Repository Interfaces. (Zero external dependencies).
+* `[Module].Application`: DTOs, Service Interfaces, Business Logic. (References Domain).
+* `[Module].Infrastructure`: Repository Implementations, EF Core `DbContext` per schema, Entity Configurations. (References Application).
+* `[Module].Presentation`: HTTP Controllers (`[ApiController]`). (References Application).
 
-## 3. Patrón de Organización en Application (CQRS + Vertical Slices)
-Las operaciones dentro de `[Module].Application` NO se organizan por carpetas técnicas (`/Handlers`, `/Requests`), sino por **Feature**.
-* **Estructura obligatoria:** `/Features/{Entity}/{OperationName}/`
-* **Ejemplo:** `/Features/Events/GetAllEvents/`
-* **Archivos esperados por Feature:**
-    * `GetAllEventsQuery.cs` (El Request de MediatR).
-    * `GetAllEventsHandler.cs` (El IRequestHandler).
-    * `GetAllEventsResponse.cs` o DTOs específicos de esta operación.
+## 3. Application Organization Pattern (CQRS + Vertical Slices)
+Operations within `[Module].Application` MUST NOT be organized by technical folders (`/Handlers`, `/Requests`), but by **Feature**.
+* **Mandatory structure:** `/Features/{Entity}/{OperationName}/`
+* **Example:** `/Features/Events/GetAllEvents/`
+* **Expected files per Feature:**
+    * `GetAllEventsQuery.cs` (MediatR Request).
+    * `GetAllEventsHandler.cs` (IRequestHandler).
+    * `GetAllEventsResponse.cs` or operation-specific DTOs.
     * `GetAllEventsValidator.cs` (FluentValidation).
 
-## 4. Reglas de Integración y Host (`Web.API`)
-* La inyección de dependencias se encapsula en la capa `Infrastructure` mediante métodos de extensión (ej. `IServiceCollection AddEventsModule()`).
-* El proyecto `Web.API` es el único punto de entrada, y solo existe para encadenar las dependencias en `Program.cs` y arrancar el servidor.
-* Para la comunicación inter-módulo, está **prohibido** referenciar proyectos de `Infrastructure` o `Domain` de otro módulo. Usar interfaces de integración en `Shared.Kernel` o eventos en memoria (MediatR).  
-* También de encapsulará la inyección de controladores en la capa `Presentation` con el patrón `ServiceCollectionExtensions`, en un archivo llamado `DependencyInjection.cs` en la raíz del proyecto Presentation.
+## 4. Integration and Host Rules (`Web.API`)
+* Dependency injection is encapsulated in the `Infrastructure` layer via extension methods (e.g., `IServiceCollection AddEventsModule()`).
+* The `Web.API` project is the only entry point, existing only to chain dependencies in `Program.cs` and start the server.
+* Inter-module communication: It is **forbidden** to reference `Infrastructure` or `Domain` projects from another module. Use integration interfaces in `Shared.Kernel` or in-memory events (MediatR).
+* Controller injection will also be encapsulated in the `Presentation` layer using the `ServiceCollectionExtensions` pattern, in a file named `DependencyInjection.cs` at the root of the Presentation project.
 
-## 5. Estilo de Código (.editorconfig Compliance)
-* **Namespaces:** Usar `file-scoped namespaces` obligatoriamente.
-* **Tipado:** Evitar `var` a menos que el tipo sea estrictamente obvio en la parte derecha de la asignación. Preferir tipos explícitos.
-* **Constructores:** Preferir `Primary Constructors` (C# 12+) para inyección de dependencias en Handlers y Controllers.
-* **Retornos API:** Los Controllers deben retornar `IActionResult` estandarizados, evitando exponer excepciones crudas al cliente.
-* Evitar `using System;`, estamos usando usings implícitos.
+## 5. Code Style (.editorconfig Compliance)
+* **Namespaces:** Use `file-scoped namespaces` obligatorily.
+* **Typing:** Avoid `var` unless the type is strictly obvious from the right side of the assignment. Prefer explicit types.
+* **Constructors:** Prefer `Primary Constructors` (C# 12+) for dependency injection in Handlers and Controllers.
+* **API Returns:** Controllers must return standardized `IActionResult`, avoiding exposing raw exceptions to the client.
+* **Clean Code:** 
+    * Avoid `using System;` (we use implicit usings).
+    * **No Unused Code:** Do NOT write code that is not used. If a `FluentValidation` validator is created, it MUST be integrated and used in the corresponding flow. Avoid "code smells" related to dead or unreachable code.
