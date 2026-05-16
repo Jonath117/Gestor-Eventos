@@ -10,4 +10,10 @@
       <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\Events\" />
+      <Folder Include="Features\Organizations\" />
+      <Folder Include="Interfaces\" />
+    </ItemGroup>
+
 </Project>
