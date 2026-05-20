@@ -10,10 +10,14 @@
       <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
     </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+  </ItemGroup>
+
     <ItemGroup>
       <Folder Include="Features\Events\" />
       <Folder Include="Features\Organizations\" />
-      <Folder Include="Interfaces\" />
     </ItemGroup>
 
 </Project>

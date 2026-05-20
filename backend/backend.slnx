@@ -9,12 +9,6 @@
     <Project Path="src/Modules/Core/Core.Infrastructure/Core.Infrastructure.csproj" />
     <Project Path="src/Modules/Core/Core.Presentation/Core.Presentation.csproj" />
   </Folder>
-  <Folder Name="/src/Modules/Events/">
-    <Project Path="src/Modules/Events/Events.Application/Events.Application.csproj" />
-    <Project Path="src/Modules/Events/Events.Domain/Events.Domain.csproj" />
-    <Project Path="src/Modules/Events/Events.Infrastructure/Events.Infrastructure.csproj" />
-    <Project Path="src/Modules/Events/Events.Presentation/Events.Presentation.csproj" />
-  </Folder>
   <Folder Name="/src/Modules/Identity/">
     <Project Path="src/Modules/Identity/Identity.Application/Identity.Application.csproj" />
     <Project Path="src/Modules/Identity/Identity.Domain/Identity.Domain.csproj" />

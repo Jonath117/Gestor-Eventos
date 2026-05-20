@@ -1,8 +1,9 @@
-using Events.Infrastructure;
 using Identity.Presentation;
 using Identity.Infrastructure;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+
+using Core.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Registra todas las dependencias del módulo de Eventos (Application, Infrastructure, etc.)
-builder.Services.AddEventsModule();
+
+builder.Services.AddCoreInfrastructure(builder.Configuration);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
