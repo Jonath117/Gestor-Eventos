@@ -1,0 +1,14 @@
+**/bin
+**/obj
+**/Properties
+**/Dockerfile
+**/.dockerignore
+**/appsettings.Development.json
+**/*.sln
+**/.editorconfig
+**/HousingApp.sln.DotSettings.user
+**/.vscode
+**/.env
+**/.gitignore
+**/.idea
+**/AGENTS.md

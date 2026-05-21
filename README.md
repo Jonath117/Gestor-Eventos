@@ -130,6 +130,44 @@ VITE_API_URL=http://localhost:5000/api
 
 ---
 
+## Ejecución con Docker Compose
+
+El proyecto está configurado para ejecutarse fácilmente mediante Docker Compose. Se utiliza **Neon** como base de datos externa, por lo que no es necesario levantar un contenedor de base de datos local.
+
+### Requisitos Previos para Docker
+* Docker y Docker Compose instalados.
+* Archivo `.env` en la raíz del proyecto con las siguientes variables:
+  ```env
+  CONNECTION_STRING=tu_cadena_de_conexion_a_neon
+  JWT_SECRET=tu_secreto_jwt
+  JWT_ISSUER=Campeando
+  JWT_AUDIENCE=CampeandoApp
+  JWT_EXPIRY_MINUTES=60
+  ASPNETCORE_ENVIRONMENT=Development
+  ```
+
+### 1. Entorno de Desarrollo (con Hot-Reload)
+Este modo utiliza `docker-compose.yml` + `docker-compose.override.yml`. Permite que los cambios en el código se reflejen automáticamente (Backend usa `dotnet watch`, Frontend mapea volúmenes).
+
+```bash
+# Levantar el proyecto en desarrollo
+docker compose up --build
+```
+*   **Backend:** http://localhost:5000
+*   **Frontend:** http://localhost:5173
+
+### 2. Entorno de Producción (Simulación)
+Este modo utiliza `docker-compose.yml` + `docker-compose.prod.yml`. Compila las imágenes en modo `Release` y sirve el frontend mediante Nginx optimizado.
+
+```bash
+# Levantar el proyecto en modo producción
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+```
+*   **Backend:** http://localhost:5000 (Mapeado a puerto 8080 interno)
+*   **Frontend:** http://localhost:80 (Nginx)
+
+---
+
 ## Guía de Uso básica para el desarrollo
 
 ### Ejecutar el Backend
