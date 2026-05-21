@@ -15,4 +15,5 @@ export interface CreateEventData {
 	startDate: string;
 	endDate: string;
 	maxCapacity: number;
+	organizationId: string;
 }

@@ -15,7 +15,7 @@ public class CreateEventHandler(
 {
     public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
     {
-        Guid organizationId = tenantProvider.GetTenantId();
+        Guid organizationId = request.OrganizationId;
         Guid userId = tenantProvider.GetCurrentUserId();
 
         // Validar que el usuario pertenece a la organización y es Admin
