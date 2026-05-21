@@ -9,6 +9,8 @@ using Logistics.Infrastructure;
 
 using Microsoft.AspNetCore.RateLimiting;
 
+using Payment.Infrastructure;
+
 using Registration.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +27,8 @@ builder.Services.AddCoreInfrastructure(builder.Configuration);
 builder.Services.AddLogisticsInfrastructure(builder.Configuration);
 
 builder.Services.AddRegistrationInfrastructure(builder.Configuration);
+
+builder.Services.AddPaymentInfrastructure(builder.Configuration);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
