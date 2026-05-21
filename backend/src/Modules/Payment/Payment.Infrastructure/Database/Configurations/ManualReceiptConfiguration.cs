@@ -2,6 +2,7 @@ namespace Payment.Infrastructure.Database.Configurations;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using Payment.Domain.Entities;
 
 public class ManualReceiptConfiguration : IEntityTypeConfiguration<ManualReceipt>
@@ -12,7 +13,7 @@ public class ManualReceiptConfiguration : IEntityTypeConfiguration<ManualReceipt
         builder.HasKey(m => m.Id);
 
         builder.HasIndex(m => m.FileHash).IsUnique();
-        
+
         builder.Property(m => m.FileUrl).IsRequired().HasMaxLength(500);
         builder.Property(m => m.MimeType).IsRequired().HasMaxLength(50);
         builder.Property(m => m.UploadedAt).HasDefaultValueSql("now()");
