@@ -34,7 +34,7 @@ public static class DependencyInjection
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("NeonPostgres");
         services.AddDbContext<IdentityDbContext>(options =>
             options.UseNpgsql(connectionString));
 
