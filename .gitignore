@@ -68,3 +68,6 @@ coverage/
 
 # Optional (if using storybook)
 storybook-static/
+
+#sonarqube
+.sonarqube/
