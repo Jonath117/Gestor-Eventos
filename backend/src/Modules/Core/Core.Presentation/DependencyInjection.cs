@@ -8,7 +8,7 @@ public static class DependencyInjection
     {
         services.AddControllers()
             .AddApplicationPart(typeof(DependencyInjection).Assembly);
-        
+
         return services;
     }
 }

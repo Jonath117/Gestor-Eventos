@@ -1,9 +1,13 @@
-using Identity.Presentation;
-using Identity.Infrastructure;
-using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
 using Core.Infrastructure;
+
+using Identity.Infrastructure;
+using Identity.Presentation;
+
+using Logistics.Infrastructure;
+
+using Microsoft.AspNetCore.RateLimiting;
 
 using Registration.Infrastructure;
 
@@ -17,6 +21,8 @@ builder.Services.AddControllers();
 // Registra todas las dependencias del módulo de Eventos (Application, Infrastructure, etc.)
 
 builder.Services.AddCoreInfrastructure(builder.Configuration);
+
+builder.Services.AddLogisticsInfrastructure(builder.Configuration);
 
 builder.Services.AddRegistrationInfrastructure(builder.Configuration);
 
@@ -40,12 +46,12 @@ builder.Services.AddRateLimiter(options =>
         opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
         opt.QueueLimit = 0; // Rechazar inmediatamente si se pasa el límite
     });
-    
+
     // Devolver 429 Too Many Requests cuando se excede el límite
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 });
 
-builder.Services.AddCors(options => 
+builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {

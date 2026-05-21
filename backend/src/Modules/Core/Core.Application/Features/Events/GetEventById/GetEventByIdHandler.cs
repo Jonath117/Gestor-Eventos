@@ -2,6 +2,7 @@ using Core.Application.Tenants;
 using Core.Domain.Entities;
 using Core.Domain.Exceptions;
 using Core.Domain.Repositories;
+
 using MediatR;
 
 namespace Core.Application.Features.Events.GetEventById;
@@ -21,10 +22,10 @@ public class GetEventByIdHandler(
         {
             throw new EventNotFoundException(request.Id);
         }
-        
+
         return new GetEventByIdResponse(
-            eventEntity.Id, 
-            eventEntity.Name, 
+            eventEntity.Id,
+            eventEntity.Name,
             eventEntity.StartDate,
             eventEntity.EndDate,
             eventEntity.MaxCapacity

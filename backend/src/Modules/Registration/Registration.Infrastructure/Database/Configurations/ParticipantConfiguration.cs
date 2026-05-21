@@ -1,8 +1,9 @@
 namespace Registration.Infrastructure.Database.Configurations;
 
+using Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Domain.Entities;
 
 public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
 {
@@ -12,7 +13,7 @@ public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.FullName).IsRequired().HasMaxLength(255);
-        
+
         builder.HasIndex(p => p.QrIdentifier).IsUnique();
 
         builder.HasOne(p => p.Order)

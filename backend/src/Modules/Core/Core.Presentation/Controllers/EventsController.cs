@@ -1,6 +1,7 @@
 using Core.Application.Features.Events.CreateEvent;
 using Core.Application.Features.Events.GetAllEvents;
 using Core.Application.Features.Events.GetEventById;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +35,6 @@ public class EventsController(IMediator mediator) : ControllerBase
         GetEventByIdResponse response = await mediator.Send(new GetEventByIdQuery(id));
         return Ok(response);
     }
-    
-    
+
+
 }

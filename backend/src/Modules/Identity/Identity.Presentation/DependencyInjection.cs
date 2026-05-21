@@ -1,6 +1,7 @@
-using Microsoft.Extensions.DependencyInjection;
 using Identity.Application.Features.Users.Login;
+
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Presentation;
 
@@ -11,10 +12,11 @@ public static class DependencyInjection
         services.AddControllers()
                 .AddApplicationPart(typeof(DependencyInjection).Assembly);
 
-        services.AddMediatR(config => {
+        services.AddMediatR(config =>
+        {
             config.RegisterServicesFromAssembly(typeof(LoginCommand).Assembly);
         });
-        
+
         return services;
     }
 }

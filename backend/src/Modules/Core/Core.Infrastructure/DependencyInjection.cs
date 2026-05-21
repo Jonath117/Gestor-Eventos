@@ -19,11 +19,11 @@ public static class DependencyInjection
     {
         services.AddCoreApplication();
 
-        string connectionString = configuration.GetConnectionString("NeonPostgres") 
+        string connectionString = configuration.GetConnectionString("NeonPostgres")
                                   ?? throw new InvalidOperationException("No se encontro la cadena de conexión 'NeonPostgres'.");
-        
+
         services.AddDbContext<CoreDbContext>(options =>
-            options.UseNpgsql(connectionString, npgsqlOptions => 
+            options.UseNpgsql(connectionString, npgsqlOptions =>
                 {
                     npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "core");
                 })
@@ -32,8 +32,8 @@ public static class DependencyInjection
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IOrganizationProvider,MockOrganizationProvider>();
-        
+        services.AddScoped<IOrganizationProvider, MockOrganizationProvider>();
+
         return services;
     }
 }
