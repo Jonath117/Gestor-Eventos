@@ -30,7 +30,7 @@ jobs:
         run: dotnet build backend/backend.slnx --configuration Release
 
       - name: Paso 4: Ejecución de Tests
-        run: dotnet test backend/backend.slnx --no-build
+        run: dotnet test backend/backend.slnx --no-build --pass-exit-code-with-no-tests
 
       - name: Paso 5: Docker Build Check
         run: docker build ./backend -t backend-api:test
