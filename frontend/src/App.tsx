@@ -27,6 +27,11 @@ const CreateEvent = lazy(() =>
 		default: module.CreateEvent,
 	})),
 );
+const CreateOrganization = lazy(() =>
+	import("./pages/CreateOrganization").then((module) => ({
+		default: module.CreateOrganization,
+	})),
+);
 const NotFound = lazy(() =>
 	import("./pages/NotFound").then((module) => ({ default: module.NotFound })),
 );
@@ -54,6 +59,10 @@ function App() {
 							<Route element={<ProtectedRoute />}>
 								<Route path="/dashboard" element={<Dashboard />} />
 								<Route path="/events/new" element={<CreateEvent />} />
+								<Route
+									path="/organizations/new"
+									element={<CreateOrganization />}
+								/>
 								<Route path="/settings" element={<Settings />} />
 							</Route>
 
