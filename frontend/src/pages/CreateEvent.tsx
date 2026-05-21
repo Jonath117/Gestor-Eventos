@@ -1,20 +1,45 @@
 import type { ChangeEvent } from "react";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateEvent } from "../features/events/hooks/useCreateEvent";
 import type { CreateEventData } from "../features/events/types/event";
+import { getOrganizations } from "../features/organizations/api/organizations";
+import type { Organization } from "../features/organizations/types/organization";
 
 export const CreateEvent = () => {
 	const navigate = useNavigate();
 	const { mutate, isPending } = useCreateEvent();
+	const [organizations, setOrganizations] = useState<Organization[]>([]);
+	const [isLoadingOrgs, setIsLoadingOrgs] = useState(true);
+
 	const [formData, setFormData] = useState<CreateEventData>({
 		name: "",
 		startDate: "",
 		endDate: "",
 		maxCapacity: 0,
+		organizationId: "",
 	});
 
-	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+	useEffect(() => {
+		const fetchOrgs = async () => {
+			try {
+				const data = await getOrganizations();
+				setOrganizations(data);
+				if (data.length > 0) {
+					setFormData((prev) => ({ ...prev, organizationId: data[0].id }));
+				}
+			} catch (error) {
+				console.error("Error fetching organizations:", error);
+			} finally {
+				setIsLoadingOrgs(false);
+			}
+		};
+		fetchOrgs();
+	}, []);
+
+	const handleChange = (
+		e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+	) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({
 			...prev,
@@ -24,6 +49,11 @@ export const CreateEvent = () => {
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
+		if (!formData.organizationId) {
+			alert("Por favor selecciona una organización.");
+			return;
+		}
 
 		mutate(formData, {
 			onSuccess: () => {
@@ -39,6 +69,37 @@ export const CreateEvent = () => {
 					Crear Nuevo Evento
 				</h1>
 				<form onSubmit={handleSubmit} className="space-y-4">
+					<div>
+						<label className="block text-sm text-slate-300 mb-1">
+							Organización
+						</label>
+						{isLoadingOrgs ? (
+							<div className="h-10 bg-slate-800 rounded-lg animate-pulse" />
+						) : (
+							<select
+								name="organizationId"
+								value={formData.organizationId}
+								onChange={handleChange}
+								required
+								className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+							>
+								<option value="" disabled>
+									Selecciona una organización
+								</option>
+								{organizations.map((org) => (
+									<option key={org.id} value={org.id}>
+										{org.name}
+									</option>
+								))}
+							</select>
+						)}
+						{organizations.length === 0 && !isLoadingOrgs && (
+							<p className="text-xs text-amber-400 mt-1">
+								No tienes organizaciones. Crea una primero.
+							</p>
+						)}
+					</div>
+
 					<div>
 						<label className="block text-sm text-slate-300 mb-1">Nombre</label>
 						<input
@@ -95,7 +156,7 @@ export const CreateEvent = () => {
 						<button
 							className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white font-semibold transition"
 							type="submit"
-							disabled={isPending}
+							disabled={isPending || organizations.length === 0}
 						>
 							{isPending ? "Creando..." : "Crear Evento"}
 						</button>
