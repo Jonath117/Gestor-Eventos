@@ -1,9 +1,14 @@
 using System.Text;
 
+using Identity.Application;
 using Identity.Application.Interfaces;
+using Identity.Domain.Repositories;
 using Identity.Infrastructure.Authentication;
+using Identity.Infrastructure.Database;
+using Identity.Infrastructure.Repositories;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -13,13 +18,27 @@ namespace Identity.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddIdentityApplication();
+        services.AddIdentityInfrastructure(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = new JwtSettings();
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
         services.AddSingleton(Options.Create(jwtSettings));
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        services.AddDbContext<IdentityDbContext>(options =>
+            options.UseNpgsql(connectionString));
+
+        services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters

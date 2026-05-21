@@ -1,4 +1,7 @@
 using Identity.Application.Features.Users.Login;
+using Identity.Application.Features.Users.Logout;
+using Identity.Application.Features.Users.RefreshToken;
+using Identity.Application.Features.Users.Register;
 
 using MediatR;
 
@@ -12,31 +15,38 @@ namespace Identity.Presentation.Controllers;
 [Route("api/identity")]
 public class IdentityController(ISender sender) : ControllerBase
 {
+    [HttpPost("register")]
+    [AllowAnonymous]
+    [EnableRateLimiting("PublicEndpointsPolicy")]
+    public async Task<IActionResult> Register([FromBody] RegisterCommand command, CancellationToken cancellationToken)
+    {
+        var response = await sender.Send(command, cancellationToken);
+        return Ok(response);
+    }
+
     [HttpPost("login")]
     [AllowAnonymous]
     [EnableRateLimiting("PublicEndpointsPolicy")]
     public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
     {
-        try
-        {
-            var response = await sender.Send(command, cancellationToken);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            // Simple global error handling (Ideally should be handled by a global exception handler or ProblemDetails)
-            if (ex.GetType().Name == "InvalidCredentialsException")
-            {
-                return Unauthorized(new { error = ex.Message });
-            }
+        var response = await sender.Send(command, cancellationToken);
+        return Ok(response);
+    }
 
-            return StatusCode(500, new
-            {
-                error = "An unexpected error occurred.",
-                details = ex.Message,
-                stackTrace = ex.StackTrace
-            });
-        }
+    [HttpPost("refresh")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command, CancellationToken cancellationToken)
+    {
+        var response = await sender.Send(command, cancellationToken);
+        return Ok(response);
+    }
+
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<IActionResult> Logout([FromBody] LogoutRequest request, CancellationToken cancellationToken)
+    {
+        await sender.Send(new LogoutCommand(request.RefreshToken), cancellationToken);
+        return NoContent();
     }
 
     [HttpGet("me")]
@@ -47,3 +57,5 @@ public class IdentityController(ISender sender) : ControllerBase
         return Ok(new { Message = "You are authenticated!", Claims = claims });
     }
 }
+
+public record LogoutRequest(string RefreshToken);
