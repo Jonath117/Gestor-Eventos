@@ -34,5 +34,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Identity.Application.UnitTests/Identity.Application.UnitTests.csproj" />
+    <Project Path="tests/Registration.Application.UnitTests/Registration.Application.UnitTests.csproj" />
   </Folder>
 </Solution>
