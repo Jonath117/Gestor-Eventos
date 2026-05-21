@@ -20,7 +20,7 @@ public class RegisterCommandHandlerTests
     public async Task Handle_ShouldHashPassword_WhenRegistrationIsSuccessful()
     {
         // Arrange
-        var command = new RegisterCommand("test@example.com", "Password123!", "Admin", Guid.NewGuid().ToString());
+        var command = new RegisterCommand("test@example.com", "Password123!");
         _userRepository.GetByEmailAsync(command.Email).Returns((User?)null);
 
         // Act

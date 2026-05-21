@@ -22,13 +22,6 @@ public class RegisterCommandHandler(IUserRepository userRepository) : IRequestHa
         // Create user
         var user = User.Create(request.Email, passwordHash);
 
-        // If a tenant/org is provided, add the user to it
-        if (!string.IsNullOrEmpty(request.TenantId) && Guid.TryParse(request.TenantId, out var orgId))
-        {
-            var role = !string.IsNullOrEmpty(request.Role) ? request.Role : "User";
-            user.JoinOrganization(orgId, role);
-        }
-
         // Save user
         await userRepository.AddAsync(user, cancellationToken);
 
