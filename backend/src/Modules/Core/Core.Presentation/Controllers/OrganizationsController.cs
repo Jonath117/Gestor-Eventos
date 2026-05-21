@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Core.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/organizations")]
 [Authorize]
 public class OrganizationsController(IMediator mediator) : ControllerBase
 {
