@@ -23,9 +23,12 @@ export const Home = () => {
 					>
 						Iniciar Sesión
 					</Link>
-					<button className="px-8 py-3 rounded-full bg-slate-800 hover:bg-slate-700 text-white font-semibold transition-all border border-slate-700 hover:border-slate-500">
-						Saber más
-					</button>
+					<Link
+						to="/register"
+						className="px-8 py-3 rounded-full bg-slate-800 hover:bg-slate-700 text-white font-semibold transition-all border border-slate-700 hover:border-slate-500 transform hover:-translate-y-1"
+					>
+						Registrarse
+					</Link>
 				</div>
 			</div>
 		</div>
