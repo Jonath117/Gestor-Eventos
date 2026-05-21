@@ -1,7 +1,9 @@
 using FluentAssertions;
+
 using Identity.Application.Features.Users.Logout;
 using Identity.Domain.Entities;
 using Identity.Domain.Repositories;
+
 using NSubstitute;
 
 namespace Identity.Application.UnitTests.Features.Users.Logout;
@@ -23,7 +25,7 @@ public class LogoutCommandHandlerTests
         var user = new User(Guid.NewGuid(), "test@example.com", "hash");
         var token = "valid-token";
         user.AddRefreshToken(token, DateTime.UtcNow.AddDays(1));
-        
+
         var command = new LogoutCommand(token);
         _userRepository.GetByRefreshTokenAsync(token).Returns(user);
 
