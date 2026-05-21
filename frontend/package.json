@@ -1,33 +1,33 @@
 {
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "biome": "biome check",
-    "mock-api": "json-server db.json --port 3001"
-  },
-  "dependencies": {
-    "@tanstack/react-query": "^5.90.21",
-    "axios": "^1.13.6",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.13.1"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.4.6",
-    "@tailwindcss/vite": "^4.2.1",
-    "@types/node": "^24.10.1",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "globals": "^16.5.0",
-    "json-server": "1.0.0-beta.13",
-    "tailwindcss": "^4.2.1",
-    "typescript": "~5.9.3",
-    "vite": "^7.3.1"
-  }
+	"name": "frontend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"preview": "vite preview",
+		"biome": "biome",
+		"mock-api": "json-server db.json --port 3001"
+	},
+	"dependencies": {
+		"@tanstack/react-query": "^5.90.21",
+		"axios": "^1.13.6",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
+		"react-router-dom": "^7.13.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.6",
+		"@tailwindcss/vite": "^4.2.1",
+		"@types/node": "^24.10.1",
+		"@types/react": "^19.2.7",
+		"@types/react-dom": "^19.2.3",
+		"@vitejs/plugin-react": "^5.1.1",
+		"globals": "^16.5.0",
+		"json-server": "1.0.0-beta.13",
+		"tailwindcss": "^4.2.1",
+		"typescript": "~5.9.3",
+		"vite": "^7.3.1"
+	}
 }

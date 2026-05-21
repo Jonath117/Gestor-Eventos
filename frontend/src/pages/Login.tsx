@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/context/AuthContext";
 import { useLogin } from "../features/auth/hooks/useLogin";
 
@@ -24,7 +24,7 @@ export const Login = () => {
 			{ email, password },
 			{
 				onSuccess: (data) => {
-					login(data.token);
+					login(data.accessToken, data.refreshToken);
 					navigate("/dashboard");
 				},
 			},
@@ -108,6 +108,17 @@ export const Login = () => {
 							{isPending ? "Iniciando sesión..." : "Iniciar Sesión"}
 						</button>
 					</form>
+					<div className="text-center mt-6">
+						<p className="text-slate-400 text-sm">
+							¿No tienes una cuenta?{" "}
+							<Link
+								to="/register"
+								className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+							>
+								Regístrate gratis
+							</Link>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,8 +1,10 @@
 using FluentAssertions;
+
 using Identity.Application.Features.Users.RefreshToken;
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Domain.Repositories;
+
 using NSubstitute;
 
 namespace Identity.Application.UnitTests.Features.Users.RefreshToken;
@@ -25,10 +27,10 @@ public class RefreshTokenCommandHandlerTests
         var user = new User(Guid.NewGuid(), "test@example.com", "hash");
         var oldToken = "old-refresh-token";
         user.AddRefreshToken(oldToken, DateTime.UtcNow.AddDays(1));
-        
+
         var command = new RefreshTokenCommand(oldToken);
         _userRepository.GetByRefreshTokenAsync(oldToken).Returns(user);
-        
+
         _jwtTokenGenerator.GenerateRefreshToken().Returns("new-refresh-token");
         _jwtTokenGenerator.GenerateToken(user.Id, user.Email, Arg.Any<string>(), Arg.Any<string>()).Returns("new-access-token");
 
@@ -39,11 +41,11 @@ public class RefreshTokenCommandHandlerTests
         result.Should().NotBeNull();
         result.AccessToken.Should().Be("new-access-token");
         result.RefreshToken.Should().Be("new-refresh-token");
-        
+
         var oldRt = user.RefreshTokens.Single(x => x.Token == oldToken);
         oldRt.IsRevoked.Should().BeTrue();
         oldRt.ReplacedByToken.Should().Be("new-refresh-token");
-        
+
         user.RefreshTokens.Should().ContainSingle(x => x.Token == "new-refresh-token");
         await _userRepository.Received(1).UpdateAsync(user, Arg.Any<CancellationToken>());
     }
@@ -56,7 +58,7 @@ public class RefreshTokenCommandHandlerTests
         var expiredToken = "expired-token";
         // Adding expired token (ExpiryDate in the past)
         user.AddRefreshToken(expiredToken, DateTime.UtcNow.AddMinutes(-1));
-        
+
         var command = new RefreshTokenCommand(expiredToken);
         _userRepository.GetByRefreshTokenAsync(expiredToken).Returns(user);
 
@@ -75,7 +77,7 @@ public class RefreshTokenCommandHandlerTests
         var revokedToken = "revoked-token";
         user.AddRefreshToken(revokedToken, DateTime.UtcNow.AddDays(1));
         user.RevokeRefreshToken(revokedToken);
-        
+
         var command = new RefreshTokenCommand(revokedToken);
         _userRepository.GetByRefreshTokenAsync(revokedToken).Returns(user);
 

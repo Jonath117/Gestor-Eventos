@@ -1,9 +1,11 @@
 using FluentAssertions;
+
 using Identity.Application.Features.Users.Login;
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Domain.Exceptions;
 using Identity.Domain.Repositories;
+
 using NSubstitute;
 
 namespace Identity.Application.UnitTests.Features.Users.Login;
@@ -26,9 +28,9 @@ public class LoginCommandHandlerTests
         var password = "Password123!";
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
         var user = new User(Guid.NewGuid(), "test@example.com", passwordHash);
-        
+
         var command = new LoginCommand(user.Email, password);
-        
+
         _userRepository.GetByEmailAsync(command.Email).Returns(user);
         _jwtTokenGenerator.GenerateToken(user.Id, user.Email, Arg.Any<string>(), Arg.Any<string>()).Returns("access-token");
         _jwtTokenGenerator.GenerateRefreshToken().Returns("refresh-token");
@@ -40,7 +42,7 @@ public class LoginCommandHandlerTests
         result.Should().NotBeNull();
         result.AccessToken.Should().Be("access-token");
         result.RefreshToken.Should().Be("refresh-token");
-        
+
         user.RefreshTokens.Should().ContainSingle(x => x.Token == "refresh-token");
         await _userRepository.Received(1).UpdateAsync(user, Arg.Any<CancellationToken>());
     }
@@ -65,7 +67,7 @@ public class LoginCommandHandlerTests
         // Arrange
         var user = new User(Guid.NewGuid(), "test@example.com", BCrypt.Net.BCrypt.HashPassword("CorrectPassword"));
         var command = new LoginCommand(user.Email, "WrongPassword");
-        
+
         _userRepository.GetByEmailAsync(command.Email).Returns(user);
 
         // Act

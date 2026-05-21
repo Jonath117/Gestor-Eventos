@@ -13,6 +13,9 @@ const Home = lazy(() =>
 const Login = lazy(() =>
 	import("./pages/Login").then((module) => ({ default: module.Login })),
 );
+const Register = lazy(() =>
+	import("./pages/Register").then((module) => ({ default: module.Register })),
+);
 const Dashboard = lazy(() =>
 	import("./pages/Dashboard").then((module) => ({ default: module.Dashboard })),
 );
@@ -44,6 +47,7 @@ function App() {
 							<Route element={<PublicRoute />}>
 								<Route path="/" element={<Home />} />
 								<Route path="/login" element={<Login />} />
+								<Route path="/register" element={<Register />} />
 							</Route>
 
 							{/* Rutas Protegidas */}

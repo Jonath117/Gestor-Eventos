@@ -6,15 +6,35 @@ export interface LoginCredentials {
 }
 
 export interface LoginResponse {
-	token: string;
+	accessToken: string;
+	refreshToken: string;
+}
+
+export interface RegisterCredentials {
+	email: string;
+	password?: string;
+}
+
+export interface RegisterResponse {
+	id: string;
+	email: string;
 }
 
 export const loginUser = async (
 	credentials: LoginCredentials,
 ): Promise<LoginResponse> => {
-	// Consumir el endpoint específico de login
 	const response = await api.post<LoginResponse>(
 		"/identity/login",
+		credentials,
+	);
+	return response.data;
+};
+
+export const registerUser = async (
+	credentials: RegisterCredentials,
+): Promise<RegisterResponse> => {
+	const response = await api.post<RegisterResponse>(
+		"/identity/register",
 		credentials,
 	);
 	return response.data;
