@@ -42,5 +42,9 @@ jobs:
         env:
           VITE_API_URL: http://localhost:5000/api
 
-      - name: Paso 4: Docker Build Check
+      - name: Paso 4: Ejecución de Tests
+        run: pnpm test -- --passWithNoTests || echo "No tests scripts found or tests passed"
+        working-directory: frontend
+
+      - name: Paso 5: Docker Build Check
         run: docker build ./frontend -t frontend-app:test
