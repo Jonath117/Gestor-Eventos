@@ -69,6 +69,9 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// El middleware de CORS debe ir lo más arriba posible
+app.UseCors();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -80,9 +83,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseCors();
-
-// 2. Usar el middleware de Rate Limiting (antes de UseAuthentication y MapControllers)
+// 2. Usar el middleware de Rate Limiting
 app.UseRateLimiter();
 
 // These middlewares must be added before MapControllers to secure the endpoints
