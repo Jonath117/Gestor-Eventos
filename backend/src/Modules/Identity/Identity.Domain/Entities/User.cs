@@ -40,4 +40,10 @@ public class User
             _organizationUsers.Add(new OrganizationUser(organizationId, Id, role));
         }
     }
+
+    public void RevokeRefreshToken(string token, string? replacedByToken = null)
+    {
+        var refreshToken = _refreshTokens.SingleOrDefault(x => x.Token == token);
+        refreshToken?.Revoke(replacedByToken);
+    }
 }
