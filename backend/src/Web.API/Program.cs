@@ -5,6 +5,8 @@ using System.Threading.RateLimiting;
 
 using Core.Infrastructure;
 
+using Logistics.Infrastructure;
+
 using Registration.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,8 @@ builder.Services.AddControllers();
 // Registra todas las dependencias del módulo de Eventos (Application, Infrastructure, etc.)
 
 builder.Services.AddCoreInfrastructure(builder.Configuration);
+
+builder.Services.AddLogisticsInfrastructure(builder.Configuration);
 
 builder.Services.AddRegistrationInfrastructure(builder.Configuration);
 
