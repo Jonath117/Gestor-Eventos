@@ -1,4 +1,5 @@
 using Core.Application;
+using Core.Application.Abstractions;
 using Core.Application.Tenants;
 using Core.Domain.Repositories;
 using Core.Infrastructure.Persistence;
@@ -29,10 +30,12 @@ public static class DependencyInjection
                 })
                 .UseSnakeCaseNamingConvention());
 
+        services.AddScoped<ICoreDbContext>(sp => sp.GetRequiredService<CoreDbContext>());
+
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IOrganizationProvider, MockOrganizationProvider>();
+        services.AddScoped<ITenantProvider, MockTenantProvider>();
 
         return services;
     }
