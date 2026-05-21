@@ -38,7 +38,7 @@ public static class DependencyInjection
         services.AddDbContext<IdentityDbContext>(options =>
             options.UseNpgsql(connectionString, npgsqlOptions =>
                 {
-                    npgsqlOptions.QuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                    npgsqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 })
                 .UseSnakeCaseNamingConvention());
 
