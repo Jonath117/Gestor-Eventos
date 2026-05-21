@@ -33,6 +33,11 @@ COPY ["src/Modules/Registration/Registration.Domain/Registration.Domain.csproj",
 COPY ["src/Modules/Registration/Registration.Application/Registration.Application.csproj", "Modules/Registration/Registration.Application/"]
 COPY ["src/Modules/Registration/Registration.Infrastructure/Registration.Infrastructure.csproj", "Modules/Registration/Registration.Infrastructure/"]
 
+COPY ["src/Modules/Payment/Payment.Domain/Payment.Domain.csproj", "Modules/Payment/Payment.Domain/"]
+COPY ["src/Modules/Payment/Payment.Application/Payment.Application.csproj", "Modules/Payment/Payment.Application/"]
+COPY ["src/Modules/Payment/Payment.Infrastructure/Payment.Infrastructure.csproj", "Modules/Payment/Payment.Infrastructure/"]
+COPY ["src/Modules/Payment/Payment.Presentation/Payment.Presentation.csproj", "Modules/Payment/Payment.Presentation/"]
+
 COPY ["src/Web.API/Web.API.csproj", "Web.API/"]
 
 RUN dotnet restore "Web.API/Web.API.csproj"
