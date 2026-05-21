@@ -4,12 +4,13 @@ using Core.Domain.Entities;
 using Core.Domain.Repositories;
 
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Application.Features.Events.GetAllEvents;
 
 public class GetAllEventsHandler(
-    ICoreDbContext context, 
+    ICoreDbContext context,
     ITenantProvider tenantProvider) : IRequestHandler<GetAllEventsQuery, IEnumerable<GetAllEventsResponse>>
 {
     public async Task<IEnumerable<GetAllEventsResponse>> Handle(GetAllEventsQuery request, CancellationToken cancellationToken)
@@ -25,9 +26,9 @@ public class GetAllEventsHandler(
             .ToListAsync(cancellationToken);
 
         return events.Select(evt => new GetAllEventsResponse(
-            evt.Id, 
-            evt.Name, 
-            evt.StartDate, 
+            evt.Id,
+            evt.Name,
+            evt.StartDate,
             evt.EndDate));
     }
 }

@@ -1,5 +1,7 @@
 using System.Security.Claims;
+
 using Core.Application.Tenants;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Core.Infrastructure.Tenants;
@@ -11,7 +13,7 @@ public class MockTenantProvider(IHttpContextAccessor httpContextAccessor) : ITen
 
     public Guid GetCurrentUserId()
     {
-        var userIdClaim = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+        var userIdClaim = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
                           ?? httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value;
 
         if (string.IsNullOrEmpty(userIdClaim))

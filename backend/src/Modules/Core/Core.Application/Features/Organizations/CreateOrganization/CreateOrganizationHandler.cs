@@ -3,6 +3,7 @@ using Core.Application.Tenants;
 using Core.Domain.Entities;
 
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Application.Features.Organizations.CreateOrganization;
