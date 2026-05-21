@@ -1,6 +1,7 @@
 namespace Core.Infrastructure.Persistence.Configurations;
 
 using Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -27,10 +28,10 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
         builder.Property(e => e.CreatedAt)
             .HasDefaultValueSql("now()");
-        
+
         builder.HasOne(e => e.Organization)
             .WithMany(o => o.Events)
             .HasForeignKey(e => e.OrganizationId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

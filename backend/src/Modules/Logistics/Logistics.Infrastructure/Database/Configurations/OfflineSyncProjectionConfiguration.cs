@@ -1,15 +1,16 @@
 namespace Logistics.Infrastructure.Database.Configurations;
 
+using Logistics.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Logistics.Domain.Entities;
 
 public class OfflineSyncProjectionConfiguration : IEntityTypeConfiguration<OfflineSyncProjection>
 {
     public void Configure(EntityTypeBuilder<OfflineSyncProjection> builder)
     {
         builder.ToTable("offline_sync_projections");
-        
+
         builder.HasKey(o => o.ParticipantId);
 
         builder.Property(o => o.QrIdentifier).IsRequired().HasMaxLength(255);

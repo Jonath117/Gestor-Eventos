@@ -1,5 +1,6 @@
 using Core.Domain.Entities;
 using Core.Domain.Repositories;
+
 using MediatR;
 
 namespace Core.Application.Features.Organizations.CreateOrganization;

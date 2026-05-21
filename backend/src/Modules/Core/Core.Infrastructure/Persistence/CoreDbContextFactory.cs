@@ -1,9 +1,10 @@
 namespace Core.Infrastructure.Persistence;
 
+using System.IO;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
 public class CoreDbContextFactory : IDesignTimeDbContextFactory<CoreDbContext>
 {
@@ -17,10 +18,10 @@ public class CoreDbContextFactory : IDesignTimeDbContextFactory<CoreDbContext>
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<CoreDbContext>();
-        
+
         string connectionString = configuration.GetConnectionString("NeonPostgres")
                                   ?? throw new InvalidOperationException("No se encontró la cadena de conexión 'NeonPostgres'.");
-        
+
         optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
             {
                 npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "core");

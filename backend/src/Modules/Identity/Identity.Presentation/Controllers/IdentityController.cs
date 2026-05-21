@@ -1,5 +1,7 @@
 using Identity.Application.Features.Users.Login;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -28,10 +30,11 @@ public class IdentityController(ISender sender) : ControllerBase
                 return Unauthorized(new { error = ex.Message });
             }
 
-            return StatusCode(500, new { 
-                error = "An unexpected error occurred.", 
+            return StatusCode(500, new
+            {
+                error = "An unexpected error occurred.",
                 details = ex.Message,
-                stackTrace = ex.StackTrace 
+                stackTrace = ex.StackTrace
             });
         }
     }

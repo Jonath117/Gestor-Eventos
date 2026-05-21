@@ -1,7 +1,9 @@
 using Core.Application.Features.Organizations.CreateOrganization;
 using Core.Application.Features.Organizations.GetAllOrganizations;
 using Core.Application.Features.Organizations.GetOrganizationById;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

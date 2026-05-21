@@ -1,5 +1,6 @@
 using Identity.Application.Interfaces;
 using Identity.Domain.Exceptions;
+
 using MediatR;
 
 namespace Identity.Application.Features.Users.Login;

@@ -1,9 +1,10 @@
 namespace Registration.Infrastructure.Database;
 
+using System.IO;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
 public class RegistrationDbContextFactory : IDesignTimeDbContextFactory<RegistrationDbContext>
 {
@@ -16,7 +17,7 @@ public class RegistrationDbContextFactory : IDesignTimeDbContextFactory<Registra
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<RegistrationDbContext>();
-        
+
         string connectionString = configuration.GetConnectionString("NeonPostgres")
                                   ?? throw new InvalidOperationException("No se encontró la cadena de conexión.");
 

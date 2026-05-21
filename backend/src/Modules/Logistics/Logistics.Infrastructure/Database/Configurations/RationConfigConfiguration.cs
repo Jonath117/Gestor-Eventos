@@ -1,8 +1,9 @@
 namespace Logistics.Infrastructure.Database.Configurations;
 
+using Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Domain.Entities;
 
 public class RationConfigConfiguration : IEntityTypeConfiguration<RationConfig>
 {
@@ -10,7 +11,7 @@ public class RationConfigConfiguration : IEntityTypeConfiguration<RationConfig>
     {
         builder.ToTable("ration_configs");
         builder.HasKey(r => r.Id);
-        
+
         builder.Property(r => r.Name).IsRequired().HasMaxLength(255);
         builder.Property(r => r.TotalAllowedPerParticipant).HasDefaultValue(1);
 

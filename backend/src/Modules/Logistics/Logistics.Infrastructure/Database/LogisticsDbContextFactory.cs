@@ -1,9 +1,10 @@
 namespace Logistics.Infrastructure.Database;
 
+using System.IO;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
 public class LogisticsDbContextFactory : IDesignTimeDbContextFactory<LogisticsDbContext>
 {
@@ -12,11 +13,11 @@ public class LogisticsDbContextFactory : IDesignTimeDbContextFactory<LogisticsDb
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.Development.json", optional: false)
-            .AddUserSecrets<LogisticsDbContextFactory>() 
+            .AddUserSecrets<LogisticsDbContextFactory>()
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<LogisticsDbContext>();
-        
+
         string connectionString = configuration.GetConnectionString("NeonPostgres")
                                   ?? throw new InvalidOperationException("No se encontró la cadena de conexión.");
 
