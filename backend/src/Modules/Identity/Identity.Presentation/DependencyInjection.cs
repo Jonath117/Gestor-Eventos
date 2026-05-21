@@ -1,5 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Presentation;
 
@@ -9,7 +9,7 @@ public static class DependencyInjection
     {
         services.AddControllers()
                 .AddApplicationPart(typeof(DependencyInjection).Assembly);
-        
+
         return services;
     }
 }

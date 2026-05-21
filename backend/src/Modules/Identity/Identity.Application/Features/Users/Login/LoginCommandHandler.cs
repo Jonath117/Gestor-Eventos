@@ -1,18 +1,19 @@
 using Identity.Application.Interfaces;
 using Identity.Domain.Exceptions;
 using Identity.Domain.Repositories;
+
 using MediatR;
 
 namespace Identity.Application.Features.Users.Login;
 
 public class LoginCommandHandler(
-    IUserRepository userRepository, 
+    IUserRepository userRepository,
     IJwtTokenGenerator jwtTokenGenerator) : IRequestHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByEmailAsync(request.Email, cancellationToken);
-        
+
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
             throw new InvalidCredentialsException();

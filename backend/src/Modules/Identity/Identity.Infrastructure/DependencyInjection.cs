@@ -1,16 +1,18 @@
+using System.Text;
+
 using Identity.Application;
 using Identity.Application.Interfaces;
 using Identity.Domain.Repositories;
 using Identity.Infrastructure.Authentication;
 using Identity.Infrastructure.Database;
 using Identity.Infrastructure.Repositories;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace Identity.Infrastructure;
 
@@ -33,7 +35,7 @@ public static class DependencyInjection
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        services.AddDbContext<IdentityDbContext>(options => 
+        services.AddDbContext<IdentityDbContext>(options =>
             options.UseNpgsql(connectionString));
 
         services.AddScoped<IUserRepository, UserRepository>();

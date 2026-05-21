@@ -1,8 +1,10 @@
 using Identity.Application.Features.Users.Login;
-using Identity.Application.Features.Users.Register;
-using Identity.Application.Features.Users.RefreshToken;
 using Identity.Application.Features.Users.Logout;
+using Identity.Application.Features.Users.RefreshToken;
+using Identity.Application.Features.Users.Register;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;

@@ -1,5 +1,6 @@
 using Identity.Domain.Entities;
 using Identity.Domain.Repositories;
+
 using MediatR;
 
 namespace Identity.Application.Features.Users.Register;

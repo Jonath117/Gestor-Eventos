@@ -1,5 +1,6 @@
 using Identity.Application.Interfaces;
 using Identity.Domain.Repositories;
+
 using MediatR;
 
 namespace Identity.Application.Features.Users.RefreshToken;
@@ -11,7 +12,7 @@ public class RefreshTokenCommandHandler(
     public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByRefreshTokenAsync(request.Token, cancellationToken);
-        
+
         if (user == null)
         {
             throw new Exception("Invalid refresh token");

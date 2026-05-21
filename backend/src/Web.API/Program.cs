@@ -58,7 +58,7 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddCors(options =>
 {
     var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? [];
-    
+
     options.AddDefaultPolicy(policy =>
     {
         policy.WithOrigins(allowedOrigins)

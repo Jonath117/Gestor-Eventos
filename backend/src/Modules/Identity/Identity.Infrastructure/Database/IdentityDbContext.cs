@@ -1,4 +1,5 @@
 using Identity.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Database;
@@ -34,7 +35,7 @@ public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : Db
             entity.HasKey(ou => new { ou.OrganizationId, ou.UserId });
             entity.Property(ou => ou.Role).IsRequired();
             entity.Property(ou => ou.JoinedAt).HasDefaultValueSql("now()");
-            
+
             entity.HasOne<User>()
                   .WithMany(u => u.OrganizationUsers)
                   .HasForeignKey(ou => ou.UserId);
