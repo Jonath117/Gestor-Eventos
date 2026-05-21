@@ -1,4 +1,5 @@
 using Core.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Application.Abstractions;

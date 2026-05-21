@@ -4,6 +4,7 @@ using Core.Domain.Entities;
 using Core.Domain.Repositories;
 
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Application.Features.Events.CreateEvent;
@@ -19,9 +20,9 @@ public class CreateEventHandler(
 
         // Validar que el usuario pertenece a la organización y es Admin
         bool isAdmin = await context.OrganizationUsers
-            .AnyAsync(ou => ou.OrganizationId == organizationId && 
-                            ou.UserId == userId && 
-                            ou.Role == "Admin", 
+            .AnyAsync(ou => ou.OrganizationId == organizationId &&
+                            ou.UserId == userId &&
+                            ou.Role == "Admin",
                       cancellationToken);
 
         if (!isAdmin)

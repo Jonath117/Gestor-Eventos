@@ -7,7 +7,7 @@ using MediatR;
 namespace Core.Application.Features.Organizations.CreateOrganization;
 
 public class CreateOrganizationHandler(
-    ICoreDbContext context, 
+    ICoreDbContext context,
     ITenantProvider tenantProvider) : IRequestHandler<CreateOrganizationCommand, Guid>
 {
     public async Task<Guid> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
