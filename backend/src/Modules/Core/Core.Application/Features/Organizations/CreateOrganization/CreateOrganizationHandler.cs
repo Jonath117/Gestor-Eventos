@@ -3,6 +3,7 @@ using Core.Application.Tenants;
 using Core.Domain.Entities;
 
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Application.Features.Organizations.CreateOrganization;
 
@@ -13,6 +14,18 @@ public class CreateOrganizationHandler(
     public async Task<Guid> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
     {
         Guid currentUserId = tenantProvider.GetCurrentUserId();
+
+        // Validar si el usuario existe en la tabla de Core (Sync entre módulos)
+        bool userExists = await context.Users.AnyAsync(u => u.Id == currentUserId, cancellationToken);
+        if (!userExists)
+        {
+            await context.Users.AddAsync(new User
+            {
+                Id = currentUserId,
+                Email = "admin@demo.com", // Fallback email
+                CreatedAt = DateTime.UtcNow
+            }, cancellationToken);
+        }
 
         Organization organization = new()
         {

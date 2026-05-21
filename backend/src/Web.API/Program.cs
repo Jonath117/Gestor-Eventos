@@ -17,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddHttpContextAccessor();
+
 // Registra los controladores de todos los módulos que se añaden.
 builder.Services.AddControllers();
 
