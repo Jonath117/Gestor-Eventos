@@ -15,6 +15,36 @@ services:
 
     volumes:
       - ./backend:/app
+      - /app/src/Modules/Core/Core.Application/bin
+      - /app/src/Modules/Core/Core.Application/obj
+      - /app/src/Modules/Core/Core.Domain/bin
+      - /app/src/Modules/Core/Core.Domain/obj
+      - /app/src/Modules/Core/Core.Infrastructure/bin
+      - /app/src/Modules/Core/Core.Infrastructure/obj
+      - /app/src/Modules/Core/Core.Presentation/bin
+      - /app/src/Modules/Core/Core.Presentation/obj
+      - /app/src/Modules/Identity/Identity.Application/bin
+      - /app/src/Modules/Identity/Identity.Application/obj
+      - /app/src/Modules/Identity/Identity.Domain/bin
+      - /app/src/Modules/Identity/Identity.Domain/obj
+      - /app/src/Modules/Identity/Identity.Infrastructure/bin
+      - /app/src/Modules/Identity/Identity.Infrastructure/obj
+      - /app/src/Modules/Identity/Identity.Presentation/bin
+      - /app/src/Modules/Identity/Identity.Presentation/obj
+      - /app/src/Modules/Logistics/Logistics.Application/bin
+      - /app/src/Modules/Logistics/Logistics.Application/obj
+      - /app/src/Modules/Logistics/Logistics.Domain/bin
+      - /app/src/Modules/Logistics/Logistics.Domain/obj
+      - /app/src/Modules/Logistics/Logistics.Infrastructure/bin
+      - /app/src/Modules/Logistics/Logistics.Infrastructure/obj
+      - /app/src/Modules/Registration/Registration.Application/bin
+      - /app/src/Modules/Registration/Registration.Application/obj
+      - /app/src/Modules/Registration/Registration.Domain/bin
+      - /app/src/Modules/Registration/Registration.Domain/obj
+      - /app/src/Modules/Registration/Registration.Infrastructure/bin
+      - /app/src/Modules/Registration/Registration.Infrastructure/obj
+      - /app/src/Web.API/bin
+      - /app/src/Web.API/obj
 
   campeando-frontend:
     build:

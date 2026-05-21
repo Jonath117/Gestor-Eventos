@@ -28,7 +28,11 @@ public class IdentityController(ISender sender) : ControllerBase
                 return Unauthorized(new { error = ex.Message });
             }
 
-            return StatusCode(500, new { error = "An unexpected error occurred." });
+            return StatusCode(500, new { 
+                error = "An unexpected error occurred.", 
+                details = ex.Message,
+                stackTrace = ex.StackTrace 
+            });
         }
     }
 
