@@ -11,7 +11,10 @@ export const api = axios.create({
 api.interceptors.request.use(
 	(config) => {
 		const storedToken = localStorage.getItem("token");
-		if (storedToken && config.url?.includes("/events")) {
+		const isAuthRequest =
+			config.url?.includes("/login") || config.url?.includes("/register");
+
+		if (storedToken && !isAuthRequest) {
 			try {
 				const token = JSON.parse(storedToken);
 				if (token) {
@@ -33,6 +36,7 @@ api.interceptors.response.use(
 	(error) => {
 		if (axios.isAxiosError(error) && error.response?.status === 401) {
 			localStorage.removeItem("token");
+			localStorage.removeItem("refreshToken");
 			window.location.href = "/login";
 		}
 		return Promise.reject(error);
