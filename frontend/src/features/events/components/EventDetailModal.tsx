@@ -34,12 +34,10 @@ export const EventDetailModal = ({
 		}
 	};
 
-	const spotsLeft = event
-		? event.maxCapacity - event.currentParticipantsCount
-		: 0;
+	const spotsLeft = event ? event.maxCapacity - 0 : 0;
 	const occupancyPercent =
 		event && event.maxCapacity > 0
-			? Math.round((event.currentParticipantsCount / event.maxCapacity) * 100)
+			? Math.round((0 / event.maxCapacity) * 100)
 			: 0;
 
 	return (
@@ -135,7 +133,7 @@ export const EventDetailModal = ({
 										/>
 									</svg>
 									<span className="text-slate-300">
-										{new Date(event.date).toLocaleDateString("es", {
+										{new Date(event.startDate).toLocaleDateString("es", {
 											weekday: "long",
 											year: "numeric",
 											month: "long",
@@ -160,7 +158,7 @@ export const EventDetailModal = ({
 										/>
 									</svg>
 									<span className="text-slate-300">
-										{new Date(event.date).toLocaleTimeString("es", {
+										{new Date(event.startDate).toLocaleTimeString("es", {
 											hour: "2-digit",
 											minute: "2-digit",
 										})}
@@ -183,8 +181,7 @@ export const EventDetailModal = ({
 										/>
 									</svg>
 									<span className="text-slate-300">
-										{event.currentParticipantsCount} / {event.maxCapacity}{" "}
-										inscritos
+										0 / {event.maxCapacity} inscritos
 									</span>
 								</div>
 

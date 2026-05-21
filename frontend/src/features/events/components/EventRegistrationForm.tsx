@@ -75,7 +75,7 @@ export const EventRegistrationForm = ({
 	}
 
 	// --- Evento ya finalizó ---
-	if (event && event.date < new Date().toISOString()) {
+	if (event && event.startDate < new Date().toISOString()) {
 		return (
 			<div className="text-center py-16">
 				<div className="w-20 h-20 mx-auto mb-6 bg-amber-500/10 rounded-full flex items-center justify-center border border-amber-500/20">
@@ -107,7 +107,7 @@ export const EventRegistrationForm = ({
 	// --- Evento cancelado (removed: no status field in current API) ---
 
 	// --- Cupos agotados ---
-	if (event && event.currentParticipantsCount >= event.maxCapacity) {
+	if (event && 0 >= event.maxCapacity) {
 		return (
 			<div className="text-center py-16">
 				<div className="w-20 h-20 mx-auto mb-6 bg-orange-500/10 rounded-full flex items-center justify-center border border-orange-500/20">
@@ -222,7 +222,7 @@ export const EventRegistrationForm = ({
 					</h1>
 					<p className="text-slate-400 text-sm">{event.name}</p>
 					<p className="text-slate-500 text-xs mt-1">
-						{new Date(event.date).toLocaleDateString("es", {
+						{new Date(event.startDate).toLocaleDateString("es", {
 							year: "numeric",
 							month: "long",
 							day: "numeric",
