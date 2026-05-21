@@ -11,10 +11,40 @@ services:
       target: development
 
     ports:
-      - "${BACKEND_PORT:-5206}:5206"
-      
+      - "${BACKEND_PORT:-5000}:5206"
+
     volumes:
       - ./backend:/app
+      - /app/src/Modules/Core/Core.Application/bin
+      - /app/src/Modules/Core/Core.Application/obj
+      - /app/src/Modules/Core/Core.Domain/bin
+      - /app/src/Modules/Core/Core.Domain/obj
+      - /app/src/Modules/Core/Core.Infrastructure/bin
+      - /app/src/Modules/Core/Core.Infrastructure/obj
+      - /app/src/Modules/Core/Core.Presentation/bin
+      - /app/src/Modules/Core/Core.Presentation/obj
+      - /app/src/Modules/Identity/Identity.Application/bin
+      - /app/src/Modules/Identity/Identity.Application/obj
+      - /app/src/Modules/Identity/Identity.Domain/bin
+      - /app/src/Modules/Identity/Identity.Domain/obj
+      - /app/src/Modules/Identity/Identity.Infrastructure/bin
+      - /app/src/Modules/Identity/Identity.Infrastructure/obj
+      - /app/src/Modules/Identity/Identity.Presentation/bin
+      - /app/src/Modules/Identity/Identity.Presentation/obj
+      - /app/src/Modules/Logistics/Logistics.Application/bin
+      - /app/src/Modules/Logistics/Logistics.Application/obj
+      - /app/src/Modules/Logistics/Logistics.Domain/bin
+      - /app/src/Modules/Logistics/Logistics.Domain/obj
+      - /app/src/Modules/Logistics/Logistics.Infrastructure/bin
+      - /app/src/Modules/Logistics/Logistics.Infrastructure/obj
+      - /app/src/Modules/Registration/Registration.Application/bin
+      - /app/src/Modules/Registration/Registration.Application/obj
+      - /app/src/Modules/Registration/Registration.Domain/bin
+      - /app/src/Modules/Registration/Registration.Domain/obj
+      - /app/src/Modules/Registration/Registration.Infrastructure/bin
+      - /app/src/Modules/Registration/Registration.Infrastructure/obj
+      - /app/src/Web.API/bin
+      - /app/src/Web.API/obj
 
   campeando-frontend:
     build:
@@ -25,16 +55,7 @@ services:
       - /app/node_modules
 
     environment:
-    - VITE_API_URL=${VITE_API_URL:-http://localhost:5206/api}
+    - VITE_API_URL=${VITE_API_URL:-http://localhost:5000/api}
 
     ports:
       - "${FRONTEND_PORT:-5173}:5173"
-
-  # campeando-database:
-  #   environment:
-  #     - POSTGRES_DB=${POSTGRES_DB}
-  #     - POSTGRES_USER=${POSTGRES_USER}
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-
-  #   ports:
-  #     - "${POSTGRES_PORT:-5432}:5432"
