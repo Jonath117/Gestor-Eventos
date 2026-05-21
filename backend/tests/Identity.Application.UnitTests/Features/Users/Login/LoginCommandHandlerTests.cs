@@ -39,7 +39,7 @@ public class LoginCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Should().NotBeNull();
+        result.Should().Be(null);
         result.AccessToken.Should().Be("access-token");
         result.RefreshToken.Should().Be("refresh-token");
 
