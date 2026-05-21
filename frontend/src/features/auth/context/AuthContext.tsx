@@ -9,7 +9,8 @@ export interface User {
 
 interface AuthContextType {
 	token: string | null;
-	login: (token: string) => void;
+	refreshToken: string | null;
+	login: (token: string, refreshToken: string) => void;
 	logout: () => void;
 }
 
@@ -17,18 +18,25 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [token, setToken] = useLocalStorage<string | null>("token", null);
+	const [refreshToken, setRefreshToken] = useLocalStorage<string | null>(
+		"refreshToken",
+		null,
+	);
 
-	const login = (newToken: string) => {
+	const login = (newToken: string, newRefreshToken: string) => {
 		setToken(newToken);
+		setRefreshToken(newRefreshToken);
 	};
 
 	const logout = () => {
 		setToken(null);
+		setRefreshToken(null);
 		localStorage.removeItem("token");
+		localStorage.removeItem("refreshToken");
 	};
 
 	return (
-		<AuthContext.Provider value={{ token, login, logout }}>
+		<AuthContext.Provider value={{ token, refreshToken, login, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);
