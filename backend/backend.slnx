@@ -30,6 +30,7 @@
     <Project Path="src/Modules/Registration/Registration.Application/Registration.Application.csproj" />
     <Project Path="src/Modules/Registration/Registration.Domain/Registration.Domain.csproj" />
     <Project Path="src/Modules/Registration/Registration.Infrastructure/Registration.Infrastructure.csproj" />
+    <Project Path="src/Modules/Registration/Registration.Presentation/Registration.Presentation.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Identity.Application.UnitTests/Identity.Application.UnitTests.csproj" />

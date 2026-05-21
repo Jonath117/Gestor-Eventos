@@ -1,10 +1,11 @@
-namespace Registration.Infrastructure.Database;
-
 using Microsoft.EntityFrameworkCore;
 
+using Registration.Application.Interfaces;
 using Registration.Domain.Entities;
 
-public class RegistrationDbContext(DbContextOptions<RegistrationDbContext> options) : DbContext(options)
+namespace Registration.Infrastructure.Database;
+
+public class RegistrationDbContext(DbContextOptions<RegistrationDbContext> options) : DbContext(options), IRegistrationDbContext
 {
     public DbSet<Order>? Orders { get; set; }
     public DbSet<Participant>? Participants { get; set; }
