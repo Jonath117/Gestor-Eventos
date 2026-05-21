@@ -32,9 +32,6 @@ public static class DependencyInjection
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
-        // services.AddDbContext<IdentityDbContext>(options =>
-        //     options.UseInMemoryDatabase("Identity_MockDb"));
-
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<IdentityDbContext>(options => 
             options.UseNpgsql(connectionString));
