@@ -32,8 +32,8 @@ public class CreateEventHandler(
 
         Event newEvent = Event.Create(
             request.Name,
-            request.StartDate,
-            request.EndDate,
+            DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc),
+            DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc),
             request.MaxCapacity,
             organizationId);
 
