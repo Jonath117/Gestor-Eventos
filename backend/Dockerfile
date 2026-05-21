@@ -14,10 +14,11 @@ WORKDIR /src
 COPY ["Directory.Build.props", "Directory.Build.props"]
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
 
-COPY ["src/Modules/Events/Events.Domain/Events.Domain.csproj", "Modules/Events/Events.Domain/"]
-COPY ["src/Modules/Events/Events.Application/Events.Application.csproj", "Modules/Events/Events.Application/"]
-COPY ["src/Modules/Events/Events.Infrastructure/Events.Infrastructure.csproj", "Modules/Events/Events.Infrastructure/"]
-COPY ["src/Modules/Events/Events.Presentation/Events.Presentation.csproj", "Modules/Events/Events.Presentation/"]
+COPY ["src/Modules/Core/Core.Domain/Core.Domain.csproj", "Modules/Core/Core.Domain/"]
+COPY ["src/Modules/Core/Core.Application/Core.Application.csproj", "Modules/Core/Core.Application/"]
+COPY ["src/Modules/Core/Core.Infrastructure/Core.Infrastructure.csproj", "Modules/Core/Core.Infrastructure/"]
+COPY ["src/Modules/Core/Core.Presentation/Core.Presentation.csproj", "Modules/Core/Core.Presentation/"]
+
 
 COPY ["src/Modules/Identity/Identity.Domain/Identity.Domain.csproj", "Modules/Identity/Identity.Domain/"]
 COPY ["src/Modules/Identity/Identity.Application/Identity.Application.csproj", "Modules/Identity/Identity.Application/"]
