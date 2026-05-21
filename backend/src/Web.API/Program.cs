@@ -5,6 +5,8 @@ using System.Threading.RateLimiting;
 
 using Core.Infrastructure;
 
+using Registration.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +17,8 @@ builder.Services.AddControllers();
 // Registra todas las dependencias del módulo de Eventos (Application, Infrastructure, etc.)
 
 builder.Services.AddCoreInfrastructure(builder.Configuration);
+
+builder.Services.AddRegistrationInfrastructure(builder.Configuration);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
