@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Core.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/events")]
 [Authorize]
 public class EventsController(IMediator mediator) : ControllerBase
 {

@@ -151,12 +151,20 @@ export const Dashboard = () => {
 				{/* Events Section */}
 				<div className="mb-6 flex justify-between items-center mt-12">
 					<h2 className="text-xl font-semibold text-white">Tus Eventos</h2>
-					<Link
-						to="/events/new"
-						className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors"
-					>
-						Nuevo Evento
-					</Link>
+					<div className="flex gap-3">
+						<Link
+							to="/organizations/new"
+							className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition-colors"
+						>
+							Nueva Org
+						</Link>
+						<Link
+							to="/events/new"
+							className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors"
+						>
+							Nuevo Evento
+						</Link>
+					</div>
 				</div>
 				{isLoading ? (
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

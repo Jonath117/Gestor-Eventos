@@ -34,12 +34,10 @@ export const EventDetailModal = ({
 		}
 	};
 
-	const spotsLeft = event
-		? event.maxCapacity - event.currentParticipantsCount
-		: 0;
+	const spotsLeft = event ? event.maxCapacity - 0 : 0;
 	const occupancyPercent =
 		event && event.maxCapacity > 0
-			? Math.round((event.currentParticipantsCount / event.maxCapacity) * 100)
+			? Math.round((0 / event.maxCapacity) * 100)
 			: 0;
 
 	return (
@@ -183,8 +181,7 @@ export const EventDetailModal = ({
 										/>
 									</svg>
 									<span className="text-slate-300">
-										{event.currentParticipantsCount} / {event.maxCapacity}{" "}
-										inscritos
+										0 / {event.maxCapacity} inscritos
 									</span>
 								</div>
 

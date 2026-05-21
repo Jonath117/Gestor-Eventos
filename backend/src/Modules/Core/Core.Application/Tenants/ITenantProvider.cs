@@ -1,6 +1,7 @@
 namespace Core.Application.Tenants;
 
-public interface IOrganizationProvider
+public interface ITenantProvider
 {
     Guid GetTenantId();
+    Guid GetCurrentUserId();
 }

@@ -9,7 +9,7 @@ namespace Core.Application.Features.Events.GetEventById;
 
 public class GetEventByIdHandler(
     IEventRepository repository,
-    IOrganizationProvider tenantProvider
+    ITenantProvider tenantProvider
     ) : IRequestHandler<GetEventByIdQuery, GetEventByIdResponse>
 {
     public async Task<GetEventByIdResponse> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)

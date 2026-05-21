@@ -1,10 +1,75 @@
 services:
-  campeando-backend:
-    image: campeando-backend:${TAG:-latest}
+  db:
+    image: postgres:17-alpine
+    container_name: campeando-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: gestor_eventos
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    container_name: campeando-backend
     build:
       context: ./backend
+      target: development
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__NeonPostgres=Host=db;Database=gestor_eventos;Username=user;Password=password
+    ports:
+      - "5000:5206"
+    volumes:
+      - ./backend:/app
+      - /app/src/Modules/Core/Core.Application/bin
+      - /app/src/Modules/Core/Core.Application/obj
+      - /app/src/Modules/Core/Core.Domain/bin
+      - /app/src/Modules/Core/Core.Domain/obj
+      - /app/src/Modules/Core/Core.Infrastructure/bin
+      - /app/src/Modules/Core/Core.Infrastructure/obj
+      - /app/src/Modules/Core/Core.Presentation/bin
+      - /app/src/Modules/Core/Core.Presentation/obj
+      - /app/src/Modules/Identity/Identity.Application/bin
+      - /app/src/Modules/Identity/Identity.Application/obj
+      - /app/src/Modules/Identity/Identity.Domain/bin
+      - /app/src/Modules/Identity/Identity.Domain/obj
+      - /app/src/Modules/Identity/Identity.Infrastructure/bin
+      - /app/src/Modules/Identity/Identity.Infrastructure/obj
+      - /app/src/Modules/Identity/Identity.Presentation/bin
+      - /app/src/Modules/Identity/Identity.Presentation/obj
+      - /app/src/Modules/Logistics/Logistics.Application/bin
+      - /app/src/Modules/Logistics/Logistics.Application/obj
+      - /app/src/Modules/Logistics/Logistics.Domain/bin
+      - /app/src/Modules/Logistics/Logistics.Domain/obj
+      - /app/src/Modules/Logistics/Logistics.Infrastructure/bin
+      - /app/src/Modules/Logistics/Logistics.Infrastructure/obj
+      - /app/src/Modules/Registration/Registration.Application/bin
+      - /app/src/Modules/Registration/Registration.Application/obj
+      - /app/src/Modules/Registration/Registration.Domain/bin
+      - /app/src/Modules/Registration/Registration.Domain/obj
+      - /app/src/Modules/Registration/Registration.Infrastructure/bin
+      - /app/src/Modules/Registration/Registration.Infrastructure/obj
+      - /app/src/Web.API/bin
+      - /app/src/Web.API/obj
+    depends_on:
+      - db
 
-  campeando-frontend:
-    image: campeando-frontend:${TAG:-latest}
+  frontend:
+    container_name: campeando-frontend
     build:
       context: ./frontend
+      target: development
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

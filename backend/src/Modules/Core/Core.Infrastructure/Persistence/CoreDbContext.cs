@@ -1,15 +1,16 @@
-namespace Core.Infrastructure.Persistence;
-
-using Domain.Entities;
+using Core.Application.Abstractions;
+using Core.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
-public class CoreDbContext(DbContextOptions<CoreDbContext> options) : DbContext(options)
+namespace Core.Infrastructure.Persistence;
+
+public class CoreDbContext(DbContextOptions<CoreDbContext> options) : DbContext(options), ICoreDbContext
 {
-    public DbSet<Organization>? Organizations { get; set; }
-    public DbSet<User>? Users { get; set; }
-    public DbSet<OrganizationUser>? OrganizationUsers { get; set; }
-    public DbSet<Event>? Events { get; set; }
+    public DbSet<Organization> Organizations { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<OrganizationUser> OrganizationUsers { get; set; } = null!;
+    public DbSet<Event> Events { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

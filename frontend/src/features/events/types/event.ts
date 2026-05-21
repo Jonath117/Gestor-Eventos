@@ -7,7 +7,7 @@ export interface EventSummary {
 
 export interface Event extends EventSummary {
 	maxCapacity: number;
-	currentParticipantsCount: number;
+	createdAt: string;
 }
 
 export interface CreateEventData {

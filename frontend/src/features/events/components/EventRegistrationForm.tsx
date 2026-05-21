@@ -179,7 +179,7 @@ export const EventRegistrationForm = ({
 	}
 
 	// --- Cupos agotados ---
-	if (event && event.currentParticipantsCount >= event.maxCapacity) {
+	if (event && 0 >= event.maxCapacity) {
 		return (
 			<div className="text-center py-16">
 				<div className="w-20 h-20 mx-auto mb-6 bg-orange-500/10 rounded-full flex items-center justify-center border border-orange-500/20">
