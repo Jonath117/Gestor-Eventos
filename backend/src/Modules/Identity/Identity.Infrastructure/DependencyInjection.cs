@@ -36,7 +36,11 @@ public static class DependencyInjection
 
         var connectionString = configuration.GetConnectionString("NeonPostgres");
         services.AddDbContext<IdentityDbContext>(options =>
-            options.UseNpgsql(connectionString));
+            options.UseNpgsql(connectionString, npgsqlOptions =>
+                {
+                    npgsqlOptions.QuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                })
+                .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IUserRepository, UserRepository>();
 
