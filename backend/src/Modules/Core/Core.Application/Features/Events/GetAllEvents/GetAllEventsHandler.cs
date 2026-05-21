@@ -7,7 +7,7 @@ using MediatR;
 namespace Core.Application.Features.Events.GetAllEvents;
 
 public class GetAllEventsHandler(
-    IEventRepository repository, IOrganizationProvider tenantProvider) : IRequestHandler<GetAllEventsQuery, IEnumerable<GetAllEventsResponse>>
+    IEventRepository repository, ITenantProvider tenantProvider) : IRequestHandler<GetAllEventsQuery, IEnumerable<GetAllEventsResponse>>
 {
     public async Task<IEnumerable<GetAllEventsResponse>> Handle(GetAllEventsQuery request, CancellationToken cancellationToken)
     {
