@@ -135,7 +135,7 @@ export const EventDetailModal = ({
 										/>
 									</svg>
 									<span className="text-slate-300">
-										{new Date(event.date).toLocaleDateString("es", {
+										{new Date(event.startDate).toLocaleDateString("es", {
 											weekday: "long",
 											year: "numeric",
 											month: "long",
@@ -160,7 +160,7 @@ export const EventDetailModal = ({
 										/>
 									</svg>
 									<span className="text-slate-300">
-										{new Date(event.date).toLocaleTimeString("es", {
+										{new Date(event.startDate).toLocaleTimeString("es", {
 											hour: "2-digit",
 											minute: "2-digit",
 										})}

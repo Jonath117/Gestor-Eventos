@@ -169,6 +169,13 @@ export const EventRegistrationForm = ({
 				<div className="text-center mb-10">
 					<h1 className="text-3xl font-bold text-white mb-2">{event.name}</h1>
 					<p className="text-slate-400 text-sm">Registro Público Individual</p>
+					<p className="text-slate-500 text-xs mt-1">
+						{new Date(event.startDate).toLocaleDateString("es", {
+							year: "numeric",
+							month: "long",
+							day: "numeric",
+						})}
+					</p>
 				</div>
 			)}
 

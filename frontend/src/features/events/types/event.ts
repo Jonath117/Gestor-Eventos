@@ -1,7 +1,8 @@
 export interface EventSummary {
 	id: string;
 	name: string;
-	date: string;
+	startDate: string;
+	endDate: string;
 }
 
 export interface Event extends EventSummary {
@@ -11,6 +12,7 @@ export interface Event extends EventSummary {
 
 export interface CreateEventData {
 	name: string;
-	date: string;
+	startDate: string;
+	endDate: string;
 	maxCapacity: number;
 }

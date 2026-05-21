@@ -241,7 +241,7 @@ export const Dashboard = () => {
 											></path>
 										</svg>
 										<span>
-											{new Date(event.date).toLocaleDateString("es", {
+											{new Date(event.startDate).toLocaleDateString("es", {
 												year: "numeric",
 												month: "long",
 												day: "numeric",
@@ -263,7 +263,7 @@ export const Dashboard = () => {
 											></path>
 										</svg>
 										<span>
-											{new Date(event.date).toLocaleTimeString("es", {
+											{new Date(event.startDate).toLocaleTimeString("es", {
 												hour: "2-digit",
 												minute: "2-digit",
 											})}

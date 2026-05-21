@@ -14,9 +14,9 @@ public class GetEventByIdHandler(
 {
     public async Task<GetEventByIdResponse> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
     {
-        Guid organizationId = tenantProvider.GetTenantId();
-
-        Event? eventEntity = await repository.GetByIdAsync(organizationId, request.Id, cancellationToken);
+        // For public access, we don't strictly need the organizationId from the context
+        // as the event ID is a unique Guid.
+        Event? eventEntity = await repository.GetByIdAsync(request.Id, cancellationToken);
 
         if (eventEntity is null)
         {

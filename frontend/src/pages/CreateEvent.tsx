@@ -9,7 +9,8 @@ export const CreateEvent = () => {
 	const { mutate, isPending } = useCreateEvent();
 	const [formData, setFormData] = useState<CreateEventData>({
 		name: "",
-		date: "",
+		startDate: "",
+		endDate: "",
 		maxCapacity: 0,
 	});
 
@@ -48,16 +49,33 @@ export const CreateEvent = () => {
 							className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
 						/>
 					</div>
-					<div>
-						<label className="block text-sm text-slate-300 mb-1">Fecha</label>
-						<input
-							name="date"
-							type="datetime-local"
-							value={formData.date}
-							onChange={handleChange}
-							required
-							className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-						/>
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<div>
+							<label className="block text-sm text-slate-300 mb-1">
+								Fecha de Inicio
+							</label>
+							<input
+								name="startDate"
+								type="datetime-local"
+								value={formData.startDate}
+								onChange={handleChange}
+								required
+								className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+							/>
+						</div>
+						<div>
+							<label className="block text-sm text-slate-300 mb-1">
+								Fecha de Fin
+							</label>
+							<input
+								name="endDate"
+								type="datetime-local"
+								value={formData.endDate}
+								onChange={handleChange}
+								required
+								className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+							/>
+						</div>
 					</div>
 					<div>
 						<label className="block text-sm text-slate-300 mb-1">
