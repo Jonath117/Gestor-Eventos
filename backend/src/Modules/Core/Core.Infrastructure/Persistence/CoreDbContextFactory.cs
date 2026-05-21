@@ -13,6 +13,7 @@ public class CoreDbContextFactory : IDesignTimeDbContextFactory<CoreDbContext>
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.Development.json", optional: false)
+            .AddUserSecrets<CoreDbContextFactory>()
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<CoreDbContext>();

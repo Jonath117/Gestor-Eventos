@@ -22,6 +22,7 @@
       <ProjectReference Include="..\Modules\Core\Core.Infrastructure\Core.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\Identity\Identity.Presentation\Identity.Presentation.csproj" />
+      <ProjectReference Include="..\Modules\Registration\Registration.Infrastructure\Registration.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
