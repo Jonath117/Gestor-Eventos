@@ -1,16 +1,18 @@
 export interface EventSummary {
 	id: string;
 	name: string;
-	date: string;
+	startDate: string;
+	endDate: string;
 }
 
 export interface Event extends EventSummary {
 	maxCapacity: number;
-	currentParticipantsCount: number;
+	createdAt: string;
 }
 
 export interface CreateEventData {
 	name: string;
-	date: string;
+	startDate: string;
+	endDate: string;
 	maxCapacity: number;
 }
