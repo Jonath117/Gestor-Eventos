@@ -13,14 +13,16 @@ public class CoreDbContextFactory : IDesignTimeDbContextFactory<CoreDbContext>
 
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.Development.json", optional: false)
+            .AddJsonFile("appsettings.json", optional: true)
+            .AddJsonFile("appsettings.Development.json", optional: true)
             .AddUserSecrets<CoreDbContextFactory>()
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<CoreDbContext>();
 
         string connectionString = configuration.GetConnectionString("NeonPostgres")
-                                  ?? throw new InvalidOperationException("No se encontró la cadena de conexión 'NeonPostgres'.");
+                                  ?? configuration.GetConnectionString("DefaultConnection")
+                                  ?? "Host=localhost;Database=dummy;Username=dummy;Password=dummy";
 
         optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
             {
