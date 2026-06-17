@@ -1,5 +1,4 @@
 import { api } from "../../../api/client";
-import type { Organization } from "../types/organization";
 import type {
 	CreateOrganizationData,
 	Organization,

@@ -81,7 +81,9 @@ export const Dashboard = () => {
 						Crea tu Organización
 					</h1>
 					<p className="text-slate-400 text-sm mb-8 leading-relaxed">
-						Para comenzar a crear y gestionar eventos, primero necesitas configurar una organización. Las organizaciones te permiten organizar equipos y controlar accesos.
+						Para comenzar a crear y gestionar eventos, primero necesitas
+						configurar una organización. Las organizaciones te permiten
+						organizar equipos y controlar accesos.
 					</p>
 					<Link
 						to="/organizations/new"
@@ -113,7 +115,8 @@ export const Dashboard = () => {
 							Selecciona tu Organización
 						</h1>
 						<p className="text-slate-400 text-sm">
-							Elige la organización con la que deseas trabajar hoy para ver sus eventos.
+							Elige la organización con la que deseas trabajar hoy para ver sus
+							eventos.
 						</p>
 					</div>
 
@@ -199,7 +202,9 @@ export const Dashboard = () => {
 							<span className="font-bold text-xl tracking-tight text-white hidden md:inline">
 								Dashboard
 							</span>
-							<span className="text-slate-700 font-medium hidden md:inline">/</span>
+							<span className="text-slate-700 font-medium hidden md:inline">
+								/
+							</span>
 
 							{/* Organization Switcher Dropdown */}
 							<div className="relative">
@@ -207,7 +212,9 @@ export const Dashboard = () => {
 									onClick={() => setIsTenantSelectorOpen(!isTenantSelectorOpen)}
 									className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 text-sm font-medium text-slate-200 transition-all hover:bg-slate-850"
 								>
-									<span className="max-w-[150px] truncate">{activeOrg?.name}</span>
+									<span className="max-w-[150px] truncate">
+										{activeOrg?.name}
+									</span>
 									<svg
 										className={`w-4 h-4 text-slate-500 transition-transform ${isTenantSelectorOpen ? "rotate-180" : ""}`}
 										fill="none"
@@ -280,7 +287,7 @@ export const Dashboard = () => {
 														/>
 													</svg>
 													Crear Organización
-												</button>
+												</Link>
 												<button
 													onClick={() => {
 														localStorage.removeItem("tenantId");
@@ -596,7 +603,8 @@ export const Dashboard = () => {
 							Crear tu primer evento
 						</h3>
 						<p className="text-slate-400 max-w-sm text-center mb-6">
-							Aún no tienes ningún evento programado. Empieza planeando tu primera actividad.
+							Aún no tienes ningún evento programado. Empieza planeando tu
+							primera actividad.
 						</p>
 						<Link
 							to="/events/new"

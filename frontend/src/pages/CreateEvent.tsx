@@ -25,7 +25,7 @@ export const CreateEvent = () => {
 			try {
 				const data = await getOrganizations();
 				setOrganizations(data);
-				
+
 				const storedTenantId = localStorage.getItem("tenantId");
 				let activeId = "";
 				if (storedTenantId) {
@@ -125,7 +125,6 @@ export const CreateEvent = () => {
 							className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
 						/>
 					</div>
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div>
 							<label className="block text-sm text-slate-300 mb-1">
