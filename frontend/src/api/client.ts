@@ -34,7 +34,7 @@ api.interceptors.request.use(
 				if (tenantId) {
 					config.headers["X-Tenant-Id"] = tenantId;
 				}
-			} catch (error) {
+			} catch {
 				config.headers["X-Tenant-Id"] = storedTenantId;
 			}
 		}
