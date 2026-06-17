@@ -1,0 +1,72 @@
+name: Deploy Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore and Build Backend
+        run: dotnet build backend/backend.slnx --configuration Release
+
+      - name: Run Backend Tests
+        run: dotnet test backend/backend.slnx --configuration Release
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install Frontend Dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: ./frontend
+
+      - name: Lint and Build Frontend
+        run: pnpm run build
+        working-directory: ./frontend
+
+      # =========================================================================
+      # COMENTADO: Pasos de construcción Docker, Push y Despliegue a GCP
+      # =========================================================================
+      # - name: Authenticate to GCP
+      #   uses: google-github-actions/auth@v2
+      #   with:
+      #     credentials_json: ${{ secrets.GCP_SA_KEY }}
+      #
+      # - name: Setup Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v2
+      #
+      # - name: Configure Docker for GCP
+      #   run: gcloud auth configure-docker us-central1-docker.pkg.dev
+      #
+      # - name: Build and Push Backend Docker Image
+      #   run: |
+      #     docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/campeando-repo/backend:latest ./backend
+      #     docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/campeando-repo/backend:latest
+      #
+      # - name: Deploy to Cloud Run
+      #   run: |
+      #     gcloud run deploy campeando-backend \
+      #       --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/campeando-repo/backend:latest \
+      #       --platform managed \
+      #       --region us-central1 \
+      #       --allow-unauthenticated \
+      #       --set-env-vars "ConnectionStrings__NeonPostgres=${{ secrets.NEON_DATABASE_URL }}"
