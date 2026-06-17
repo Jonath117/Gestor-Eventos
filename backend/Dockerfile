@@ -32,6 +32,7 @@ COPY ["src/Modules/Logistics/Logistics.Infrastructure/Logistics.Infrastructure.c
 COPY ["src/Modules/Registration/Registration.Domain/Registration.Domain.csproj", "Modules/Registration/Registration.Domain/"]
 COPY ["src/Modules/Registration/Registration.Application/Registration.Application.csproj", "Modules/Registration/Registration.Application/"]
 COPY ["src/Modules/Registration/Registration.Infrastructure/Registration.Infrastructure.csproj", "Modules/Registration/Registration.Infrastructure/"]
+COPY ["src/Modules/Registration/Registration.Presentation/Registration.Presentation.csproj", "Modules/Registration/Registration.Presentation/"]
 
 COPY ["src/Modules/Payment/Payment.Domain/Payment.Domain.csproj", "Modules/Payment/Payment.Domain/"]
 COPY ["src/Modules/Payment/Payment.Application/Payment.Application.csproj", "Modules/Payment/Payment.Application/"]

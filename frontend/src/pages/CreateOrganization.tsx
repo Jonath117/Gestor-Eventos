@@ -17,7 +17,8 @@ export const CreateOrganization = () => {
 		setError(null);
 
 		try {
-			await createOrganization(formData);
+			const result = await createOrganization(formData);
+			localStorage.setItem("tenantId", result.id);
 			navigate("/dashboard");
 		} catch (err) {
 			setError("Error al crear la organización. Intenta de nuevo.");

@@ -24,6 +24,21 @@ api.interceptors.request.use(
 				console.error("Error parsing token from localStorage", error);
 			}
 		}
+
+		const storedTenantId = localStorage.getItem("tenantId");
+		if (storedTenantId) {
+			try {
+				const tenantId = storedTenantId.startsWith('"')
+					? JSON.parse(storedTenantId)
+					: storedTenantId;
+				if (tenantId) {
+					config.headers["X-Tenant-Id"] = tenantId;
+				}
+			} catch {
+				config.headers["X-Tenant-Id"] = storedTenantId;
+			}
+		}
+
 		return config;
 	},
 	(error) => {

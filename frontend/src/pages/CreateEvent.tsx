@@ -25,7 +25,22 @@ export const CreateEvent = () => {
 			try {
 				const data = await getOrganizations();
 				setOrganizations(data);
-				if (data.length > 0) {
+
+				const storedTenantId = localStorage.getItem("tenantId");
+				let activeId = "";
+				if (storedTenantId) {
+					try {
+						activeId = storedTenantId.startsWith('"')
+							? JSON.parse(storedTenantId)
+							: storedTenantId;
+					} catch {
+						activeId = storedTenantId;
+					}
+				}
+
+				if (activeId && data.some((org) => org.id === activeId)) {
+					setFormData((prev) => ({ ...prev, organizationId: activeId }));
+				} else if (data.length > 0) {
 					setFormData((prev) => ({ ...prev, organizationId: data[0].id }));
 				}
 			} catch (error) {

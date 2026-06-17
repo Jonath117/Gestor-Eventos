@@ -10,4 +10,10 @@
       <ProjectReference Include="..\Registration.Domain\Registration.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MediatR" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" />
+      <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+    </ItemGroup>
+
 </Project>

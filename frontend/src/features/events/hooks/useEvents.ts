@@ -3,14 +3,16 @@ import { getEvents } from "../api/events";
 import type { EventSummary } from "../types/event";
 
 // Hook Personalizado: Une TanStack Query con nuestro servicio API
-export const useEvents = () => {
+export const useEvents = (tenantId: string | null) => {
 	return useQuery<EventSummary[], Error>({
-		queryKey: ["events"], // Clave única de caché para esta consulta
+		queryKey: ["events", tenantId], // Clave única de caché para esta consulta
 		queryFn: async () => {
+			if (!tenantId) return [];
 			await new Promise((resolve) => setTimeout(resolve, 1000));
 
 			//ejectuamos la pettcion
 			return getEvents();
 		},
+		enabled: !!tenantId,
 	});
 };

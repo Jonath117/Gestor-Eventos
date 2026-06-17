@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Payment.Infrastructure;
 
 using Registration.Infrastructure;
+using Registration.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddCoreInfrastructure(builder.Configuration);
 
 builder.Services.AddLogisticsInfrastructure(builder.Configuration);
 
-builder.Services.AddRegistrationInfrastructure(builder.Configuration);
+builder.Services.AddRegistrationModule(builder.Configuration);
 
 builder.Services.AddPaymentInfrastructure(builder.Configuration);
 
@@ -39,6 +40,8 @@ builder.Services.AddSwaggerGen();
 // Add Identity Module
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddIdentityPresentation();
+
+builder.Services.AddRegistrationPresentation();
 
 builder.Services.AddAuthorization(options =>
 {
