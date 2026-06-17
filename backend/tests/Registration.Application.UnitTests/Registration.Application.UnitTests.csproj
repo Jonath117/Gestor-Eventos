@@ -21,6 +21,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Modules\Registration\Registration.Application\Registration.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Registration\Registration.Infrastructure\Registration.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
   </ItemGroup>
 
   <ItemGroup>
