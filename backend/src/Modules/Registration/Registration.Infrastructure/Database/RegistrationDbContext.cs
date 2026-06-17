@@ -11,6 +11,7 @@ public class RegistrationDbContext(DbContextOptions<RegistrationDbContext> optio
     public DbSet<Participant>? Participants { get; set; }
 
     public DbSet<Code>? Codes { get; set; }
+    public DbSet<OtpRequest>? OtpRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
