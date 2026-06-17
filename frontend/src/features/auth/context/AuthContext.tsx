@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		setRefreshToken(null);
 		localStorage.removeItem("token");
 		localStorage.removeItem("refreshToken");
+		localStorage.removeItem("tenantId");
 	};
 
 	return (
