@@ -21,7 +21,8 @@ public static class DependencyInjection
         services.AddCoreApplication();
 
         string connectionString = configuration.GetConnectionString("NeonPostgres")
-                                  ?? throw new InvalidOperationException("No se encontro la cadena de conexión 'NeonPostgres'.");
+                                  ?? configuration.GetConnectionString("DefaultConnection")
+                                  ?? throw new InvalidOperationException("No se encontro la cadena de conexión 'NeonPostgres' o 'DefaultConnection'.");
 
         services.AddDbContext<CoreDbContext>(options =>
             options.UseNpgsql(connectionString, npgsqlOptions =>

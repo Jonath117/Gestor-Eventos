@@ -1,32 +1,40 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using MediatR;
 
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+
+using Registration.Application.Interfaces;
+using Registration.Domain.Entities;
 
 namespace Registration.Application.Features.Registration.RequestOtp;
 
 public class RequestOtpHandler(
-    IMemoryCache cache,
+    IRegistrationDbContext dbContext,
     ILogger<RequestOtpHandler> logger) : IRequestHandler<RequestOtpCommand>
 {
-    public Task Handle(RequestOtpCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RequestOtpCommand request, CancellationToken cancellationToken)
     {
-        // Generar un OTP de 6 dígitos aleatorio
-        var otp = new Random().Next(100000, 999999).ToString();
+        logger.LogInformation("Recibida solicitud de OTP. Registrando en DB. Evento: {EventId}, Email: {Email}", request.EventId, request.Email);
 
-        // Guardar en cache con expiración de 180 segundos (3 minutos)
-        var cacheKey = $"OTP_{request.EventId}_{request.Email}";
-        cache.Set(cacheKey, otp, TimeSpan.FromSeconds(180));
+        var otpRequest = new OtpRequest
+        {
+            Id = Guid.NewGuid(),
+            UserId = request.Email,
+            TenantId = request.EventId.ToString(),
+            Code = null, // Será generado y procesado por la función serverless FaaS
+            Status = "pendiente",
+            CreatedAt = DateTime.UtcNow
+        };
 
-        // Simulación: Imprimir en consola para que el usuario pueda verlo
-        logger.LogInformation("========================================");
-        logger.LogInformation("SIMULACION OTP PARA REGISTRO");
-        logger.LogInformation("Evento: {EventId}", request.EventId);
-        logger.LogInformation("Email: {Email}", request.Email);
-        logger.LogInformation("OTP GENERADO: {Otp}", otp);
-        logger.LogInformation("Expira en: 180 segundos");
-        logger.LogInformation("========================================");
+        if (dbContext.OtpRequests != null)
+        {
+            await dbContext.OtpRequests.AddAsync(otpRequest, cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
+        }
 
-        return Task.CompletedTask;
+        logger.LogInformation("Solicitud de OTP persistida con ID: {Id} en estado PENDIENTE.", otpRequest.Id);
     }
 }

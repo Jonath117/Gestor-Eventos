@@ -18,7 +18,7 @@ public class RegistrationController(ISender sender) : ControllerBase
     public async Task<IActionResult> RequestOtp(Guid eventId, [FromBody] RequestOtpRequest request)
     {
         await sender.Send(new RequestOtpCommand(eventId, request.Email, request.FullName));
-        return Ok(new { Message = "OTP sent to console." });
+        return Accepted(new { Message = "OTP request accepted. Pending processing." });
     }
 
     [HttpPost("{eventId}/verify-otp")]
