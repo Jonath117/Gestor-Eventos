@@ -1,8 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using MediatR;
+
 using Microsoft.Extensions.Logging;
+
 using Registration.Application.Interfaces;
 using Registration.Domain.Entities;
 

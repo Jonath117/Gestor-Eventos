@@ -1,12 +1,17 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using FluentAssertions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
 using NSubstitute;
+
 using Registration.Application.Features.Registration.RequestOtp;
 using Registration.Infrastructure.Database;
+
 using Xunit;
 
 namespace Registration.Application.UnitTests.Features.Registration.RequestOtp;

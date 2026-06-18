@@ -1,12 +1,16 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using FluentAssertions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+
 using Registration.Application.Features.Registration.VerifyOtp;
 using Registration.Domain.Entities;
 using Registration.Infrastructure.Database;
+
 using Xunit;
 
 namespace Registration.Application.UnitTests.Features.Registration.VerifyOtp;
@@ -53,7 +57,7 @@ public class VerifyOtpHandlerTests : IDisposable
 
         // Assert
         result.Should().BeTrue();
-        
+
         // Verify database state updated
         var updatedRecord = await _dbContext.OtpRequests.FindAsync(otpRequest.Id);
         updatedRecord.Should().NotBeNull();
@@ -89,7 +93,7 @@ public class VerifyOtpHandlerTests : IDisposable
 
         // Assert
         result.Should().BeFalse();
-        
+
         // Verify database state not changed to verificado
         var updatedRecord = await _dbContext.OtpRequests.FindAsync(otpRequest.Id);
         updatedRecord.Should().NotBeNull();
@@ -122,7 +126,7 @@ public class VerifyOtpHandlerTests : IDisposable
 
         // Assert
         result.Should().BeFalse();
-        
+
         // Verify database state not changed to verificado
         var updatedRecord = await _dbContext.OtpRequests.FindAsync(otpRequest.Id);
         updatedRecord.Should().NotBeNull();
