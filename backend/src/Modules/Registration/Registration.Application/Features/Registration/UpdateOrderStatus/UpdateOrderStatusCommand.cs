@@ -1,4 +1,5 @@
 using MediatR;
+
 using Registration.Domain.Enums;
 
 namespace Registration.Application.Features.Registration.UpdateOrderStatus;

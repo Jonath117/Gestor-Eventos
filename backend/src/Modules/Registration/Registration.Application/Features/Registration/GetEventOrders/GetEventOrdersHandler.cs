@@ -6,7 +6,7 @@ using Registration.Application.Interfaces;
 
 namespace Registration.Application.Features.Registration.GetEventOrders;
 
-public class GetEventOrdersHandler(IRegistrationDbContext dbContext) 
+public class GetEventOrdersHandler(IRegistrationDbContext dbContext)
     : IRequestHandler<GetEventOrdersQuery, List<OrderDto>>
 {
     public async Task<List<OrderDto>> Handle(GetEventOrdersQuery request, CancellationToken cancellationToken)

@@ -1,10 +1,12 @@
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
+
 using Registration.Application.Interfaces;
 
 namespace Registration.Application.Features.Registration.UpdateOrderStatus;
 
-public class UpdateOrderStatusHandler(IRegistrationDbContext dbContext) 
+public class UpdateOrderStatusHandler(IRegistrationDbContext dbContext)
     : IRequestHandler<UpdateOrderStatusCommand, bool>
 {
     public async Task<bool> Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
