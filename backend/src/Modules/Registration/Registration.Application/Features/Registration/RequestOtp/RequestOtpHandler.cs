@@ -13,11 +13,15 @@ namespace Registration.Application.Features.Registration.RequestOtp;
 
 public class RequestOtpHandler(
     IRegistrationDbContext dbContext,
+    IOtpMessagePublisher messagePublisher,
     ILogger<RequestOtpHandler> logger) : IRequestHandler<RequestOtpCommand>
 {
     public async Task Handle(RequestOtpCommand request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Recibida solicitud de OTP. Registrando en DB. Evento: {EventId}, Email: {Email}", request.EventId, request.Email);
+        logger.LogInformation(
+            "Recibida solicitud de OTP. Registrando en DB. Evento: {EventId}, Email: {Email}",
+            request.EventId,
+            request.Email);
 
         var otpRequest = new OtpRequest
         {
@@ -35,6 +39,14 @@ public class RequestOtpHandler(
             await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        logger.LogInformation("Solicitud de OTP persistida con ID: {Id} en estado PENDIENTE.", otpRequest.Id);
+        logger.LogInformation(
+            "Solicitud de OTP persistida con ID: {Id} en estado PENDIENTE.",
+            otpRequest.Id);
+
+        await messagePublisher.PublishOtpRequestAsync(otpRequest, cancellationToken);
+
+        logger.LogInformation(
+            "Mensaje de OTP publicado en Pub/Sub para: {Email}",
+            otpRequest.UserId);
     }
 }
