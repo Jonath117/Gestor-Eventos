@@ -42,7 +42,29 @@ public class RegistrationController(ISender sender) : ControllerBase
         var orderId = await sender.Send(new SubmitRegistrationCommand(eventId, request.Email, request.FullName, request.Phone));
         return Ok(new { OrderId = orderId });
     }
+
+    [HttpGet("{eventId}/orders")]
+    [Authorize]
+    public async Task<IActionResult> GetOrders(Guid eventId)
+    {
+        var orders = await sender.Send(new Registration.Application.Features.Registration.GetEventOrders.GetEventOrdersQuery(eventId));
+        return Ok(orders);
+    }
+
+    [HttpPatch("orders/{orderId}/status")]
+    [Authorize]
+    public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromBody] UpdateOrderStatusRequest request)
+    {
+        var success = await sender.Send(new Registration.Application.Features.Registration.UpdateOrderStatus.UpdateOrderStatusCommand(orderId, request.Status));
+        if (!success)
+        {
+            return NotFound(new { Message = "Order not found." });
+        }
+        return Ok(new { Message = "Order status updated successfully." });
+    }
 }
+
+public record UpdateOrderStatusRequest(Registration.Domain.Enums.OrderStatus Status);
 
 public record RequestOtpRequest(string Email, string FullName);
 public record VerifyOtpRequest(string Email, string Otp);
