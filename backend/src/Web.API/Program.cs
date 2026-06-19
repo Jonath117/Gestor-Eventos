@@ -8,10 +8,12 @@ using Identity.Presentation;
 using Logistics.Infrastructure;
 
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 
 using Payment.Infrastructure;
 
 using Registration.Infrastructure;
+using Registration.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +30,7 @@ builder.Services.AddCoreInfrastructure(builder.Configuration);
 
 builder.Services.AddLogisticsInfrastructure(builder.Configuration);
 
-builder.Services.AddRegistrationInfrastructure(builder.Configuration);
+builder.Services.AddRegistrationModule(builder.Configuration);
 
 builder.Services.AddPaymentInfrastructure(builder.Configuration);
 
@@ -39,6 +41,10 @@ builder.Services.AddSwaggerGen();
 // Add Identity Module
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddIdentityPresentation();
+
+builder.Services.AddRegistrationPresentation();
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -98,4 +104,50 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapHealthChecks("/health");
+
+app.ApplyMigrations();
+
 app.Run();
+
+public static class MigrationExtensions
+{
+    public static void ApplyMigrations(this IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+        var services = scope.ServiceProvider;
+        var logger = services.GetRequiredService<ILogger<Program>>();
+
+        try
+        {
+            logger.LogInformation("Iniciando aplicación automática de migraciones de base de datos...");
+
+            var coreDb = services.GetRequiredService<Core.Infrastructure.Persistence.CoreDbContext>();
+            coreDb.Database.Migrate();
+            logger.LogInformation("Migraciones de CoreDbContext aplicadas exitosamente.");
+
+            var identityDb = services.GetRequiredService<Identity.Infrastructure.Database.IdentityDbContext>();
+            identityDb.Database.Migrate();
+            logger.LogInformation("Migraciones de IdentityDbContext aplicadas exitosamente.");
+
+            var logisticsDb = services.GetRequiredService<Logistics.Infrastructure.Database.LogisticsDbContext>();
+            logisticsDb.Database.Migrate();
+            logger.LogInformation("Migraciones de LogisticsDbContext aplicadas exitosamente.");
+
+            var paymentDb = services.GetRequiredService<Payment.Infrastructure.Database.PaymentDbContext>();
+            paymentDb.Database.Migrate();
+            logger.LogInformation("Migraciones de PaymentDbContext aplicadas exitosamente.");
+
+            var registrationDb = services.GetRequiredService<Registration.Infrastructure.Database.RegistrationDbContext>();
+            registrationDb.Database.Migrate();
+            logger.LogInformation("Migraciones de RegistrationDbContext aplicadas exitosamente.");
+
+            logger.LogInformation("Todas las migraciones se aplicaron de manera exitosa.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Ocurrió un error crítico al aplicar las migraciones en el arranque.");
+            throw;
+        }
+    }
+}

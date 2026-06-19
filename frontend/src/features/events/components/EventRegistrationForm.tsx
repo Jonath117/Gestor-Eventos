@@ -1,12 +1,18 @@
 import { isAxiosError } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingFallback } from "../../../components/LoadingFallback";
 import { useEvent } from "../hooks/useEvent";
-import { useRegisterParticipant } from "../hooks/useRegisterParticipant";
+import {
+	useRequestOtp,
+	useSubmitRegistration,
+	useVerifyOtp,
+} from "../hooks/useRegistration";
 
 interface EventRegistrationFormProps {
 	eventId: string;
 }
+
+type RegistrationStep = "DETAILS" | "OTP" | "VERIFIED" | "SUCCESS";
 
 export const EventRegistrationForm = ({
 	eventId,
@@ -18,30 +24,98 @@ export const EventRegistrationForm = ({
 		error: eventError,
 	} = useEvent(eventId);
 
-	const {
-		mutate: register,
-		isPending,
-		isError: isRegisterError,
-		error: registerError,
-		isSuccess,
-		data: registerData,
-		reset,
-	} = useRegisterParticipant(eventId);
+	// Registration hooks
+	const { mutate: requestOtp, isPending: isRequestingOtp } =
+		useRequestOtp(eventId);
+	const { mutate: verifyOtp, isPending: isVerifyingOtp } =
+		useVerifyOtp(eventId);
+	const { mutate: submitRegistration, isPending: isSubmitting } =
+		useSubmitRegistration(eventId);
 
+	// Local state
+	const [step, setStep] = useState<RegistrationStep>("DETAILS");
 	const [fullName, setFullName] = useState("");
 	const [email, setEmail] = useState("");
+	const [phone, setPhone] = useState("");
+	const [otp, setOtp] = useState("");
+	const [error, setError] = useState<string | null>(null);
+	const [timer, setTimer] = useState(0);
+	const [orderId, setOrderId] = useState<string | null>(null);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	// Timer logic
+	useEffect(() => {
+		let interval: ReturnType<typeof setInterval> | undefined;
+		if (timer > 0) {
+			interval = setInterval(() => {
+				setTimer((prev) => prev - 1);
+			}, 1000);
+		}
+		return () => {
+			if (interval) clearInterval(interval);
+		};
+	}, [timer]);
+
+	// Handlers
+	const handleRequestOtp = (e: React.FormEvent) => {
 		e.preventDefault();
-		register({ fullName, email });
+		setError(null);
+		requestOtp(
+			{ email, fullName },
+			{
+				onSuccess: () => {
+					setStep("OTP");
+					setTimer(180); // 3 minutes
+				},
+				onError: (err) => {
+					setError("Error al solicitar OTP. Reintenta.");
+					console.error(err);
+				},
+			},
+		);
 	};
 
-	// --- Estado de carga del evento ---
-	if (isLoadingEvent) {
-		return <LoadingFallback />;
-	}
+	const handleVerifyOtp = () => {
+		setError(null);
+		verifyOtp(
+			{ email, otp },
+			{
+				onSuccess: () => {
+					setStep("VERIFIED");
+					setTimer(0);
+				},
+				onError: (err) => {
+					if (isAxiosError(err) && err.response?.status === 400) {
+						setError("OTP inválido o expirado.");
+					} else {
+						setError("Error de verificación.");
+					}
+				},
+			},
+		);
+	};
 
-	// --- Evento no encontrado (404) ---
+	const handleSubmitRegistration = () => {
+		setError(null);
+		submitRegistration(
+			{ email, fullName, phone },
+			{
+				onSuccess: (data) => {
+					const result = data as { orderId: string };
+					setOrderId(result.orderId);
+					setStep("SUCCESS");
+				},
+				onError: (err) => {
+					setError("Error al procesar la inscripción.");
+					console.error(err);
+				},
+			},
+		);
+	};
+
+	// --- Component Views ---
+
+	if (isLoadingEvent) return <LoadingFallback />;
+
 	if (isEventError) {
 		const is404 =
 			isAxiosError(eventError) && eventError.response?.status === 404;
@@ -104,8 +178,6 @@ export const EventRegistrationForm = ({
 		);
 	}
 
-	// --- Evento cancelado (removed: no status field in current API) ---
-
 	// --- Cupos agotados ---
 	if (event && 0 >= event.maxCapacity) {
 		return (
@@ -135,11 +207,10 @@ export const EventRegistrationForm = ({
 		);
 	}
 
-	// --- Registro exitoso ---
-	if (isSuccess && registerData) {
+	if (step === "SUCCESS") {
 		return (
-			<div className="text-center py-16">
-				<div className="w-20 h-20 mx-auto mb-6 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/20 animate-bounce-once">
+			<div className="text-center py-16 animate-fade-in">
+				<div className="w-20 h-20 mx-auto mb-6 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/20">
 					<svg
 						className="w-10 h-10 text-emerald-400"
 						fill="none"
@@ -155,72 +226,28 @@ export const EventRegistrationForm = ({
 					</svg>
 				</div>
 				<h2 className="text-2xl font-bold text-white mb-2">
-					¡Registro exitoso!
+					¡Inscripción Exitosa!
 				</h2>
-				<p className="text-slate-400 mb-4">
-					Te has registrado exitosamente al evento{" "}
-					<span className="text-white font-medium">{event?.name}</span>.
+				<p className="text-slate-400 mb-6">
+					Te has registrado al evento <strong>{event?.name}</strong>.
 				</p>
-				<div className="inline-block bg-slate-800/60 border border-slate-700 rounded-xl px-6 py-3">
-					<span className="text-xs text-slate-500 uppercase tracking-wider font-medium">
-						ID de participante
-					</span>
-					<p className="text-emerald-400 font-mono text-sm mt-1">
-						{registerData.participantId}
+				<div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+					<p className="text-xs text-slate-500 uppercase font-bold mb-1">
+						Orden de Registro
 					</p>
+					<p className="text-emerald-400 font-mono text-sm">{orderId}</p>
 				</div>
 			</div>
 		);
 	}
 
-	// --- Helper para mostrar el error de registro ---
-	const getRegisterErrorMessage = (): string => {
-		if (!isRegisterError || !registerError) return "";
-
-		if (isAxiosError(registerError)) {
-			const status = registerError.response?.status;
-			const serverMessage =
-				(registerError.response?.data as { error?: string })?.error ?? "";
-
-			if (status === 404) {
-				return "El evento no fue encontrado.";
-			}
-			if (status === 400) {
-				return serverMessage || "No se pudo completar el registro.";
-			}
-			if (status === 429) {
-				return "Demasiados intentos. Por favor, espera un momento antes de volver a intentarlo.";
-			}
-		}
-
-		return "Ocurrió un error inesperado. Intenta de nuevo.";
-	};
-
-	// --- Formulario de registro ---
 	return (
 		<div>
-			{/* Encabezado del evento */}
+			{/* Event Header */}
 			{event && (
 				<div className="text-center mb-10">
-					<div className="w-16 h-16 bg-emerald-600/20 rounded-2xl mx-auto mb-4 flex items-center justify-center border border-emerald-500/30">
-						<svg
-							className="w-8 h-8 text-emerald-400"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-							/>
-						</svg>
-					</div>
-					<h1 className="text-3xl font-bold text-white mb-2">
-						Inscripción al evento
-					</h1>
-					<p className="text-slate-400 text-sm">{event.name}</p>
+					<h1 className="text-3xl font-bold text-white mb-2">{event.name}</h1>
+					<p className="text-slate-400 text-sm">Registro Público Individual</p>
 					<p className="text-slate-500 text-xs mt-1">
 						{new Date(event.startDate).toLocaleDateString("es", {
 							year: "numeric",
@@ -232,72 +259,133 @@ export const EventRegistrationForm = ({
 			)}
 
 			<div className="space-y-6">
-				{/* Error banner */}
-				{isRegisterError && (
-					<div
-						id="registration-error"
-						className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm"
-					>
-						{getRegisterErrorMessage()}
+				{error && (
+					<div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+						{error}
 					</div>
 				)}
 
-				<form
-					id="registration-form"
-					onSubmit={handleSubmit}
-					className="space-y-4"
-				>
-					<div>
-						<label
-							htmlFor="fullName"
-							className="block text-sm font-medium text-slate-400 mb-1"
+				{step === "DETAILS" && (
+					<form onSubmit={handleRequestOtp} className="space-y-4">
+						<div>
+							<label className="block text-sm font-medium text-slate-400 mb-1">
+								Nombre Completo
+							</label>
+							<input
+								type="text"
+								value={fullName}
+								onChange={(e) => setFullName(e.target.value)}
+								className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+								required
+							/>
+						</div>
+						<div>
+							<label className="block text-sm font-medium text-slate-400 mb-1">
+								Email
+							</label>
+							<input
+								type="email"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+								required
+							/>
+						</div>
+						<div>
+							<label className="block text-sm font-medium text-slate-400 mb-1">
+								Teléfono (Opcional)
+							</label>
+							<input
+								type="tel"
+								value={phone}
+								onChange={(e) => setPhone(e.target.value)}
+								className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+							/>
+						</div>
+						<button
+							type="submit"
+							disabled={isRequestingOtp}
+							className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-medium transition-all"
 						>
-							Nombre completo
-						</label>
+							{isRequestingOtp ? "Solicitando..." : "Solicitar OTP"}
+						</button>
+					</form>
+				)}
+
+				{step === "OTP" && (
+					<div className="space-y-4">
+						<div className="text-center">
+							<p className="text-slate-300 text-sm mb-4">
+								Introduce el código OTP enviado (revisa la consola del backend)
+							</p>
+							<div className="text-2xl font-bold text-emerald-400 mb-2">
+								{Math.floor(timer / 60)}:
+								{(timer % 60).toString().padStart(2, "0")}
+							</div>
+							<p className="text-xs text-slate-500">Tiempo restante</p>
+						</div>
 						<input
-							id="fullName"
 							type="text"
-							value={fullName}
-							onChange={(e) => setFullName(e.target.value)}
-							onFocus={() => {
-								if (isRegisterError) reset();
-							}}
-							placeholder="Juan Pérez"
-							className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors"
-							required
+							value={otp}
+							maxLength={6}
+							onChange={(e) => setOtp(e.target.value)}
+							placeholder="000000"
+							className="w-full text-center text-2xl tracking-[1em] bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500"
 						/>
-					</div>
-
-					<div>
-						<label
-							htmlFor="email"
-							className="block text-sm font-medium text-slate-400 mb-1"
+						<button
+							onClick={handleVerifyOtp}
+							disabled={isVerifyingOtp || otp.length < 6 || timer === 0}
+							className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-medium transition-all"
 						>
-							Correo electrónico
-						</label>
-						<input
-							id="email"
-							type="email"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							onFocus={() => {
-								if (isRegisterError) reset();
-							}}
-							placeholder="juan.perez@ejemplo.com"
-							className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors"
-							required
-						/>
+							{isVerifyingOtp ? "Verificando..." : "Verificar OTP"}
+						</button>
+						{timer === 0 && (
+							<button
+								onClick={() => setStep("DETAILS")}
+								className="w-full text-emerald-400 text-sm hover:underline"
+							>
+								OTP expirado. Volver a empezar.
+							</button>
+						)}
 					</div>
+				)}
 
-					<button
-						id="registration-submit"
-						type="submit"
-						disabled={isPending}
-						className="w-full mt-6 py-4 px-4 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-medium shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:hover:translate-y-0"
-					>
-						{isPending ? "Registrando..." : "Registrarme"}
-					</button>
-				</form>
+				{step === "VERIFIED" && (
+					<div className="space-y-6">
+						<div className="flex items-center gap-3 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
+							<div className="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center">
+								<svg
+									className="w-6 h-6 text-emerald-400"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth="2"
+										d="M5 13l4 4L19 7"
+									/>
+								</svg>
+							</div>
+							<div>
+								<p className="text-emerald-400 font-bold">
+									Identidad Verificada
+								</p>
+								<p className="text-slate-400 text-xs">
+									Puedes proceder con la inscripción.
+								</p>
+							</div>
+						</div>
+						<button
+							onClick={handleSubmitRegistration}
+							disabled={isSubmitting}
+							className="w-full py-4 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-bold shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-1"
+						>
+							{isSubmitting ? "Procesando..." : "Finalizar Inscripción"}
+						</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);

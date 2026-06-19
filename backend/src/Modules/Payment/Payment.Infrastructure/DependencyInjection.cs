@@ -11,7 +11,8 @@ public static class DependencyInjection
     public static IServiceCollection AddPaymentInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = configuration.GetConnectionString("NeonPostgres")
-                                  ?? throw new InvalidOperationException("No se encontro la cadena de conexión 'NeonPostgres'.");
+                                  ?? configuration.GetConnectionString("DefaultConnection")
+                                  ?? throw new InvalidOperationException("No se encontro la cadena de conexión 'NeonPostgres' o 'DefaultConnection'.");
 
         services.AddDbContext<PaymentDbContext>(options =>
             options.UseNpgsql(connectionString, npgsqlOptions =>

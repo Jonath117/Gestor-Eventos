@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Instanciamos el cliente de axios usando la variable de entorno
 export const api = axios.create({
-	baseURL: import.meta.env.VITE_API_URL,
+	baseURL: "/api",
 	headers: {
 		"Content-Type": "application/json",
 	},
@@ -24,6 +24,21 @@ api.interceptors.request.use(
 				console.error("Error parsing token from localStorage", error);
 			}
 		}
+
+		const storedTenantId = localStorage.getItem("tenantId");
+		if (storedTenantId) {
+			try {
+				const tenantId = storedTenantId.startsWith('"')
+					? JSON.parse(storedTenantId)
+					: storedTenantId;
+				if (tenantId) {
+					config.headers["X-Tenant-Id"] = tenantId;
+				}
+			} catch {
+				config.headers["X-Tenant-Id"] = storedTenantId;
+			}
+		}
+
 		return config;
 	},
 	(error) => {

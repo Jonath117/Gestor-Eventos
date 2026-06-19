@@ -12,14 +12,16 @@ public class RegistrationDbContextFactory : IDesignTimeDbContextFactory<Registra
     {
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.Development.json", optional: false)
+            .AddJsonFile("appsettings.json", optional: true)
+            .AddJsonFile("appsettings.Development.json", optional: true)
             .AddUserSecrets<RegistrationDbContextFactory>()
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<RegistrationDbContext>();
 
         string connectionString = configuration.GetConnectionString("NeonPostgres")
-                                  ?? throw new InvalidOperationException("No se encontró la cadena de conexión.");
+                                  ?? configuration.GetConnectionString("DefaultConnection")
+                                  ?? "Host=localhost;Database=dummy;Username=dummy;Password=dummy";
 
         optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
             {

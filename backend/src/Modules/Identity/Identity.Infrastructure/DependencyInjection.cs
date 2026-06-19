@@ -28,13 +28,21 @@ public static class DependencyInjection
 
     private static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        var jwtSecret = configuration["JwtSettings:Secret"];
+        if (string.IsNullOrWhiteSpace(jwtSecret))
+        {
+            throw new InvalidOperationException("CRITICAL: JWT Secret key is missing from environment configuration. System halted.");
+        }
+
         var jwtSettings = new JwtSettings();
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
         services.AddSingleton(Options.Create(jwtSettings));
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
-        var connectionString = configuration.GetConnectionString("NeonPostgres");
+        var connectionString = configuration.GetConnectionString("NeonPostgres")
+                               ?? configuration.GetConnectionString("DefaultConnection")
+                               ?? throw new InvalidOperationException("No se encontró la cadena de conexión 'NeonPostgres' o 'DefaultConnection'.");
         services.AddDbContext<IdentityDbContext>(options =>
             options.UseNpgsql(connectionString, npgsqlOptions =>
                 {

@@ -22,9 +22,9 @@ public class EventsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetEvents()
+    public async Task<IActionResult> GetEvents([FromHeader(Name = "X-Tenant-Id")] Guid tenantId)
     {
-        IEnumerable<GetAllEventsResponse> events = await mediator.Send(new GetAllEventsQuery());
+        IEnumerable<GetAllEventsResponse> events = await mediator.Send(new GetAllEventsQuery(tenantId));
         return Ok(events);
     }
 
