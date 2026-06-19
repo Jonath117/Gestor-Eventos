@@ -1,8 +1,8 @@
 const { EmailService } = require("./services/emailService");
 const { DbService } = require("./services/dbService");
 
-const emailService = new EmailService();
-const dbService = new DbService();
+let emailService;
+let dbService;
 
 /**
  * Cloud Function triggered by Pub/Sub to process OTP requests.
@@ -20,6 +20,9 @@ const dbService = new DbService();
  * 3. Sends the OTP email to the user
  */
 exports.sendOtp = async (message, context) => {
+	if (!emailService) emailService = new EmailService();
+	if (!dbService) dbService = new DbService();
+
 	if (!message || !message.data) {
 		console.error("Error: Pub/Sub message or message.data is missing.");
 		return;
