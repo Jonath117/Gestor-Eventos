@@ -75,7 +75,7 @@ exports.sendOtp = async (message, context) => {
 			`OTP code persisted in DB for request ${requestId}. Status: procesado.`,
 		);
 
-		// 3. Send the OTP email
+		// 3. Send the OTP email once
 		await emailService.sendOtp({ userId, tenantId, email, otpCode });
 		console.log(`Successfully sent OTP email to ${email}`);
 	} catch (error) {
