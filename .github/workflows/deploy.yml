@@ -97,6 +97,8 @@ jobs:
           env_vars: |
             ConnectionStrings__NeonPostgres=${{ secrets.NEON_DATABASE_URL }}
             JwtSettings__Secret=${{ secrets.JWT_SECRET }}
+            PubSub__ProjectId=${{ secrets.GCP_PROJECT_ID }}
+            PubSub__TopicId=otp-requests
 
   deploy-frontend:
     needs: deploy-backend
@@ -159,4 +161,4 @@ jobs:
             --entry-point sendOtp \
             --region us-central1 \
             --source ./serverless-otp \
-            --set-env-vars "EMAIL_PROVIDER=brevo,BREVO_API_KEY=${{ secrets.BREVO_API_KEY }},EMAIL_SENDER=${{ secrets.EMAIL_SENDER_ADDRESS }},EMAIL_NAME=${{ secrets.EMAIL_SENDER_NAME }}"
+            --set-env-vars "EMAIL_PROVIDER=brevo,BREVO_API_KEY=${{ secrets.BREVO_API_KEY }},EMAIL_SENDER=${{ secrets.EMAIL_SENDER_ADDRESS }},EMAIL_NAME=${{ secrets.EMAIL_SENDER_NAME }},DATABASE_URL=${{ secrets.NEON_DATABASE_URL }}"
