@@ -1,5 +1,7 @@
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
+
 using Registration.Application.Interfaces;
 
 namespace Registration.Application.Features.Registration.GetEventOrders;
