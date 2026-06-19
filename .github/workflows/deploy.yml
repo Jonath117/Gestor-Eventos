@@ -46,7 +46,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -111,7 +111,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -156,9 +156,9 @@ jobs:
       - name: Deploy Cloud Function
         run: |
           gcloud functions deploy serverless-otp \
-            --runtime nodejs20 \
+            --runtime nodejs22 \
             --trigger-topic otp-requests \
             --entry-point sendOtp \
             --region us-central1 \
             --source ./serverless-otp \
-            --set-env-vars "EMAIL_PROVIDER=brevo,BREVO_API_KEY=${{ secrets.BREVO_API_KEY }},EMAIL_SENDER=${{ secrets.EMAIL_SENDER_ADDRESS }},EMAIL_NAME=${{ secrets.EMAIL_SENDER_NAME }},NEON_DATABASE_URL=${{ secrets.NEON_DATABASE_URL }}"
+            --set-env-vars "EMAIL_PROVIDER=brevo,BREVO_API_KEY=${{ secrets.BREVO_API_KEY }},EMAIL_SENDER=${{ secrets.EMAIL_SENDER_ADDRESS }},EMAIL_NAME=${{ secrets.EMAIL_SENDER_NAME }},NEON_DATABASE_URL=${{ secrets.NEON_POSTGRES_URI }}"
