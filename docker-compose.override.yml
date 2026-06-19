@@ -1,5 +1,5 @@
 services:
-  campeando-backend:
+  backend:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
@@ -46,7 +46,7 @@ services:
       - /app/src/Web.API/bin
       - /app/src/Web.API/obj
 
-  campeando-frontend:
+  frontend:
     build:
       target: development
 
