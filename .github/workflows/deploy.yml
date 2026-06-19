@@ -11,6 +11,21 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      serverless-otp: ${{ steps.filter.outputs.serverless-otp }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check for changes in serverless-otp
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            serverless-otp:
+              - 'serverless-otp/**'
+
   integration:
     runs-on: ubuntu-latest
     steps:
@@ -118,3 +133,30 @@ jobs:
       - name: Deploy to Firebase Hosting
         run: npx firebase-tools deploy --only hosting --project ${{ secrets.GCP_PROJECT_ID }}
         working-directory: ./frontend
+
+  deploy-serverless-otp:
+    needs: [integration, changes]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.serverless-otp == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy Cloud Function
+        run: |
+          gcloud functions deploy serverless-otp \
+            --runtime nodejs20 \
+            --trigger-topic otp-requests \
+            --entry-point sendOtp \
+            --region us-central1 \
+            --source ./serverless-otp \
+            --set-env-vars "EMAIL_PROVIDER=brevo,BREVO_API_KEY=${{ secrets.BREVO_API_KEY }},EMAIL_SENDER=${{ secrets.EMAIL_SENDER_ADDRESS }},EMAIL_NAME=${{ secrets.EMAIL_SENDER_NAME }}"
