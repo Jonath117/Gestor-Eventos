@@ -1,5 +1,7 @@
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
+
 using Registration.Application.Interfaces;
 using Registration.Domain.Enums;
 
