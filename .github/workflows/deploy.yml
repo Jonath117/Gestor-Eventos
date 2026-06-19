@@ -161,4 +161,4 @@ jobs:
             --entry-point sendOtp \
             --region us-central1 \
             --source ./serverless-otp \
-            --set-env-vars "EMAIL_PROVIDER=brevo,BREVO_API_KEY=${{ secrets.BREVO_API_KEY }},EMAIL_SENDER=${{ secrets.EMAIL_SENDER_ADDRESS }},EMAIL_NAME=${{ secrets.EMAIL_SENDER_NAME }},DATABASE_URL=${{ secrets.NEON_DATABASE_URL }}"
+            --set-env-vars "EMAIL_PROVIDER=brevo,BREVO_API_KEY=${{ secrets.BREVO_API_KEY }},EMAIL_SENDER=${{ secrets.EMAIL_SENDER_ADDRESS }},EMAIL_NAME=${{ secrets.EMAIL_SENDER_NAME }},NEON_DATABASE_URL=${{ secrets.NEON_DATABASE_URL }}"
