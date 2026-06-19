@@ -1,7 +1,6 @@
 using System.Threading.RateLimiting;
 
 using Core.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 using Identity.Infrastructure;
 using Identity.Presentation;
@@ -9,6 +8,7 @@ using Identity.Presentation;
 using Logistics.Infrastructure;
 
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 
 using Payment.Infrastructure;
 
