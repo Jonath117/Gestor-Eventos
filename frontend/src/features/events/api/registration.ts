@@ -39,3 +39,15 @@ export const submitRegistration = async (
 	const response = await api.post(`/registration/${eventId}/submit`, data);
 	return response.data;
 };
+
+export const getEventOrders = async (eventId: string) => {
+	const response = await api.get(`/registration/${eventId}/orders`);
+	return response.data;
+};
+
+export const updateOrderStatus = async (orderId: string, status: number) => {
+	const response = await api.patch(`/registration/orders/${orderId}/status`, {
+		status,
+	});
+	return response.data;
+};

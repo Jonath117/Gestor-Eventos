@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEvent } from "../hooks/useEvent";
+import { useEventOrders, useUpdateOrderStatus } from "../hooks/useEventOrders";
 
 interface EventDetailModalProps {
 	eventId: string;
@@ -14,6 +15,9 @@ export const EventDetailModal = ({
 }: EventDetailModalProps) => {
 	const [copied, setCopied] = useState(false);
 	const { data: event, isLoading } = useEvent(eventId);
+	const { data: orders, isLoading: isLoadingOrders } = useEventOrders(eventId);
+	const { mutate: updateStatus, isPending: isUpdating } =
+		useUpdateOrderStatus();
 
 	const registrationUrl = `${window.location.origin}/events/${eventId}/register`;
 
@@ -233,6 +237,93 @@ export const EventDetailModal = ({
 							</div>
 						</>
 					) : null}
+
+					{/* Divider */}
+					<div className="border-t border-slate-800" />
+
+					{/* Registered Users Section */}
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-white">Inscripciones</h3>
+						{isLoadingOrders ? (
+							<div className="text-sm text-slate-400">
+								Cargando inscripciones...
+							</div>
+						) : orders && orders.length > 0 ? (
+							<div className="max-h-60 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+								{orders.map((order) => (
+									<div
+										key={order.id}
+										className="p-4 bg-slate-800/40 rounded-xl border border-slate-700/50"
+									>
+										<div className="flex justify-between items-start mb-2">
+											<div>
+												<p className="text-sm font-medium text-slate-200">
+													{order.contactEmail}
+												</p>
+												<p className="text-xs text-slate-500 mt-0.5">
+													{new Date(order.createdAt).toLocaleDateString()} •{" "}
+													{order.participants.length} participante(s)
+												</p>
+											</div>
+											<div className="text-xs font-medium px-2 py-1 rounded-md bg-slate-900/50 border border-slate-700">
+												{order.status === 0 && (
+													<span className="text-amber-400">Pendiente</span>
+												)}
+												{order.status === 1 && (
+													<span className="text-blue-400">Pago Pendiente</span>
+												)}
+												{order.status === 2 && (
+													<span className="text-emerald-400">Confirmado</span>
+												)}
+												{order.status === 3 && (
+													<span className="text-red-400">Rechazado</span>
+												)}
+											</div>
+										</div>
+
+										{order.participants.length > 0 && (
+											<div className="mt-2 mb-3 pl-2 border-l-2 border-slate-700">
+												{order.participants.map((p) => (
+													<p key={p.id} className="text-xs text-slate-400">
+														{p.fullName}
+													</p>
+												))}
+											</div>
+										)}
+
+										{order.status !== 2 && order.status !== 3 && (
+											<div className="flex gap-2 mt-3 pt-3 border-t border-slate-700/50">
+												<button
+													onClick={() =>
+														updateStatus({ orderId: order.id, status: 2 })
+													}
+													disabled={isUpdating}
+													className="flex-1 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-medium rounded-lg border border-emerald-500/20 transition-colors disabled:opacity-50"
+												>
+													Aceptar
+												</button>
+												<button
+													onClick={() =>
+														updateStatus({ orderId: order.id, status: 3 })
+													}
+													disabled={isUpdating}
+													className="flex-1 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-medium rounded-lg border border-red-500/20 transition-colors disabled:opacity-50"
+												>
+													Rechazar
+												</button>
+											</div>
+										)}
+									</div>
+								))}
+							</div>
+						) : (
+							<div className="text-center py-6 bg-slate-800/20 rounded-xl border border-dashed border-slate-700">
+								<p className="text-sm text-slate-400">
+									Aún no hay inscripciones.
+								</p>
+							</div>
+						)}
+					</div>
 
 					{/* Divider */}
 					<div className="border-t border-slate-800" />
