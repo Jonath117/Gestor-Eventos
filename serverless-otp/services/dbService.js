@@ -2,11 +2,11 @@ const { Pool } = require("pg");
 
 class DbService {
 	constructor() {
-		const databaseUrl = process.env.DATABASE_URL;
+		const databaseUrl = process.env.NEON_DATABASE_URL;
 
 		if (!databaseUrl) {
 			throw new Error(
-				"Critical initialization failure: DATABASE_URL environment variable is required.",
+				"Critical initialization failure: NEON_DATABASE_URL environment variable is required.",
 			);
 		}
 
