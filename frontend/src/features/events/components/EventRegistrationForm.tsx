@@ -316,7 +316,7 @@ export const EventRegistrationForm = ({
 					<div className="space-y-4">
 						<div className="text-center">
 							<p className="text-slate-300 text-sm mb-4">
-								Introduce el código OTP enviado (revisa la consola del backend)
+								Introduce el código OTP enviado
 							</p>
 							<div className="text-2xl font-bold text-emerald-400 mb-2">
 								{Math.floor(timer / 60)}:
