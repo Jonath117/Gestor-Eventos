@@ -2,6 +2,7 @@ import { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { LoadingFallback } from "../../../components/LoadingFallback";
 import { useEvent } from "../hooks/useEvent";
+import { useEventSummary } from "../hooks/useEventSummary";
 import {
 	useRequestOtp,
 	useSubmitRegistration,
@@ -23,6 +24,8 @@ export const EventRegistrationForm = ({
 		isError: isEventError,
 		error: eventError,
 	} = useEvent(eventId);
+	const { data: summary, isLoading: isLoadingSummary } =
+		useEventSummary(eventId);
 
 	// Registration hooks
 	const { mutate: requestOtp, isPending: isRequestingOtp } =
@@ -114,7 +117,7 @@ export const EventRegistrationForm = ({
 
 	// --- Component Views ---
 
-	if (isLoadingEvent) return <LoadingFallback />;
+	if (isLoadingEvent || isLoadingSummary) return <LoadingFallback />;
 
 	if (isEventError) {
 		const is404 =
@@ -179,7 +182,8 @@ export const EventRegistrationForm = ({
 	}
 
 	// --- Cupos agotados ---
-	if (event && 0 >= event.maxCapacity) {
+	const confirmedParticipants = summary?.confirmedParticipants || 0;
+	if (event && confirmedParticipants >= event.maxCapacity) {
 		return (
 			<div className="text-center py-16">
 				<div className="w-20 h-20 mx-auto mb-6 bg-orange-500/10 rounded-full flex items-center justify-center border border-orange-500/20">

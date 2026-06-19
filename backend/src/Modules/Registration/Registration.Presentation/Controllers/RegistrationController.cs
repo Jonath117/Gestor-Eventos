@@ -62,6 +62,14 @@ public class RegistrationController(ISender sender) : ControllerBase
         }
         return Ok(new { Message = "Order status updated successfully." });
     }
+
+    [HttpGet("{eventId}/summary")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetEventSummary(Guid eventId)
+    {
+        var summary = await sender.Send(new Registration.Application.Features.Registration.GetEventSummary.GetEventSummaryQuery(eventId));
+        return Ok(summary);
+    }
 }
 
 public record UpdateOrderStatusRequest(Registration.Domain.Enums.OrderStatus Status);

@@ -51,3 +51,10 @@ export const updateOrderStatus = async (orderId: string, status: number) => {
 	});
 	return response.data;
 };
+
+export const getEventSummary = async (eventId: string) => {
+	const response = await api.get<{ confirmedParticipants: number }>(
+		`/registration/${eventId}/summary`,
+	);
+	return response.data;
+};

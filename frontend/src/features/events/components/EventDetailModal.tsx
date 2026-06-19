@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useEvent } from "../hooks/useEvent";
 import { useEventOrders, useUpdateOrderStatus } from "../hooks/useEventOrders";
+import { useEventSummary } from "../hooks/useEventSummary";
 
 interface EventDetailModalProps {
 	eventId: string;
@@ -18,6 +19,8 @@ export const EventDetailModal = ({
 	const { data: orders, isLoading: isLoadingOrders } = useEventOrders(eventId);
 	const { mutate: updateStatus, isPending: isUpdating } =
 		useUpdateOrderStatus();
+	const { data: summary, isLoading: isLoadingSummary } =
+		useEventSummary(eventId);
 
 	const registrationUrl = `${window.location.origin}/events/${eventId}/register`;
 
@@ -38,10 +41,16 @@ export const EventDetailModal = ({
 		}
 	};
 
-	const spotsLeft = event ? event.maxCapacity - 0 : 0;
+	const confirmedParticipants = summary?.confirmedParticipants || 0;
+	const spotsLeft = event
+		? Math.max(0, event.maxCapacity - confirmedParticipants)
+		: 0;
 	const occupancyPercent =
 		event && event.maxCapacity > 0
-			? Math.round((0 / event.maxCapacity) * 100)
+			? Math.min(
+					100,
+					Math.round((confirmedParticipants / event.maxCapacity) * 100),
+				)
 			: 0;
 
 	return (
@@ -107,7 +116,7 @@ export const EventDetailModal = ({
 
 				{/* Content */}
 				<div className="p-6 space-y-5">
-					{isLoading ? (
+					{isLoading || isLoadingSummary ? (
 						<div className="space-y-3">
 							{[1, 2, 3, 4].map((n) => (
 								<div
@@ -185,7 +194,7 @@ export const EventDetailModal = ({
 										/>
 									</svg>
 									<span className="text-slate-300">
-										0 / {event.maxCapacity} inscritos
+										{confirmedParticipants} / {event.maxCapacity} inscritos
 									</span>
 								</div>
 
