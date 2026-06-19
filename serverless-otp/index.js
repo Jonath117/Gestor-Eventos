@@ -1,22 +1,27 @@
 const { EmailService } = require("./services/emailService");
+const { DbService } = require("./services/dbService");
 
-// Instantiating here at global scope ensures Fail-Fast on Cold Start if configuration is invalid.
 const emailService = new EmailService();
+const dbService = new DbService();
 
 /**
- * Cloud Function to process an OTP send request via Pub/Sub.
- * Expected event payload (base64 encoded in message.data):
+ * Cloud Function triggered by Pub/Sub to process OTP requests.
+ * Expected payload (base64 encoded in message.data):
  * {
+ *   "requestId": "uuid",
  *   "userId": "string",
  *   "tenantId": "string",
- *   "email": "string",
- *   "otpCode": "string"
+ *   "email": "string"
  * }
+ *
+ * This function:
+ * 1. Generates a 6-digit OTP code
+ * 2. Persists the code in the database (marks as 'procesado')
+ * 3. Sends the OTP email to the user
  */
 exports.sendOtp = async (message, context) => {
 	if (!message || !message.data) {
-		const errorMsg = "Error: Pub/Sub message or message.data is missing.";
-		console.error(errorMsg);
+		console.error("Error: Pub/Sub message or message.data is missing.");
 		return;
 	}
 
@@ -38,19 +43,40 @@ exports.sendOtp = async (message, context) => {
 		throw error;
 	}
 
-	const { userId, tenantId, email, otpCode } = payload;
+	const { requestId, userId, tenantId, email } = payload;
 
-	if (!email || !otpCode) {
-		const errorMsg = `Error: Missing required fields in payload (email: ${email}, otpCode: ${otpCode})`;
-		console.error(errorMsg);
+	if (!requestId || !email) {
+		console.error(
+			`Error: Missing required fields in payload (requestId: ${requestId}, email: ${email})`,
+		);
 		return;
 	}
 
+	console.log(
+		`Processing OTP request: requestId=${requestId}, email=${email}, tenantId=${tenantId}`,
+	);
+
+	// 1. Generate a 6-digit OTP code
+	const otpCode = String(Math.floor(100000 + Math.random() * 900000));
+
 	try {
+		// 2. Persist the OTP code in the database and mark as 'procesado'
+		const updated = await dbService.saveOtpCode(requestId, otpCode);
+		if (!updated) {
+			console.error(
+				`OTP request ${requestId} not found or already processed. Skipping.`,
+			);
+			return;
+		}
+		console.log(
+			`OTP code persisted in DB for request ${requestId}. Status: procesado.`,
+		);
+
+		// 3. Send the OTP email
 		await emailService.sendOtp({ userId, tenantId, email, otpCode });
 		console.log(`Successfully sent OTP email to ${email}`);
 	} catch (error) {
-		console.error(`Failed to send OTP email to ${email}: ${error.message}`);
+		console.error(`Failed to process OTP for ${email}: ${error.message}`);
 		throw error;
 	}
 };
