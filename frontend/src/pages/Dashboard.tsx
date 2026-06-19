@@ -196,11 +196,15 @@ export const Dashboard = () => {
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex items-center justify-between h-16">
 						<div className="flex items-center gap-3">
-							<div className="w-8 h-8 rounded bg-linear-to-tr from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 animate-pulse">
-								<span className="text-white font-bold text-lg">G</span>
+							<div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-md overflow-hidden p-0.5 shrink-0">
+								<img
+									src="/logo-campeando.svg"
+									alt="Campeando Logo"
+									className="w-full h-full object-contain"
+								/>
 							</div>
 							<span className="font-bold text-xl tracking-tight text-white hidden md:inline">
-								Dashboard
+								Campeando
 							</span>
 							<span className="text-slate-700 font-medium hidden md:inline">
 								/
