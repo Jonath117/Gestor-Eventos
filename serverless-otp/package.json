@@ -4,6 +4,7 @@
 	"description": "Serverless function to generate and save OTP",
 	"main": "index.js",
 	"dependencies": {
-		"nodemailer": "^6.9.13"
+		"nodemailer": "^6.9.13",
+		"pg": "^8.16.0"
 	}
 }
