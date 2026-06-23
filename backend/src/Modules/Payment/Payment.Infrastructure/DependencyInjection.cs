@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Payment.Application;
+
 public static class DependencyInjection
 {
     public static IServiceCollection AddPaymentInfrastructure(this IServiceCollection services, IConfiguration configuration)
@@ -20,6 +22,8 @@ public static class DependencyInjection
                     npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "payment");
                 })
                 .UseSnakeCaseNamingConvention());
+                
+        services.AddPaymentApplication();
         return services;
     }
 }
