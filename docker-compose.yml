@@ -3,11 +3,11 @@ services:
     image: postgres:17-alpine
     container_name: campeando-db
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: gestor_eventos
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-gestor_eventos}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -15,8 +15,8 @@ services:
     image: axllent/mailpit
     container_name: campeando-mailpit
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - "${MAILPIT_WEB_PORT:-8025}:8025"
+      - "${MAILPIT_SMTP_PORT:-1025}:1025"
     environment:
       MP_MAX_MESSAGES: 5000
 
