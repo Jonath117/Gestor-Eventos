@@ -12,6 +12,7 @@ public static class DependencyInjection
         });
 
         services.AddMemoryCache();
+        services.AddScoped<Services.ApplicationQueryService>();
 
         return services;
     }
