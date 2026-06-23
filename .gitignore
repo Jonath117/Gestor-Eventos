@@ -71,3 +71,6 @@ storybook-static/
 
 #sonarqube
 .sonarqube/
+
+# ASP.NET generated assets
+backend/src/Web.API/wwwroot/
