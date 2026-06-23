@@ -3,8 +3,14 @@
 	"version": "1.0.0",
 	"description": "Serverless function to generate and save OTP",
 	"main": "index.js",
+	"scripts": {
+		"dev": "functions-framework --target=sendOtp --signature-type=event --port=8080"
+	},
 	"dependencies": {
 		"nodemailer": "^6.9.13",
 		"pg": "^8.16.0"
+	},
+	"devDependencies": {
+		"@google-cloud/functions-framework": "^5.0.2"
 	}
 }

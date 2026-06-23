@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "dev:backend": "dotnet run --project backend/src/Web.API/Web.API.csproj",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:serverless": "cd serverless-otp && npm run dev",
+    "dev": "concurrently -c \"cyan,magenta,yellow\" -n \"backend,frontend,serverless\" \"pnpm dev:backend\" \"pnpm dev:frontend\" \"pnpm dev:serverless\""
   },
   "lint-staged": {
     "frontend/**/*.{js,ts,jsx,tsx}": [
@@ -20,6 +24,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.30.3",
   "devDependencies": {
+    "concurrently": "^10.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.7"
   }
