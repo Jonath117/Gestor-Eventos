@@ -28,7 +28,9 @@ public class GetEventByIdHandler(
             eventEntity.Name,
             eventEntity.StartDate,
             eventEntity.EndDate,
-            eventEntity.MaxCapacity
+            eventEntity.MaxCapacity,
+            eventEntity.CoverImageUrl,
+            eventEntity.PaymentQrImageUrl
         );
     }
 }

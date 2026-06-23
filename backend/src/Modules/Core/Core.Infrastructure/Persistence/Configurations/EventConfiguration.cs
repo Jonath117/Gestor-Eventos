@@ -29,6 +29,12 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.Property(e => e.CreatedAt)
             .HasDefaultValueSql("now()");
 
+        builder.Property(e => e.CoverImageUrl)
+            .HasMaxLength(500);
+
+        builder.Property(e => e.PaymentQrImageUrl)
+            .HasMaxLength(500);
+
         builder.HasOne(e => e.Organization)
             .WithMany(o => o.Events)
             .HasForeignKey(e => e.OrganizationId)

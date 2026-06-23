@@ -12,6 +12,12 @@ public class Event
     public int MaxCapacity { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
+    /// <summary>Ruta relativa de la imagen de portada del evento.</summary>
+    public string? CoverImageUrl { get; private set; }
+
+    /// <summary>Ruta relativa del QR de pago mostrado en el registro público.</summary>
+    public string? PaymentQrImageUrl { get; private set; }
+
     private Event() { }
 
     public static Event Create(
@@ -19,7 +25,9 @@ public class Event
         DateTime startDate,
         DateTime endDate,
         int maxCapacity,
-        Guid organizationId)
+        Guid organizationId,
+        string? coverImageUrl = null,
+        string? paymentQrImageUrl = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("El nombre no puede estar vacio", nameof(name));
@@ -41,7 +49,9 @@ public class Event
             StartDate = startDate,
             EndDate = endDate,
             MaxCapacity = maxCapacity,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            CoverImageUrl = coverImageUrl,
+            PaymentQrImageUrl = paymentQrImageUrl
         };
     }
 

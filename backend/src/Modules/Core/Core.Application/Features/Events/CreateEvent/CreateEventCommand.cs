@@ -7,4 +7,6 @@ public record CreateEventCommand(
     DateTime StartDate,
     DateTime EndDate,
     int MaxCapacity,
-    Guid OrganizationId) : IRequest<Guid>;
+    Guid OrganizationId,
+    string? CoverImageBase64 = null,
+    string? PaymentQrBase64 = null) : IRequest<Guid>;

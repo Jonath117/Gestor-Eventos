@@ -11,7 +11,8 @@ namespace Core.Application.Features.Events.CreateEvent;
 
 public class CreateEventHandler(
         ICoreDbContext context,
-        ITenantProvider tenantProvider) : IRequestHandler<CreateEventCommand, Guid>
+        ITenantProvider tenantProvider,
+        IImageStorageService imageStorage) : IRequestHandler<CreateEventCommand, Guid>
 {
     public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
     {
@@ -30,12 +31,19 @@ public class CreateEventHandler(
             throw new UnauthorizedAccessException("Only administrators can create events for this organization.");
         }
 
+        string? coverImageUrl = await imageStorage.SaveImageAsync(
+            request.CoverImageBase64, "events", cancellationToken);
+        string? paymentQrImageUrl = await imageStorage.SaveImageAsync(
+            request.PaymentQrBase64, "payment-qrs", cancellationToken);
+
         Event newEvent = Event.Create(
             request.Name,
             DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc),
             DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc),
             request.MaxCapacity,
-            organizationId);
+            organizationId,
+            coverImageUrl,
+            paymentQrImageUrl);
 
         await context.Events.AddAsync(newEvent, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

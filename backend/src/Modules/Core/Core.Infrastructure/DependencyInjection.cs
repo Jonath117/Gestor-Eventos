@@ -4,6 +4,7 @@ using Core.Application.Tenants;
 using Core.Domain.Repositories;
 using Core.Infrastructure.Persistence;
 using Core.Infrastructure.Repositories;
+using Core.Infrastructure.Storage;
 using Core.Infrastructure.Tenants;
 
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITenantProvider, MockTenantProvider>();
+        services.AddScoped<IImageStorageService, LocalImageStorageService>();
 
         return services;
     }
