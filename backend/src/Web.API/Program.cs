@@ -6,6 +6,7 @@ using Identity.Infrastructure;
 using Identity.Presentation;
 
 using Logistics.Infrastructure;
+using Logistics.Presentation;
 
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ builder.Services.AddControllers();
 builder.Services.AddCoreInfrastructure(builder.Configuration);
 
 builder.Services.AddLogisticsInfrastructure(builder.Configuration);
+builder.Services.AddLogisticsPresentation();
 
 builder.Services.AddRegistrationModule(builder.Configuration);
 
