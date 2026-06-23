@@ -1,13 +1,35 @@
+using Microsoft.AspNetCore.Hosting;
+
 namespace Payment.Application.Services;
 
-public class LocalAttachmentStorageService
+/// <summary>
+/// Persiste los comprobantes en <c>wwwroot/receipts</c> y devuelve la ruta
+/// relativa servible por el host estático (MVP, almacenamiento local).
+/// </summary>
+public class LocalAttachmentStorageService(IWebHostEnvironment environment)
 {
-    public Task<string> SaveReceiptAsync(Guid applicationId, string base64Content)
+    private const string ReceiptsFolder = "receipts";
+
+    public async Task<string> SaveReceiptAsync(Guid applicationId, string base64Content)
     {
-        // Dummy implementation for MVP.
-        // Pretends to save the file and returns a dummy URL.
-        var dummyUrl = $"https://campeando-storage.dummy/receipts/{applicationId}.png";
-        Console.WriteLine($"[Storage Simulation] Saved receipt for application {applicationId} to {dummyUrl}");
-        return Task.FromResult(dummyUrl);
+        string webRoot = environment.WebRootPath
+                         ?? Path.Combine(environment.ContentRootPath, "wwwroot");
+
+        string receiptsDir = Path.Combine(webRoot, ReceiptsFolder);
+        Directory.CreateDirectory(receiptsDir);
+
+        string fileName = $"{applicationId}.png";
+        string fullPath = Path.Combine(receiptsDir, fileName);
+
+        // El payload puede venir como data URI ("data:image/png;base64,....").
+        string payload = base64Content.Contains(',')
+            ? base64Content[(base64Content.IndexOf(',') + 1)..]
+            : base64Content;
+
+        byte[] bytes = Convert.FromBase64String(payload);
+        await File.WriteAllBytesAsync(fullPath, bytes);
+
+        // Ruta relativa servida por UseStaticFiles (ej. http://host/receipts/{id}.png).
+        return $"/{ReceiptsFolder}/{fileName}";
     }
 }

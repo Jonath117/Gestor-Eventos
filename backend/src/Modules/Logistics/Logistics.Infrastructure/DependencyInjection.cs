@@ -2,6 +2,9 @@ namespace Logistics.Infrastructure;
 
 using Database;
 
+using Logistics.Application.Services;
+using Logistics.Infrastructure.Services;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +23,9 @@ public static class DependencyInjection
                     npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "logistics");
                 })
                 .UseSnakeCaseNamingConvention());
+
+        services.AddScoped<IEventMetricsService, EventMetricsService>();
+
         return services;
     }
 }

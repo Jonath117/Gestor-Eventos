@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 using Payment.Infrastructure;
+using Payment.Presentation;
 
 using Registration.Infrastructure;
 using Registration.Presentation;
@@ -53,6 +54,7 @@ builder.Services.AddLogisticsPresentation();
 builder.Services.AddRegistrationModule(builder.Configuration);
 
 builder.Services.AddPaymentInfrastructure(builder.Configuration);
+builder.Services.AddPaymentPresentation();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
@@ -103,6 +105,9 @@ var app = builder.Build();
 
 // El middleware de CORS debe ir lo más arriba posible
 app.UseCors();
+
+// Sirve los comprobantes subidos desde wwwroot/receipts.
+app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
