@@ -28,11 +28,13 @@ public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : Db
                   .HasForeignKey(rt => rt.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasData(new User(
-                Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                "admin@campeando.com",
-                "$2a$11$MGpEBiAytwzYQQZ/23CWRueAnvvyrFHumKraeMObdiqdEDOiP8FlG"
-            ));
+            entity.HasData(new
+            {
+                Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                Email = "admin@campeando.com",
+                PasswordHash = "$2a$11$MGpEBiAytwzYQQZ/23CWRueAnvvyrFHumKraeMObdiqdEDOiP8FlG",
+                CreatedAt = new DateTime(2026, 6, 23, 5, 49, 39, 955, DateTimeKind.Utc).AddTicks(7842)
+            });
         });
 
         modelBuilder.Entity<OrganizationUser>(entity =>

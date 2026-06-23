@@ -7,11 +7,11 @@ infra-down:
 	docker compose down
 
 db-migrate:
-	dotnet ef database update --project backend/src/Modules/Core/Core.Infrastructure --startup-project backend/src/Web.API --context CoreDbContext
-	dotnet ef database update --project backend/src/Modules/Identity/Identity.Infrastructure --startup-project backend/src/Web.API --context IdentityDbContext
-	dotnet ef database update --project backend/src/Modules/Logistics/Logistics.Infrastructure --startup-project backend/src/Web.API --context LogisticsDbContext
-	dotnet ef database update --project backend/src/Modules/Payment/Payment.Infrastructure --startup-project backend/src/Web.API --context PaymentDbContext
-	dotnet ef database update --project backend/src/Modules/Registration/Registration.Infrastructure --startup-project backend/src/Web.API --context RegistrationDbContext
+	export PATH="$$PATH:$$HOME/.dotnet/tools" && dotnet ef database update --project backend/src/Modules/Core/Core.Infrastructure --startup-project backend/src/Web.API --context CoreDbContext
+	export PATH="$$PATH:$$HOME/.dotnet/tools" && dotnet ef database update --project backend/src/Modules/Identity/Identity.Infrastructure --startup-project backend/src/Web.API --context IdentityDbContext
+	export PATH="$$PATH:$$HOME/.dotnet/tools" && dotnet ef database update --project backend/src/Modules/Logistics/Logistics.Infrastructure --startup-project backend/src/Web.API --context LogisticsDbContext
+	export PATH="$$PATH:$$HOME/.dotnet/tools" && dotnet ef database update --project backend/src/Modules/Payment/Payment.Infrastructure --startup-project backend/src/Web.API --context PaymentDbContext
+	export PATH="$$PATH:$$HOME/.dotnet/tools" && dotnet ef database update --project backend/src/Modules/Registration/Registration.Infrastructure --startup-project backend/src/Web.API --context RegistrationDbContext
 
 db-reset:
 	docker compose down -v

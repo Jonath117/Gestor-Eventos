@@ -22,7 +22,7 @@ public class LoginCommandHandler(
         // Determine role and tenant (Logic: Use first available organization or handle if none)
         var orgUser = user.OrganizationUsers.FirstOrDefault();
         var role = orgUser?.Role ?? "User";
-        var tenantId = orgUser?.OrganizationId.ToString() ?? "default_tenant";
+        var tenantId = orgUser?.OrganizationId.ToString() ?? string.Empty;
 
         var accessToken = jwtTokenGenerator.GenerateToken(user.Id, user.Email, role, tenantId);
         var refreshToken = jwtTokenGenerator.GenerateRefreshToken();

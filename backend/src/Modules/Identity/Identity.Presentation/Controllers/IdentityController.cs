@@ -29,8 +29,15 @@ public class IdentityController(ISender sender) : ControllerBase
     [EnableRateLimiting("PublicEndpointsPolicy")]
     public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
     {
-        var response = await sender.Send(command, cancellationToken);
-        return Ok(response);
+        try
+        {
+            var response = await sender.Send(command, cancellationToken);
+            return Ok(response);
+        }
+        catch (Identity.Domain.Exceptions.InvalidCredentialsException ex)
+        {
+            return Unauthorized(new { error = ex.Message });
+        }
     }
 
     [HttpPost("refresh")]
