@@ -8,6 +8,7 @@ public static class DependencyInjection
     public static IServiceCollection AddPaymentApplication(this IServiceCollection services)
     {
         services.AddScoped<LocalAttachmentStorageService>();
+        services.AddScoped<PaymentLinkGeneratorService>();
         return services;
     }
 }
