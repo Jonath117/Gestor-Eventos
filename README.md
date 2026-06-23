@@ -194,3 +194,8 @@ cd backend
 dotnet ef migrations add InitialCreate --project src/NOMBREDELMODULO.Infrastructure --startup-project src/Web.API
 dotnet ef database update --project src/NOMBREDELMODULO.Infrastructure --startup-project src/Web.API
 ```
+
+### Credenciales por Defecto (Desarrollo Local)
+Al aplicar las migraciones de Entity Framework, se generará un usuario administrador por defecto para que no tengas que registrarte manualmente cada vez que limpies la base de datos local:
+- **Email:** `admin@campeando.com`
+- **Contraseña:** `Admin123!`

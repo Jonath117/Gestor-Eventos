@@ -27,6 +27,12 @@ public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : Db
                   .WithOne()
                   .HasForeignKey(rt => rt.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasData(new User(
+                Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                "admin@campeando.com",
+                "$2a$11$MGpEBiAytwzYQQZ/23CWRueAnvvyrFHumKraeMObdiqdEDOiP8FlG"
+            ));
         });
 
         modelBuilder.Entity<OrganizationUser>(entity =>
