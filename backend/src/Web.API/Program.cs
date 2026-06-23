@@ -17,6 +17,24 @@ using Registration.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load .env file from the root
+DotNetEnv.Env.TraversePath().Load();
+
+// Build connection string from environment variables
+var pgHost = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+var pgPort = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
+var pgDb = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "gestor_eventos";
+var pgUser = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "user";
+var pgPass = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "password";
+
+var envConnectionString = $"Host={pgHost};Port={pgPort};Database={pgDb};Username={pgUser};Password={pgPass};";
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration["ConnectionStrings:DefaultConnection"] = envConnectionString;
+    builder.Configuration["ConnectionStrings:NeonPostgres"] = envConnectionString;
+}
+
 // Add services to the container.
 
 builder.Services.AddHttpContextAccessor();
