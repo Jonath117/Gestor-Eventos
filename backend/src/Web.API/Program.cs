@@ -14,8 +14,11 @@ using Microsoft.EntityFrameworkCore;
 using Payment.Infrastructure;
 using Payment.Presentation;
 
+using Registration.Application.Interfaces;
 using Registration.Infrastructure;
 using Registration.Presentation;
+
+using Web.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +68,10 @@ builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddIdentityPresentation();
 
 builder.Services.AddRegistrationPresentation();
+
+// Adaptador que envía el QR por correo al aceptar una inscripción (usa los
+// servicios de Logistics sin acoplar el módulo Registration con Logistics).
+builder.Services.AddScoped<IAcceptanceNotifier, ParticipantAcceptanceNotifier>();
 
 builder.Services.AddHealthChecks();
 

@@ -1,31 +1,39 @@
+using Microsoft.EntityFrameworkCore;
+
 using Registration.Application.DTOs.Requests;
 using Registration.Application.DTOs.Responses;
+using Registration.Application.Interfaces;
+using Registration.Domain.Enums;
 
 namespace Registration.Application.Services;
 
-public class ApplicationQueryService
+public class ApplicationQueryService(IRegistrationDbContext dbContext)
 {
-    public Task<List<PendingApplicationDto>> GetPendingApplicationsAsync(GetPendingApplicationsQuery query)
+    public async Task<List<PendingApplicationDto>> GetPendingApplicationsAsync(GetPendingApplicationsQuery query)
     {
-        // Dummy implementation returning simulated data.
-        var dummyData = new List<PendingApplicationDto>
+        if (dbContext.Orders == null)
         {
-            new PendingApplicationDto
-            {
-                Id = Guid.NewGuid(),
-                ApplicantName = "Juan Perez",
-                PaymentStatus = "PendingValidation",
-                AppliedAt = DateTime.UtcNow.AddHours(-2)
-            },
-            new PendingApplicationDto
-            {
-                Id = Guid.NewGuid(),
-                ApplicantName = "Maria Gomez",
-                PaymentStatus = "PendingValidation",
-                AppliedAt = DateTime.UtcNow.AddHours(-5)
-            }
-        };
+            return [];
+        }
 
-        return Task.FromResult(dummyData);
+        // Listamos las inscripciones del evento que están pendientes de
+        // validación por el staff (las que aún no fueron aceptadas/rechazadas).
+        // NOTA: se filtra por EventId (único). La isolación por tenant queda
+        // pendiente hasta que el submit resuelva el OrganizationId real del evento.
+        var orders = await dbContext.Orders
+            .Include(o => o.Participants)
+            .Where(o => o.EventId == query.EventId && o.Status == OrderStatus.PaymentPending)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
+
+        return orders
+            .Select(o => new PendingApplicationDto
+            {
+                Id = o.Id,
+                ApplicantName = o.Participants.FirstOrDefault()?.FullName ?? o.ContactEmail,
+                PaymentStatus = o.Status.ToString(),
+                AppliedAt = o.CreatedAt,
+            })
+            .ToList();
     }
 }

@@ -55,7 +55,14 @@ public class RegistrationController(ISender sender) : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromBody] UpdateOrderStatusRequest request)
     {
-        var success = await sender.Send(new Registration.Application.Features.Registration.UpdateOrderStatus.UpdateOrderStatusCommand(orderId, request.Status));
+        // Aceptamos el estado como string (ej. "Confirmed"/"Rejected") para no
+        // depender de cómo se serialicen los enums en JSON.
+        if (!Enum.TryParse<Registration.Domain.Enums.OrderStatus>(request.Status, ignoreCase: true, out var status))
+        {
+            return BadRequest(new { Message = $"Invalid status '{request.Status}'." });
+        }
+
+        var success = await sender.Send(new Registration.Application.Features.Registration.UpdateOrderStatus.UpdateOrderStatusCommand(orderId, status));
         if (!success)
         {
             return NotFound(new { Message = "Order not found." });
@@ -72,7 +79,7 @@ public class RegistrationController(ISender sender) : ControllerBase
     }
 }
 
-public record UpdateOrderStatusRequest(Registration.Domain.Enums.OrderStatus Status);
+public record UpdateOrderStatusRequest(string Status);
 
 public record RequestOtpRequest(string Email, string FullName);
 public record VerifyOtpRequest(string Email, string Otp);

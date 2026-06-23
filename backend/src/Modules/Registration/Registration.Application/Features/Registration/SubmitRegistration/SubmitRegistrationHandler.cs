@@ -35,7 +35,10 @@ public class SubmitRegistrationHandler(
             OrganizationId = organizationId,
             EventId = request.EventId,
             ContactEmail = request.Email,
-            Status = OrderStatus.Confirmed,
+            // La inscripción pública queda pendiente de validación por el staff.
+            // El staff la acepta (Confirmed) o la rechaza (Rejected) desde
+            // "Solicitudes pendientes".
+            Status = OrderStatus.PaymentPending,
             CreatedAt = DateTime.UtcNow
         };
 
