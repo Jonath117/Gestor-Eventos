@@ -1,4 +1,5 @@
 using System.Threading.RateLimiting;
+using Amazon.S3;
 
 using Core.Infrastructure;
 
@@ -46,6 +47,18 @@ builder.Services.AddHttpContextAccessor();
 
 // Registra los controladores de todos los módulos que se añaden.
 builder.Services.AddControllers();
+
+// Configurar Amazon S3 / MinIO
+var minioUser = Environment.GetEnvironmentVariable("MINIO_USER") ?? "minioadmin";
+var minioPass = Environment.GetEnvironmentVariable("MINIO_PASSWORD") ?? "minioadmin";
+
+var s3Config = new AmazonS3Config
+{
+    ServiceURL = "http://localhost:9000",
+    ForcePathStyle = true // Requerido para MinIO
+};
+
+builder.Services.AddSingleton<IAmazonS3>(sp => new AmazonS3Client(minioUser, minioPass, s3Config));
 
 // Registra todas las dependencias del módulo de Eventos (Application, Infrastructure, etc.)
 

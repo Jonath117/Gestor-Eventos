@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Payment.Application;
+using Payment.Application.Abstractions;
+using Payment.Infrastructure.Storage;
 
 public static class DependencyInjection
 {
@@ -24,6 +26,7 @@ public static class DependencyInjection
                 .UseSnakeCaseNamingConvention());
                 
         services.AddPaymentApplication();
+        services.AddScoped<IAttachmentStorageService, MinioAttachmentStorageService>();
         return services;
     }
 }

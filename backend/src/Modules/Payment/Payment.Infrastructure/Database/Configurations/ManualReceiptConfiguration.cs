@@ -27,7 +27,7 @@ public class ManualReceiptConfiguration : IEntityTypeConfiguration<ManualReceipt
         {
             Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
             TransactionId = Guid.Parse("88888888-8888-8888-8888-888888888888"),
-            FileUrl = "https://s3.amazonaws.com/tu-bucket/comprobante_001.jpg",
+            FileUrl = "http://localhost:9000/gestor-eventos/receipts/dummy.png",
             FileHash = "HASH_IMAGEN_SHA256_ABC123",
             MimeType = "image/jpeg",
             UploadedAt = new DateTime(2026, 5, 20, 1, 5, 0, DateTimeKind.Utc)

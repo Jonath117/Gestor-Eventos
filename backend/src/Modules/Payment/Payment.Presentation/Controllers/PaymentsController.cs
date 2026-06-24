@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Payment.Application.Abstractions;
 using Payment.Application.DTOs.Requests;
-using Payment.Application.Services;
 
 namespace Payment.Presentation.Controllers;
 
@@ -8,9 +8,9 @@ namespace Payment.Presentation.Controllers;
 [Route("api/payments")]
 public class PaymentsController : ControllerBase
 {
-    private readonly LocalAttachmentStorageService _storageService;
+    private readonly IAttachmentStorageService _storageService;
 
-    public PaymentsController(LocalAttachmentStorageService storageService)
+    public PaymentsController(IAttachmentStorageService storageService)
     {
         _storageService = storageService;
     }

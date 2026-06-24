@@ -7,7 +7,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPaymentApplication(this IServiceCollection services)
     {
-        services.AddScoped<LocalAttachmentStorageService>();
+        // Almacenamiento S3 se registrará en Infrastructure o API
         services.AddScoped<PaymentLinkGeneratorService>();
         return services;
     }
