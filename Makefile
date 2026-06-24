@@ -16,7 +16,9 @@ db-migrate:
 db-reset:
 	docker compose down -v
 	docker compose up -d db minio minio-mc
-	@echo "Base de datos reseteada. Las migraciones se aplicaran automaticamente al iniciar la API (make dev-backend)."
+	@echo "Esperando a que la base de datos inicie..."
+	sleep 3
+	$(MAKE) db-migrate
 
 dev:
 	pnpm dev
