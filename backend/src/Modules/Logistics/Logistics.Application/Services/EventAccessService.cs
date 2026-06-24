@@ -19,7 +19,8 @@ public class EventAccessService
         foreach (var participantId in request.ParticipantIds)
         {
             var payload = _qrGenerationService.GenerateParticipantQrPayload(participantId, request.EventId);
-            await _mailService.SendQrEmailAsync(participantId, payload);
+            var qrImageBytes = _qrGenerationService.GenerateQrImage(payload);
+            await _mailService.SendQrEmailAsync(participantId, qrImageBytes);
         }
     }
 

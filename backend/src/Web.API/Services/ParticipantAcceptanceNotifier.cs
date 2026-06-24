@@ -20,6 +20,7 @@ public class ParticipantAcceptanceNotifier(
         CancellationToken cancellationToken = default)
     {
         var payload = qrGenerationService.GenerateParticipantQrPayload(participantId, eventId);
-        await mailService.SendQrEmailAsync(participantId, payload, contactEmail);
+        var qrImageBytes = qrGenerationService.GenerateQrImage(payload);
+        await mailService.SendQrEmailAsync(participantId, qrImageBytes, contactEmail);
     }
 }
