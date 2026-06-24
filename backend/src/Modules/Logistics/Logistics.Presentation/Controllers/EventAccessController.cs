@@ -8,9 +8,9 @@ namespace Logistics.Presentation.Controllers;
 [Route("api/events/access")]
 public class EventAccessController : ControllerBase
 {
-    private readonly EventAccessService _eventAccessService;
+    private readonly IEventAccessService _eventAccessService;
 
-    public EventAccessController(EventAccessService eventAccessService)
+    public EventAccessController(IEventAccessService eventAccessService)
     {
         _eventAccessService = eventAccessService;
     }
@@ -23,9 +23,9 @@ public class EventAccessController : ControllerBase
     }
 
     [HttpPost("validate-qr")]
-    public async Task<IActionResult> ValidateQr([FromBody] ValidateQrRequest request)
+    public async Task<IActionResult> ValidateQr([FromBody] ValidateQrRequest request, CancellationToken cancellationToken)
     {
-        var response = await _eventAccessService.ValidateQrAsync(request);
+        var response = await _eventAccessService.ValidateQrAsync(request, cancellationToken);
         return Ok(response);
     }
 }

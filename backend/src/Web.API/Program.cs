@@ -96,6 +96,10 @@ builder.Services.AddScoped<IAcceptanceNotifier, ParticipantAcceptanceNotifier>()
 // inscripciones pendientes (módulo Registration) sin acoplar ambos módulos.
 builder.Services.AddScoped<IReceiptUrlProvider, PaymentReceiptUrlProvider>();
 
+// Adaptador que expone los participantes confirmados (módulo Registration) a
+// Logistics (métricas, validación de QR, listado) sin acoplar ambos módulos.
+builder.Services.AddScoped<Logistics.Application.Services.IConfirmedParticipantsProvider, ConfirmedParticipantsProvider>();
+
 builder.Services.AddHealthChecks();
 
 builder.Services.AddAuthorization(options =>

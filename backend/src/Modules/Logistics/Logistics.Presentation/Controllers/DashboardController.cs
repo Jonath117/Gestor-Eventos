@@ -24,4 +24,13 @@ public class DashboardController : ControllerBase
 
         return Ok(metrics);
     }
+
+    [HttpGet("participants/{eventId:guid}")]
+    public async Task<IActionResult> GetConfirmedParticipants(Guid eventId, CancellationToken cancellationToken)
+    {
+        IReadOnlyList<ConfirmedParticipantResponse> participants =
+            await _eventMetricsService.GetConfirmedParticipantsAsync(eventId, cancellationToken);
+
+        return Ok(participants);
+    }
 }

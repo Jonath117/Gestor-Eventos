@@ -25,6 +25,7 @@ public static class DependencyInjection
                 .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IEventMetricsService, EventMetricsService>();
+        services.AddScoped<IEventAccessService, EventAccessService>();
 
         return services;
     }

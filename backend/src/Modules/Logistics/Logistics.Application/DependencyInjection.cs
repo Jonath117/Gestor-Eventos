@@ -9,7 +9,8 @@ public static class DependencyInjection
     {
         services.AddScoped<QrGenerationService>();
         services.AddScoped<MailpitIntegrationService>();
-        services.AddScoped<EventAccessService>();
+        // IEventAccessService se registra en la capa de Infrastructure porque
+        // su implementación depende del LogisticsDbContext.
 
         return services;
     }
