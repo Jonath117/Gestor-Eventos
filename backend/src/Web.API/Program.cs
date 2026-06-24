@@ -21,10 +21,12 @@ using Registration.Presentation;
 
 using Web.API.Services;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Load .env file from the root
+// Load .env file from the root BEFORE creating the builder, así sus variables
+// (incl. Storage__* y ASPNETCORE_URLS) son tomadas por el proveedor de variables
+// de entorno de la configuración y por el host.
 DotNetEnv.Env.TraversePath().Load();
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Build connection string from environment variables
 var pgHost = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
@@ -52,9 +54,13 @@ builder.Services.AddControllers();
 var minioUser = Environment.GetEnvironmentVariable("MINIO_USER") ?? "minioadmin";
 var minioPass = Environment.GetEnvironmentVariable("MINIO_PASSWORD") ?? "minioadmin";
 
+// Endpoint interno que usa el SDK para subir objetos. El host público que queda
+// embebido en las URLs devueltas al cliente se configura aparte en "Storage:PublicBaseUrl".
+var minioServiceUrl = builder.Configuration["Storage:ServiceUrl"] ?? "http://localhost:9000";
+
 var s3Config = new AmazonS3Config
 {
-    ServiceURL = "http://localhost:9000",
+    ServiceURL = minioServiceUrl,
     ForcePathStyle = true // Requerido para MinIO
 };
 
@@ -85,6 +91,10 @@ builder.Services.AddRegistrationPresentation();
 // Adaptador que envía el QR por correo al aceptar una inscripción (usa los
 // servicios de Logistics sin acoplar el módulo Registration con Logistics).
 builder.Services.AddScoped<IAcceptanceNotifier, ParticipantAcceptanceNotifier>();
+
+// Adaptador que expone la URL del comprobante (módulo Payment) al listado de
+// inscripciones pendientes (módulo Registration) sin acoplar ambos módulos.
+builder.Services.AddScoped<IReceiptUrlProvider, PaymentReceiptUrlProvider>();
 
 builder.Services.AddHealthChecks();
 

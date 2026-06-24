@@ -4,10 +4,8 @@ using Core.Application.Abstractions;
 
 namespace Core.Infrastructure.Storage;
 
-public class MinioImageStorageService(IAmazonS3 s3Client) : IImageStorageService
+public class MinioImageStorageService(IAmazonS3 s3Client, StorageOptions storageOptions) : IImageStorageService
 {
-    private const string BucketName = "gestor-eventos";
-
     public async Task<string?> SaveImageAsync(
         string? base64Content,
         string folder,
@@ -30,7 +28,7 @@ public class MinioImageStorageService(IAmazonS3 s3Client) : IImageStorageService
         using var stream = new MemoryStream(bytes);
         var putRequest = new PutObjectRequest
         {
-            BucketName = BucketName,
+            BucketName = storageOptions.BucketName,
             Key = key,
             InputStream = stream,
             ContentType = "image/png"
@@ -38,6 +36,6 @@ public class MinioImageStorageService(IAmazonS3 s3Client) : IImageStorageService
 
         await s3Client.PutObjectAsync(putRequest, cancellationToken);
 
-        return $"http://localhost:9000/{BucketName}/{key}";
+        return $"{storageOptions.PublicBaseUrl}/{storageOptions.BucketName}/{key}";
     }
 }

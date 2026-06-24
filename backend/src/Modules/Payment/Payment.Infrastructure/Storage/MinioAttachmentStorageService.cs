@@ -4,9 +4,8 @@ using Payment.Application.Abstractions;
 
 namespace Payment.Infrastructure.Storage;
 
-public class MinioAttachmentStorageService(IAmazonS3 s3Client) : IAttachmentStorageService
+public class MinioAttachmentStorageService(IAmazonS3 s3Client, StorageOptions storageOptions) : IAttachmentStorageService
 {
-    private const string BucketName = "gestor-eventos";
     private const string ReceiptsFolder = "receipts";
 
     public async Task<string> SaveReceiptAsync(Guid applicationId, string base64Content)
@@ -26,7 +25,7 @@ public class MinioAttachmentStorageService(IAmazonS3 s3Client) : IAttachmentStor
         using var stream = new MemoryStream(bytes);
         var putRequest = new PutObjectRequest
         {
-            BucketName = BucketName,
+            BucketName = storageOptions.BucketName,
             Key = key,
             InputStream = stream,
             ContentType = "image/png"
@@ -34,6 +33,6 @@ public class MinioAttachmentStorageService(IAmazonS3 s3Client) : IAttachmentStor
 
         await s3Client.PutObjectAsync(putRequest);
 
-        return $"http://localhost:9000/{BucketName}/{key}";
+        return $"{storageOptions.PublicBaseUrl}/{storageOptions.BucketName}/{key}";
     }
 }

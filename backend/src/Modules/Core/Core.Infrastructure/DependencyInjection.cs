@@ -38,6 +38,13 @@ public static class DependencyInjection
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITenantProvider, MockTenantProvider>();
+
+        services.AddSingleton(new StorageOptions
+        {
+            ServiceUrl = configuration[$"{StorageOptions.SectionName}:ServiceUrl"] ?? "http://localhost:9000",
+            PublicBaseUrl = configuration[$"{StorageOptions.SectionName}:PublicBaseUrl"] ?? "http://localhost:9000",
+            BucketName = configuration[$"{StorageOptions.SectionName}:BucketName"] ?? "gestor-eventos",
+        });
         services.AddScoped<IImageStorageService, MinioImageStorageService>();
 
         return services;

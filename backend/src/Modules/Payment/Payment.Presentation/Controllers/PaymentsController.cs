@@ -8,21 +8,20 @@ namespace Payment.Presentation.Controllers;
 [Route("api/payments")]
 public class PaymentsController : ControllerBase
 {
-    private readonly IAttachmentStorageService _storageService;
+    private readonly IReceiptService _receiptService;
 
-    public PaymentsController(IAttachmentStorageService storageService)
+    public PaymentsController(IReceiptService receiptService)
     {
-        _storageService = storageService;
+        _receiptService = receiptService;
     }
 
     [HttpPost("upload-receipt")]
     public async Task<IActionResult> UploadReceipt([FromBody] UploadReceiptRequest request)
     {
-        var receiptUrl = await _storageService.SaveReceiptAsync(request.ApplicationId, request.FileContentBase64);
-        
-        // MVP: Here we would typically update the Domain Model (e.g., Application/ManualReceipt)
-        // using a repository, but for this simulation we just return the URL.
-        
+        // Guarda el archivo en el almacenamiento de objetos y persiste el
+        // ManualReceipt asociado a la transacción de la orden.
+        var receiptUrl = await _receiptService.UploadReceiptAsync(request.ApplicationId, request.FileContentBase64);
+
         return Ok(new { receiptUrl });
     }
 }

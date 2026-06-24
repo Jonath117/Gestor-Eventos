@@ -7,9 +7,13 @@ using Registration.Domain.Enums;
 
 namespace Registration.Application.Services;
 
-public class ApplicationQueryService(IRegistrationDbContext dbContext)
+public class ApplicationQueryService(
+    IRegistrationDbContext dbContext,
+    IReceiptUrlProvider receiptUrlProvider)
 {
-    public async Task<List<PendingApplicationDto>> GetPendingApplicationsAsync(GetPendingApplicationsQuery query)
+    public async Task<List<PendingApplicationDto>> GetPendingApplicationsAsync(
+        GetPendingApplicationsQuery query,
+        CancellationToken cancellationToken = default)
     {
         if (dbContext.Orders == null)
         {
@@ -24,7 +28,11 @@ public class ApplicationQueryService(IRegistrationDbContext dbContext)
             .Include(o => o.Participants)
             .Where(o => o.EventId == query.EventId && o.Status == OrderStatus.PaymentPending)
             .OrderByDescending(o => o.CreatedAt)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
+
+        // Resolvemos la URL del comprobante (módulo Payment) en un solo lote.
+        var orderIds = orders.Select(o => o.Id).ToList();
+        var receiptUrls = await receiptUrlProvider.GetReceiptUrlsByOrderIdsAsync(orderIds, cancellationToken);
 
         return orders
             .Select(o => new PendingApplicationDto
@@ -33,6 +41,7 @@ public class ApplicationQueryService(IRegistrationDbContext dbContext)
                 ApplicantName = o.Participants.FirstOrDefault()?.FullName ?? o.ContactEmail,
                 PaymentStatus = o.Status.ToString(),
                 AppliedAt = o.CreatedAt,
+                ReceiptFileUrl = receiptUrls.TryGetValue(o.Id, out var url) ? url : null,
             })
             .ToList();
     }
